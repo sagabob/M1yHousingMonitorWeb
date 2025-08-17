@@ -1,10 +1,4 @@
-export type IdProduct = {
-    id: number
-    name: string
-    description: string
-    link: string,
-    color: string
-}
+import type { IdProduct } from "./types/IdProduct";
 
 export const products: IdProduct[] = [
     {
@@ -20,22 +14,21 @@ export const products: IdProduct[] = [
         description: 'Social Atlas',
         link: 'https://atlas.id.com.au/',
         color: '#caae01'
-    },
+    },    
     {
         id: 3,
-        name: 'economic profile',
-        description: 'Economic Profile',
-        link: 'https://economy.id.com.au/',
-        color: '#70b859'
-    },
-    {
-        id: 4,
         name: 'population forecast',
         description: 'Population Forecast',
         link: 'https://forecast.id.com.au/',
         color: '#3b6e8f'
     },
-
+    {
+        id: 4,
+        name: 'economic profile',
+        description: 'Economic Profile',
+        link: 'https://economy.id.com.au/',
+        color: '#70b859'
+    },
     {
         id: 8,
         name: 'housing monitor',
@@ -45,11 +38,9 @@ export const products: IdProduct[] = [
     },
     {
         id: 9,
-        name: 'community-views',
+        name: 'community views',
         description: 'Community Views',
         link: 'https://home.id.com.au/community-views',
         color: '#b21f67'
     }
 ]
-
-
