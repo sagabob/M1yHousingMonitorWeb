@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom"
-import { lgaData } from "../page-data/lga-data"
-import { useTotalMedianPrice } from "../data-services/hooks/useMedianPrice"
+import { lgaData } from "../../page-data/lga-data"
+import { useTotalMedianPrice } from "../../data-services/hooks/useMedianPrice"
 
 const ClientHome = () => {
     const { alias } = useParams()
