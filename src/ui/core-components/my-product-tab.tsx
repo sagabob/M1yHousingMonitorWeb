@@ -1,6 +1,6 @@
-import { MAX_WIDTH } from "./constants/ui-constants"
+import { MAX_WIDTH } from "../constants/ui-constants"
 import MyProductButton from "./my-product-button"
-import { products } from "../page-data/products"
+import { products } from "../../page-data/products"
 
 const MyProductTab = () => {
     return (

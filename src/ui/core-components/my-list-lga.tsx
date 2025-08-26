@@ -1,6 +1,6 @@
-import { lgaData, baseUrl } from "../page-data/lga-data"
+import { lgaData, baseUrl } from "../../page-data/lga-data"
 import { Link } from "react-router-dom"
-import { MAX_WIDTH } from "./constants/ui-constants"
+import { MAX_WIDTH } from "../constants/ui-constants"
 const MyListLga = () => {
     return (
         <section className="py-10 bg-white">
