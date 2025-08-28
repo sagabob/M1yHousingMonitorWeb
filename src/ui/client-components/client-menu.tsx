@@ -80,7 +80,7 @@ const ClientMenu = () => {
     }
 
     return (
-        <div className="w-64 bg-white sticky top-1 h-full overflow-y-auto">
+        <div className="w-full bg-white sticky top-1 h-full overflow-y-auto">
             <div className="p-2">
                 {menuStructure.menuItems.map(renderMenuItem)}
             </div>

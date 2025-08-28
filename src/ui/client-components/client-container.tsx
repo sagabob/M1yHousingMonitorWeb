@@ -5,15 +5,14 @@ const ClientContainer = (props: { children: React.ReactNode }) => {
     return (
         <section className="py-2">
             <div className={`max-w-${MAX_WIDTH} mx-auto px-2 sm:px-2 lg:px-4 py-4`}>
-                <div className="flex grid-cols-12">
+                <div className="grid grid-cols-12 gap-4">
                     <div className="col-span-3">
                         <ClientMenu />
                     </div>
                     <div className="col-span-9">
                         {props.children}
                     </div>
-                </div>
-            </div>
+                </div>            </div>
         </section>
     )
 }

@@ -27,7 +27,7 @@ const ClientHome = () => {
     return (
         <MyWrapper>
             <ClientHeadingSection {...lga} />
-            <ClientContainer children={undefined} />
+            <ClientContainer children={undefined}  />
         </MyWrapper>
     )
 }

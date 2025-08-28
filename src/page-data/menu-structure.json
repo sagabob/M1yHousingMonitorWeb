@@ -182,11 +182,10 @@
       "type": "section",
       "subItems": [
         {
-          "id": "#how-many-households-are-in-need-of-affordable-housing",
+          "id": "how-many-households-are-in-need-of-affordable-housing",
           "label": "How many households are in need of affordable housing?",
           "route": "/affordable-housing-need/"
-        },
-        {
+        },        {
           "id": "what-types-of-households-are-in-need-of-affordable-housing",
           "label": "What types of households are in need of affordable housing?",
           "route": "/affordable-housing-need/#what-types-of-households-are-in-need-of-affordable-housing"
@@ -246,11 +245,10 @@
           "route": "/worker-affordability/#how-affordable-is-buying-a-home-for-local-workers"
         },
         {
-          "id": "#how-affordable-is-renting-for-local-workers",
+          "id": "how-affordable-is-renting-for-local-workers",
           "label": "How affordable is renting for local workers?",
           "route": "/worker-affordability/#how-affordable-is-renting-for-local-workers"
-        }        
-      ]
+        }      ]
     }
   ]
 }
