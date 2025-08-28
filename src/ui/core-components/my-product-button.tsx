@@ -1,4 +1,4 @@
-import type { IdProduct } from "../page-data/types/IdProduct"
+import type { IdProduct } from "../../page-data/types/IdProduct"
 
 interface MyProductButtonProps {
     products: IdProduct[]
