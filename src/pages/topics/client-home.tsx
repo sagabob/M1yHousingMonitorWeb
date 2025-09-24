@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom"
 import { lgaData } from "../../page-data/lga-data"
-import { useTotalMedianPrice } from "../../data-services/hooks/useMedianPrice"
 import ClientHeadingSection from "@/ui/client-components/client-heading-section"
 import ClientContainer from "@/ui/client-components/client-container"
 import MyWrapper from "@/ui/core-components/my-wrapper"
@@ -27,7 +26,7 @@ const ClientHome = () => {
     return (
         <MyWrapper>
             <ClientHeadingSection {...lga} />
-            <ClientContainer children={undefined}  />
+            <ClientContainer {...lga} />
         </MyWrapper>
     )
 }

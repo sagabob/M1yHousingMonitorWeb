@@ -26,5 +26,7 @@ export const TotalMedianPriceZ = z.object({
   Sales:   MedianPricePeriodZ,
 }).strip();
 
-// If you want to derive the TS type from Zod (recommended):
-export type TotalMedianPriceZod = z.infer<typeof TotalMedianPriceZ>;
+// Derive TypeScript types from Zod schemas (single source of truth)
+export type SingleMedianPrice = z.infer<typeof SingleMedianPriceZ>;
+export type MedianPricePeriod = z.infer<typeof MedianPricePeriodZ>;
+export type TotalMedianPrice = z.infer<typeof TotalMedianPriceZ>;

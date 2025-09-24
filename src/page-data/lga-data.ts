@@ -86,7 +86,7 @@ const lgaData: Lga[] = [
       "id": "22750",
       "name": "City of Greater Geelong",
       "alias": "geelong",
-      "image": "/static/8a565e0f2606a4cc01a9e661fe0aed68/deb99/22750.png"
+      "image": "/static/d0c61b4776e2d04216be707059a1a863/deb99/22750.png"
     },
     {
       "id": "62810",
@@ -116,7 +116,7 @@ const lgaData: Lga[] = [
       "id": "24330",
       "name": "City of Maribyrnong",
       "alias": "maribyrnong",
-      "image": "/static/69cfce295ad408fc60633da844e8b4f8/deb99/24330.png"
+      "image": "/static/eaf7c703a6649230b98a28269cad4077/deb99/24330.png"
     },
     {
       "id": "24600",
