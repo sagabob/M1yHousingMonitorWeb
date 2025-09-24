@@ -4,6 +4,7 @@ import {
 import Home from "./pages/app-landing-page";
 import ClientHome from "./pages/topics/client-home";
 import NotFound from "./pages/not-found";
+import HomeContainer from "./ui/page-containers/home-container";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     element: <ClientHome />,
     errorElement: <NotFound />,
     children: [
-      { index: true, element: <div>Overview</div> },            // /:alias
+      { index: true, element: <HomeContainer/> },            // /:alias
       { path: "population-households", element: <div>population-households</div> },       // /:alias/overview
       { path: "housing-and-approvals", element: <div>Rentals</div> },         // /:alias/rentals
       { path: "housing-market", element: <div>Sales</div> },             // /:alias/sales

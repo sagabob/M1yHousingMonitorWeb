@@ -1,13 +1,14 @@
 import { useTotalMedianPrice } from "@/data-services";
-import type { Lga } from "@/page-data/types/Lga";
+import { useLga } from "@/hooks/use-lga";
 
 
-const HomeContainer = (lga:Lga) => {
 
+const HomeContainer = () => {
+
+    const lga = useLga()
     //need to call the data service to get data from fire store
     const { data: medianPriceData, isLoading, error } = useTotalMedianPrice(lga?.id || "")
-
-    console.log(medianPriceData)
+    
 
     if (isLoading) {
         return <div>Loading...</div>
@@ -15,6 +16,8 @@ const HomeContainer = (lga:Lga) => {
     if (error) {
         return <div>Error: {error.message}</div>
     }
+
+    console.log(medianPriceData)
 
     return (
         <div>
