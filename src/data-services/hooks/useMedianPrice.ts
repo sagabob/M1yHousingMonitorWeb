@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getTotalMedianPriceById } from "../repos/medianPrice.repo";
-import { QUERY_KEYS, CACHE_TIMES } from "../utils/constants";
+import { QUERY_KEYS, CACHE_TIMES } from "../config/constants";
 
 export function useTotalMedianPrice(lgacode: string) {
   return useQuery({

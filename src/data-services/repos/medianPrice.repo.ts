@@ -1,8 +1,8 @@
-import { db } from "../firebase";
+import { db } from "../db-sources/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { makeZodConverter } from "../utils/zodFirestore";
-import { TotalMedianPriceZ, type TotalMedianPrice } from "../utils/medianPriceSchema";
-import { COLLECTIONS, ERROR_MESSAGES } from "../utils/constants";
+import { makeZodConverter } from "../schemas/zodFirestore";
+import { TotalMedianPriceZ, type TotalMedianPrice } from "../schemas/medianPriceSchema";
+import { COLLECTIONS, ERROR_MESSAGES } from "../config/constants";
 
 const totalMedianPriceConverter = makeZodConverter(TotalMedianPriceZ);
 
