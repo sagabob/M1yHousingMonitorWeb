@@ -16,7 +16,7 @@ const HomeContainer = () => {
     const bmMedianPrice = useListingTypesByCode(bm.code)
 
     if (lgaMedianPrice.isLoading || bmMedianPrice.isLoading) {
-        return <LoadingGrid cardCount={2} />
+        return <LoadingGrid cardCount={2} staggerDelay={200} />
     }
     if (lgaMedianPrice.error || bmMedianPrice.error) {
         return <div>Error: {lgaMedianPrice.error?.message || bmMedianPrice.error?.message}</div>
