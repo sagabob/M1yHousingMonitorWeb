@@ -11,8 +11,7 @@ export function getLatestPeriod(periods: SingleMedianPrice[]) {
             dayjs(b.Period_Name, "MMM YYYY").toDate().getTime() -
             dayjs(a.Period_Name, "MMM YYYY").toDate().getTime()
     );
-
-    console.log(sortedDesc.map(d => d.Period_Name));
+    sortedDesc.map(d => d.Period_Name)
     return sortedDesc[0];
 }
 

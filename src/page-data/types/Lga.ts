@@ -5,3 +5,8 @@ export interface Lga {
     image: string
 }
 
+export interface Benchmark{
+    code: string,
+    name: string,    
+}
+
