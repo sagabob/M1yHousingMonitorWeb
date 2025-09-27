@@ -12,8 +12,7 @@ export async function getTotalMedianPriceById(
 ) {
   try {
     const documentId = lgacode.startsWith("LGA") ? lgacode : `LGA${lgacode}`;
-    console.log(`🔍 Fetching median price data for LGA: ${lgacode} (Document ID: ${documentId})`);
-    
+
     const ref = doc(db, COLLECTIONS.PRICES_INCOMES_MEDIANS, documentId).withConverter(totalMedianPriceConverter);
     const snap = await getDoc(ref);
 
@@ -27,13 +26,6 @@ export async function getTotalMedianPriceById(
 
     // `snap.data()` is now parsed, stripped, and defaults applied
     const data = snap.data();
-    console.log(`✅ Successfully fetched data for LGA ${lgacode}:`, {
-      hasRentals: !!data.Rentals,
-      hasSales: !!data.Sales,
-      rentalPeriods: data.Rentals?.Periods?.length || 0,
-      salesPeriods: data.Sales?.Periods?.length || 0
-    });
-
     // (Optional) If you want TypeScript to assert compatibility with your hand-written type:
     const typed: TotalMedianPrice = data; // should compile if shapes match
     return typed;

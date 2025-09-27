@@ -23,9 +23,7 @@ export async function getListingTypesByCode(code: string) {
 
         // Add query parameters
         url.searchParams.set('code', `eq.${code}`);
-
-        console.log(`🔍 Fetching listing types from: ${url.toString()}`);
-
+        
         const response = await fetch(url.toString(), {
             method: 'GET',
             headers: {
@@ -39,7 +37,6 @@ export async function getListingTypesByCode(code: string) {
         }
 
         const data = await response.json();
-        console.log(`✅ Successfully fetched ${data.length} listing types`);
 
         // Validate and transform data using Zod
         const validatedData = z.array(ListingTypeZ).parse(data);

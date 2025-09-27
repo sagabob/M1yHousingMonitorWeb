@@ -6,15 +6,8 @@ import MyWrapper from "@/ui/core-components/my-wrapper"
 
 const ClientHome = () => {
     const { alias } = useParams()
-
-    console.log('ClientHome component rendered!')
-    console.log('URL Alias:', alias)
-
     // Find the LGA data based on the alias parameter
     const lga = lgaData.find(l => l.alias === alias)
-
-    console.log('Found LGA:', lga)
-
     // Query median price data using the LGA ID
     //const { data: medianPriceData, isLoading, error } = useTotalMedianPrice(lga?.id || "")
 
