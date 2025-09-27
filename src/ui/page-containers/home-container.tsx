@@ -26,11 +26,14 @@ const HomeContainer = () => {
         return <div>No data available</div>;
     }
 
-    const latestDataRentals = getLatestDataRentals(lgaMedianPrice.data!);
-    const latestDataSales = getLatestDataSales(lgaMedianPrice.data!);
+    const latestDataRentals = lgaMedianPrice.data
+        ? getLatestDataRentals(lgaMedianPrice.data)
+        : undefined;
+    const latestDataSales = lgaMedianPrice.data
+        ? getLatestDataSales(lgaMedianPrice.data)
+        : undefined;
     const bmLatestRentalData = getLatestRentalData(bmMedianPrice.data || []);
     const bmLatestSalesData = getLatestSalesData(bmMedianPrice.data || []);
-
     const bmUnitPrice = bmLatestSalesData.find(d => d.propertytype === "Unit")?.median;
     const bmHousePrice = bmLatestSalesData.find(d => d.propertytype === "House")?.median;
 
