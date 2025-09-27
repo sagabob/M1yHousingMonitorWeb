@@ -34,11 +34,12 @@ const HomeContainer = () => {
         : undefined;
     const bmLatestRentalData = getLatestRentalData(bmMedianPrice.data || []);
     const bmLatestSalesData = getLatestSalesData(bmMedianPrice.data || []);
+
     const bmUnitPrice = bmLatestSalesData.find(d => d.propertytype === "Unit")?.median;
     const bmHousePrice = bmLatestSalesData.find(d => d.propertytype === "House")?.median;
 
-    const lgaRentalUnitPrice = bmLatestRentalData.find(d => d.propertytype === "Unit")?.median;
-    const lgaRentalHousePrice = bmLatestRentalData.find(d => d.propertytype === "House")?.median;
+    const bmRentalUnitPrice = bmLatestRentalData.find(d => d.propertytype === "Unit")?.median;
+    const bmRentalHousePrice = bmLatestRentalData.find(d => d.propertytype === "House")?.median;
 
     return (
         <div>
@@ -75,7 +76,7 @@ const HomeContainer = () => {
                                 </div>
                                 <div className="flex justify-between space-y-1">
                                     <span>{bm.name}</span>
-                                    <span>{formatRentalValue(lgaRentalUnitPrice, "week")}</span>
+                                    <span>{formatRentalValue(bmRentalUnitPrice, "week")}</span>
                                 </div>
                             </CardDescription>
                             <CardDescription className="text-black ">
@@ -88,7 +89,7 @@ const HomeContainer = () => {
                                 </div>
                                 <div className="flex justify-between space-y-1">
                                     <span >{bm.name}</span>
-                                    <span>{formatRentalValue(lgaRentalHousePrice, "week")}</span>
+                                    <span>{formatRentalValue(bmRentalHousePrice, "week")}</span>
                                 </div>
                             </CardDescription>
                         </CardHeader>

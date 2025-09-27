@@ -9,7 +9,7 @@ const ListingTypeZ = z.object({
     listingtype: z.enum(["Rentals", "Sales"]),
     propertytype: z.enum(["Unit", "House"]),
     median: z.number(),
-    period: z.string()
+    period_time: z.string()
 }).strip();
 
 // Derive TypeScript type from Zod schema
@@ -19,7 +19,7 @@ export type ListingType = z.infer<typeof ListingTypeZ>;
 // API service functions
 export async function getListingTypesByCode(code: string) {
     try {
-        const url = new URL(`${SUPABASE_URL}/v_latest_listingtypes`);
+        const url = new URL(`${SUPABASE_URL}/v_latest_listingtypes_v1`);
 
         // Add query parameters
         url.searchParams.set('code', `eq.${code}`);
