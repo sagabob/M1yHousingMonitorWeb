@@ -1,4 +1,4 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp,type FirebaseOptions  } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 // Validate environment variables
@@ -15,10 +15,10 @@ Object.entries(requiredEnvVars).forEach(([key, value]) => {
   }
 });
 
-const config = {
-  apiKey: requiredEnvVars.apiKey,
-  authDomain: requiredEnvVars.authDomain,
-  projectId: requiredEnvVars.projectId,
+const config: FirebaseOptions = {
+  apiKey: requiredEnvVars.apiKey as string,
+  authDomain: requiredEnvVars.authDomain as string,
+  projectId: requiredEnvVars.projectId as string,
 };
 
 export const app = getApps().length ? getApp() : initializeApp(config);

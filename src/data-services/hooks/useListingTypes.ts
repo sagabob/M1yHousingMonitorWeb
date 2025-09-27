@@ -14,12 +14,11 @@ export function useListingTypesByCode(code: string ) {
     staleTime: CACHE_TIMES.LISTING_TYPES_STALE,
     gcTime: CACHE_TIMES.LISTING_TYPES_GC,
     retry: (failureCount, error) => {
-      if (error?.message?.includes('404')) {
+      if (error instanceof Error && error.message.includes('404')) {
         return false;
       }
       return failureCount < 3;
-    },
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    },    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 }
 

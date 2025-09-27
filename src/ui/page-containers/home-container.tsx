@@ -1,11 +1,10 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import LoadingGrid from "@/ui/components/loading-grid";
 import { formatRentalValue, formatSaleValue } from "@/data-services/data-utils/core-utils";
 import { getBenchMark, getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
 import { useListingTypesByCode } from "@/data-services/hooks/useListingTypes";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
 import { useLga } from "@/hooks/use-lga";
-
-
 
 const HomeContainer = () => {
 
@@ -17,7 +16,7 @@ const HomeContainer = () => {
     const bmMedianPrice = useListingTypesByCode(bm.code)
 
     if (lgaMedianPrice.isLoading || bmMedianPrice.isLoading) {
-        return <div>Loading...</div>
+        return <LoadingGrid cardCount={2} />
     }
     if (lgaMedianPrice.error || bmMedianPrice.error) {
         return <div>Error: {lgaMedianPrice.error?.message || bmMedianPrice.error?.message}</div>
@@ -27,11 +26,10 @@ const HomeContainer = () => {
         return <div>No data available</div>;
     }
 
-    const latestDataRentals = getLatestDataRentals(lgaMedianPrice.data);
-    const latestDataSales = getLatestDataSales(lgaMedianPrice.data);
-
-    const bmLatestRentalData = getLatestRentalData(bmMedianPrice.data);
-    const bmLatestSalesData = getLatestSalesData(bmMedianPrice.data);
+    const latestDataRentals = getLatestDataRentals(lgaMedianPrice.data!);
+    const latestDataSales = getLatestDataSales(lgaMedianPrice.data!);
+    const bmLatestRentalData = getLatestRentalData(bmMedianPrice.data || []);
+    const bmLatestSalesData = getLatestSalesData(bmMedianPrice.data || []);
 
     const bmUnitPrice = bmLatestSalesData.find(d => d.propertytype === "Unit")?.median;
     const bmHousePrice = bmLatestSalesData.find(d => d.propertytype === "House")?.median;
@@ -65,14 +63,30 @@ const HomeContainer = () => {
                         <CardHeader className="px-3 py-2">
                             <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">Median Rental ({latestDataRentals?.Period_Name})</CardTitle>
                             <CardDescription className="text-black ">
-                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median Unit Rental ({latestDataSales?.Period_Name})</h3>
-                                <div className="flex justify-between space-y-1"><span >{lga.name}</span><span>{formatRentalValue(latestDataRentals?.Median_Unit, "week")}</span></div>
-                                <div className="flex justify-between space-y-1"><span >{bm.name}</span><span>{formatRentalValue(lgaRentalUnitPrice, "week")}</span></div>
+                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">
+                                    Median Unit Rental ({latestDataRentals?.Period_Name})
+                                </h3>
+                                <div className="flex justify-between space-y-1">
+                                    <span>{lga.name}</span>
+                                    <span>{formatRentalValue(latestDataRentals?.Median_Unit, "week")}</span>
+                                </div>
+                                <div className="flex justify-between space-y-1">
+                                    <span>{bm.name}</span>
+                                    <span>{formatRentalValue(lgaRentalUnitPrice, "week")}</span>
+                                </div>
                             </CardDescription>
                             <CardDescription className="text-black ">
-                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median House Rental ({latestDataSales?.Period_Name})</h3>
-                                <div className="flex justify-between space-y-1"><span >{lga.name}</span><span>{formatRentalValue(latestDataRentals?.Median_House, "week")}</span></div>
-                                <div className="flex justify-between space-y-1"><span >{bm.name}</span><span>{formatRentalValue(lgaRentalHousePrice, "week")}</span></div>
+                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">
+                                    Median House Rental ({latestDataRentals?.Period_Name})
+                                </h3>
+                                <div className="flex justify-between space-y-1">
+                                    <span>{lga.name}</span>
+                                    <span>{formatRentalValue(latestDataRentals?.Median_House, "week")}</span>
+                                </div>
+                                <div className="flex justify-between space-y-1">
+                                    <span >{bm.name}</span>
+                                    <span>{formatRentalValue(lgaRentalHousePrice, "week")}</span>
+                                </div>
                             </CardDescription>
                         </CardHeader>
 

@@ -10,8 +10,7 @@ const ClientBanner = (lga: Lga) => {
                     <p className="text-white text-base sm:text-lg md:text-xl pt-5">Understand housing supply and demand, housing diversity, affordability and availability.</p>
                 </div>
                 <div className="flex justify-end">
-                    <img src={HousingIllustration} alt="Logo" className="w-[300px]  opacity-70" />
-                </div>
+                    <img src={HousingIllustration} alt="Illustration of housing" className="w-[300px] opacity-70" />                </div>
             </div>
         </section>
     )

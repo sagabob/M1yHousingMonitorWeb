@@ -2,7 +2,6 @@ import { z } from "zod";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_PROJECT_URL;
 const API_KEY = import.meta.env.VITE_SUPABASE_API_KEY;
-console.log(API_KEY)
 
 // Define the schema for the listing data
 const ListingTypeZ = z.object({
