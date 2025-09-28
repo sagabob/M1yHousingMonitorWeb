@@ -1,4 +1,3 @@
-import { useLga } from "@/hooks/use-lga";
 
 const HomeCardContainer = () => {
     return (
