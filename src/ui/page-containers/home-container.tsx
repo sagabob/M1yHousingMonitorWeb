@@ -1,28 +1,29 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import LoadingGrid from "@/ui/components/loading-grid";
+import SuspenseWrapper from "@/ui/components/suspense-wrapper";
 import { formatRentalValue, formatSaleValue } from "@/data-services/data-utils/core-utils";
 import { getBenchMark, getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
 import { useListingTypesByCode } from "@/data-services/hooks/useListingTypes";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
 import { useLga } from "@/hooks/use-lga";
 
-const HomeContainer = () => {
-
+// Data loading component that will be wrapped in Suspense
+const HomeContainerContent = () => {
     const lga = useLga()
-    //need to call the data service to get data from fire store
     const lgaMedianPrice = useTotalMedianPrice(lga?.id || "")
-
     const bm = getBenchMark()
     const bmMedianPrice = useListingTypesByCode(bm.code)
 
+    // Handle loading states - let Suspense handle the loading UI
     if (lgaMedianPrice.isLoading || bmMedianPrice.isLoading) {
-        return <LoadingGrid cardCount={2} staggerDelay={200} />
+        return null; // Suspense will show the fallback
     }
+
     if (lgaMedianPrice.error || bmMedianPrice.error) {
         return <div>Error: {lgaMedianPrice.error?.message || bmMedianPrice.error?.message}</div>
     }
 
-    if (!lgaMedianPrice.data && !bmMedianPrice.data) {
+    // Only show "No data available" if both queries have completed and returned no data
+    if (lgaMedianPrice.isSuccess && bmMedianPrice.isSuccess && !lgaMedianPrice.data && !bmMedianPrice.data) {
         return <div>No data available</div>;
     }
 
@@ -54,7 +55,7 @@ const HomeContainer = () => {
                                 <div className="flex justify-between space-y-1"><span >{bm.name}</span><span>{formatSaleValue(bmUnitPrice)}</span></div>
                             </CardDescription>
                             <CardDescription className="text-black">
-                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median House Price {latestDataSales?.Period_Name}</h3>
+                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median House Price ({latestDataSales?.Period_Name})</h3>
                                 <div className="flex justify-between space-y-1"><span >{lga.name}</span><span>{formatSaleValue(latestDataSales?.Median_House)}</span></div>
                                 <div className="flex justify-between space-y-1"><span >{bm.name}</span><span>{formatSaleValue(bmHousePrice)}</span></div>
                             </CardDescription>
@@ -99,6 +100,18 @@ const HomeContainer = () => {
             </div>
         </div>
     );
-}
+};
+
+// Main component with Suspense wrapper
+const HomeContainer = () => {
+    return (
+        <SuspenseWrapper 
+            cardCount={2} 
+            message="Loading housing market data..."
+        >
+            <HomeContainerContent />
+        </SuspenseWrapper>
+    );
+};
 
 export default HomeContainer;
