@@ -26,7 +26,7 @@ export default async function handler(req: Request) {
     supabase.from('v_home_data_summary')
       .select('*')
       .eq('LGA_CODE', lgacode)
-      .limit(50),
+      .limit(100),
   ]);
 
   if (listing.error || summary.error) {
