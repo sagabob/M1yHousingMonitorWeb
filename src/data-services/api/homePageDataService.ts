@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-// Service for fetching data from housing-data-edge.ts
-const API_BASE_URL = process.env.NODE_ENV === 'production'
-  ? '/api'
-  : 'http://localhost:3000/api';
 
 const ListingTypeZ = z.object({
   code: z.string(),
@@ -47,12 +43,12 @@ export interface HousingDataParams {
 }
 
 // Fetch housing data from edge function
-export async function getHousingData(
+export async function getHomePageData(
   lgacode: string,
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL(`${API_BASE_URL}/housing-page-data-edge`);
+    const url = new URL(`/api/home-page-data-edge`);
     url.searchParams.set('lgacode', lgacode);
     url.searchParams.set('bmcode', bmcode);
 

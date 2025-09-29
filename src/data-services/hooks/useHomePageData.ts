@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getHousingData } from "../api/housingDataService";
+import { getHomePageData } from "../api/homePageDataService";
 import { QUERY_KEYS, CACHE_TIMES } from "../config/constants";
 
 
@@ -9,7 +9,7 @@ export function useHomePageData(lgacode: string, bmcode: string) {
   const code = lgacode.startsWith("LGA") ? lgacode : `LGA${lgacode}`;
   return useQuery({
     queryKey: QUERY_KEYS.HOUSING_DATA_BY_CODE(lgacode),
-    queryFn: () => getHousingData(lgacode, bmcode),
+    queryFn: () => getHomePageData(lgacode, bmcode),
     enabled: !!code,
     staleTime: CACHE_TIMES.DEFAULT_STALE,
     gcTime: CACHE_TIMES.DEFAULT_GC,

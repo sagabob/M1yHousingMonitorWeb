@@ -1,7 +1,7 @@
 import type { Benchmark } from "@/page-data/types/Lga";
 import type { TotalMedianPrice } from "../schemas/medianPriceSchema";
 import { getLatestPeriod } from "./core-utils";
-import type { ListingType } from "../api/housingDataService";
+import type { ListingType } from "../api/homePageDataService";
 
 export function getLatestDataRentals(data: TotalMedianPrice) {
     return getLatestPeriod(data.Rentals.Periods);
