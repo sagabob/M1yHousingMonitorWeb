@@ -2,28 +2,29 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import SuspenseWrapper from "@/ui/components/suspense-wrapper";
 import { formatRentalValue, formatSaleValue } from "@/data-services/data-utils/core-utils";
 import { getBenchMark, getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
-import { useListingTypesByCode } from "@/data-services/hooks/useListingTypes";
+import { useHomePageData } from "@/data-services/hooks/useHomePageData";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
 import { useLga } from "@/hooks/use-lga";
 
 // Data loading component that will be wrapped in Suspense
 const HomeContainerContent = () => {
     const lga = useLga()
-    const lgaMedianPrice = useTotalMedianPrice(lga?.id || "")
+    const lgaCode = lga?.id.startsWith("LGA") ? lga?.id : `LGA${lga?.id}`;
+    const lgaMedianPrice = useTotalMedianPrice(lgaCode)
     const bm = getBenchMark()
-    const bmMedianPrice = useListingTypesByCode(bm.code)
+    const homePageData = useHomePageData(lgaCode,bm.code)
 
     // Handle loading states - let Suspense handle the loading UI
-    if (lgaMedianPrice.isLoading || bmMedianPrice.isLoading) {
+    if (lgaMedianPrice.isLoading || homePageData.isLoading) {
         return null; // Suspense will show the fallback
     }
 
-    if (lgaMedianPrice.error || bmMedianPrice.error) {
-        return <div>Error: {lgaMedianPrice.error?.message || bmMedianPrice.error?.message}</div>
+    if (lgaMedianPrice.error || homePageData.error) {
+        return <div>Error: {lgaMedianPrice.error?.message || homePageData.error?.message}</div>
     }
 
     // Only show "No data available" if both queries have completed and returned no data
-    if (lgaMedianPrice.isSuccess && bmMedianPrice.isSuccess && !lgaMedianPrice.data && !bmMedianPrice.data) {
+    if (lgaMedianPrice.isSuccess && homePageData.isSuccess && !lgaMedianPrice.data && !homePageData.data) {
         return <div>No data available</div>;
     }
 
@@ -33,8 +34,9 @@ const HomeContainerContent = () => {
     const latestDataSales = lgaMedianPrice.data
         ? getLatestDataSales(lgaMedianPrice.data)
         : undefined;
-    const bmLatestRentalData = getLatestRentalData(bmMedianPrice.data || []);
-    const bmLatestSalesData = getLatestSalesData(bmMedianPrice.data || []);
+        
+    const bmLatestRentalData = getLatestRentalData(homePageData.data?.supabase_listingtypes || []);
+    const bmLatestSalesData = getLatestSalesData(homePageData.data?.supabase_listingtypes || []);
 
     const bmUnitPrice = bmLatestSalesData.find(d => d.propertytype === "Unit")?.median;
     const bmHousePrice = bmLatestSalesData.find(d => d.propertytype === "House")?.median;

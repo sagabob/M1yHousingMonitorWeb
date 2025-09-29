@@ -7,8 +7,8 @@ export function useTotalMedianPrice(lgacode: string) {
     queryKey: QUERY_KEYS.MEDIAN_PRICE_BY_LGA(lgacode),
     queryFn: () => getTotalMedianPriceById(lgacode),
     enabled: !!lgacode,
-    staleTime: CACHE_TIMES.MEDIAN_PRICE_STALE,
-    gcTime: CACHE_TIMES.MEDIAN_PRICE_GC,
+    staleTime: CACHE_TIMES.DEFAULT_STALE,
+    gcTime: CACHE_TIMES.DEFAULT_GC,
     retry: (failureCount, error) => {
       // Don't retry if document not found (404)
       if (error?.message?.includes('not found')) {

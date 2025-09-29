@@ -6,33 +6,8 @@ export interface SupabaseQueryResult<T = any> {
   count?: number;
 }
 
-export const getListingTypes = async (code: string, limit: number = 50): Promise<SupabaseQueryResult> => {
-  try {
-    const supabase = getSupabaseClient();
-    
-    console.log(`🔍 Fetching listing types for code: ${code}`);
-    
-    const { data, error, count } = await supabase
-      .from('v_latest_listingtypes')
-      .select('*')
-      .eq('code', code)
-      .limit(limit);
 
-    if (error) {
-      console.error('❌ Supabase error:', error);
-      return { data: null, error, count: 0 };
-    }
-
-    console.log(`✅ Successfully fetched ${data?.length || 0} listing types`);
-    
-    return { data, error: null, count: data?.length || 0 };
-  } catch (error) {
-    console.error(`❌ Error fetching listing types for code ${code}:`, error);
-    throw error;
-  }
-};
-
-export const getHomeDataSummary = async (lgacode: string, limit: number = 100): Promise<SupabaseQueryResult> => {
+export const getHomePageDataSummary = async (lgacode: string, limit: number = 100): Promise<SupabaseQueryResult> => {
   try {
     const supabase = getSupabaseClient();
     

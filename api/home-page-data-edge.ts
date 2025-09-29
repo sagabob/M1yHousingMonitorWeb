@@ -1,7 +1,6 @@
 export const config = { runtime: 'edge' };
 import { validateEnvironment } from './lib/database';
-import { getLgaData } from './lib/firebase-service';
-import { getListingTypes, getHomeDataSummary } from './lib/supabase-service';
+import { getListingTypes, getHomePageDataSummary } from './lib/supabase-service';
 import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
 
 export default async function handler(req: Request) {
@@ -20,20 +19,14 @@ export default async function handler(req: Request) {
     console.log(`🔍 Fetching data for LGA: ${lgacode}, BM: ${bmcode}`);
 
     // Fetch data from both sources in parallel
-    const [firebaseResult, listingResult, summaryResult] = await Promise.all([
-      getLgaData(lgacode, 'PricesIncomesMedians'),
+    const [listingResult, summaryResult] = await Promise.all([
       getListingTypes(bmcode, 50),
-      getHomeDataSummary(lgacode, 100)
+      getHomePageDataSummary(lgacode, 1)
     ]);
 
     return createSuccessResponse({
-      firebase_data: firebaseResult.data,
-      firebase_exists: firebaseResult.exists,
       supabase_listingtypes: listingResult.data,
       supabase_home_summary: summaryResult.data,
-      lgacode,
-      bmcode,
-      documentId: firebaseResult.id,
       timestamp: new Date().toISOString()
     });
 
