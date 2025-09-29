@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+const baseURL = process.env.VERCEL_URL 
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000"; // fallback for local dev
 
 const ListingTypeZ = z.object({
   code: z.string(),
@@ -48,7 +51,7 @@ export async function getHomePageData(
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL(`/api/home-page-data-edge`);
+    const url = new URL(`${baseURL}/api/home-page-data-edge`);
     url.searchParams.set('lgacode', lgacode);
     url.searchParams.set('bmcode', bmcode);
 
