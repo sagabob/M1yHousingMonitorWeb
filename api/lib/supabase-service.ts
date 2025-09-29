@@ -7,7 +7,7 @@ export interface SupabaseQueryResult<T = any> {
 }
 
 
-export const getHomePageDataSummary = async (lgacode: string, limit: number = 100): Promise<SupabaseQueryResult> => {
+export const getHomePageDataSummary = async (lgacode: string, limit: number = 1): Promise<SupabaseQueryResult> => {
   try {
     const supabase = getSupabaseClient();
     

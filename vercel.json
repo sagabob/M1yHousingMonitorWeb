@@ -1,7 +1,7 @@
 {
-  "functions": {   
-    "api/housing-page-data-edge.ts": {
-      "runtime": "edge"
-    }
-  }  
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@5.3.24"
+    }    
+  }
 }

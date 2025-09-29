@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-const baseURL = process.env.VERCEL_URL 
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000"; // fallback for local dev
-
 const ListingTypeZ = z.object({
   code: z.string(),
   listingtype: z.enum(["Rentals", "Sales"]),
@@ -35,7 +31,7 @@ export type HomeDataSummary = z.infer<typeof homeDataSummaryZ>;
 
 export interface HousingDataResponse {
   supabase_listingtypes: ListingType[];
-  supabase_home_summary: HomeDataSummary;
+  supabase_home_summary: HomeDataSummary[];
   timestamp: string;
   error?: string;
 }
@@ -51,16 +47,17 @@ export async function getHomePageData(
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL(`${baseURL}/api/home-page-data-edge`);
-    url.searchParams.set('lgacode', lgacode);
-    url.searchParams.set('bmcode', bmcode);
+    const url = new URL("/api/home-page-data-edge", window.location.origin);
+
+    url.searchParams.set("lgacode", lgacode);
+    url.searchParams.set("bmcode", bmcode);
 
     console.log(`🔍 Fetching housing data via edge function: ${url.toString()}`);
 
     const response = await fetch(url.toString(), {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
     });
 
@@ -75,12 +72,12 @@ export async function getHomePageData(
     // Validate and transform data using Zod schemas
     const validatedData: HousingDataResponse = {
       supabase_listingtypes: z.array(ListingTypeZ).parse(rawData.supabase_listingtypes),
-      supabase_home_summary: homeDataSummaryZ.parse(rawData.supabase_home_summary),
+      supabase_home_summary: z.array(homeDataSummaryZ).parse(rawData.supabase_home_summary),
       timestamp: rawData.timestamp,
       error: rawData.error
     };
 
-    console.log(`✅ Successfully validated housing data: ${validatedData.supabase_listingtypes.length} listing types, ${validatedData.supabase_home_summary.length} home summary records`);
+    console.log(`✅ Successfully validated housing data: ${validatedData.supabase_listingtypes.length} listing types, ${validatedData.supabase_home_summary.length}`);
 
     return validatedData;
   } catch (error) {
