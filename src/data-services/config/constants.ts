@@ -7,7 +7,7 @@ export const COLLECTIONS = {
 export const QUERY_KEYS = {
   MEDIAN_PRICE: 'medianPrice',
   MEDIAN_PRICE_BY_LGA: (lgacode: string) => ['medianPrice', lgacode],
-  HOUSING_DATA_BY_CODE: (code: string) => ['listingTypes', 'byCode', code],
+  HOUSING_DATA_BY_CODE: (lgacode: string, bmcode: string) => ['listingTypes', 'byCode', lgacode, bmcode],
 
 } as const;
 

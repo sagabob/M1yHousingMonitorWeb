@@ -31,10 +31,10 @@ export function formatSaleValue(value: number | null | undefined) {
 }
 
 
-export function formatLgaCode(lga: Lga) {
-    return lga?.id.startsWith("LGA") ? lga?.id : `LGA${lga?.id}`;
+export function formatLgaCode(lga: Lga | null | undefined) {
+    if (!lga?.id) return 'N/A';
+    return lga.id.startsWith("LGA") ? lga.id : `LGA${lga.id}`;
 }
-
 export function formatNumber(value: number | null | undefined, digits: number = 0) {
     if (value === null || value === undefined) return 'N/A';
     return value.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ",");

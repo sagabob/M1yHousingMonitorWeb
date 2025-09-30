@@ -85,9 +85,7 @@ const LoadingGrid = ({
     }
   };
 
-  const cardProps = getCardProps();
-  const colSpan = 6; // two columns on md+: 12 / 2
-
+  const cardProps = getCardProps();  
   const numberOfRows = Math.ceil(cardCount / 2);
 
   return (
@@ -98,11 +96,11 @@ const LoadingGrid = ({
         const showSecond = secondIndex < cardCount;
         return (
           <div key={`row-${rowIndex}`} className={`grid ${gridCols} ${className}`}>
-            <div className={`col-span-1 md:col-span-${colSpan}`}>
+            <div className={`col-span-1 md:col-span-6`}>
               <LoadingCard {...cardProps} delay={firstIndex * staggerDelay} />
             </div>
             {showSecond && (
-              <div className={`col-span-1 md:col-span-${colSpan}`}>
+              <div className={`col-span-1 md:col-span-6`}>
                 <LoadingCard {...cardProps} delay={secondIndex * staggerDelay} />
               </div>
             )}

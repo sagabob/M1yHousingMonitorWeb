@@ -1,4 +1,5 @@
-// src/ui/icons/household_type.tsx
+// src/ui/icons/population.tsximport type { IdHousingIconProps } from "./household_type";
+
 import type { IdHousingIconProps } from "./household_type";
 
 export function PopulationIcon({ title, className, ...rest }: IdHousingIconProps) {
