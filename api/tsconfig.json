@@ -1,9 +1,10 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-      "module": "ESNext",
-      "moduleResolution": "bundler",
-      "verbatimModuleSyntax": true
-    },
-    "include": ["./**/*.ts", "./**/*.tsx"]
-  }
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "types": ["node"],
+    "skipLibCheck": true
+  },
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}

@@ -1,32 +1,25 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import SuspenseWrapper from "@/ui/components/suspense-wrapper";
-import { formatRentalValue, formatSaleValue } from "@/data-services/data-utils/core-utils";
+import { ErrorBoundary } from "react-error-boundary";
+import LoadingGrid from "@/ui/components/loading-grid";
+import { formatRentalValue, formatSaleValue, formatLgaCode, formatNumber, formatDate, formatPercentage, formatNumberWithSign } from "@/data-services/data-utils/core-utils";
 import { getBenchMark, getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
 import { useHomePageData } from "@/data-services/hooks/useHomePageData";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
 import { useLga } from "@/hooks/use-lga";
+import { Suspense } from "react";
+import { ErrorFallback } from "../components/error-fallback";
+import { HouseholdTypeIcon } from "../icons/household_type";
+import PopulationIcon from "../icons/population";
+
 
 // Data loading component that will be wrapped in Suspense
 const HomeContainerContent = () => {
     const lga = useLga()
-    const lgaCode = lga?.id.startsWith("LGA") ? lga?.id : `LGA${lga?.id}`;
+    const lgaCode = formatLgaCode(lga);
     const lgaMedianPrice = useTotalMedianPrice(lgaCode)
     const bm = getBenchMark()
-    const homePageData = useHomePageData(lgaCode,bm.code)
+    const homePageData = useHomePageData(lgaCode, bm.code)
 
-    // Handle loading states - let Suspense handle the loading UI
-    if (lgaMedianPrice.isLoading || homePageData.isLoading) {
-        return null; // Suspense will show the fallback
-    }
-
-    if (lgaMedianPrice.error || homePageData.error) {
-        return <div>Error: {lgaMedianPrice.error?.message || homePageData.error?.message}</div>
-    }
-
-    // Only show "No data available" if both queries have completed and returned no data
-    if (lgaMedianPrice.isSuccess && homePageData.isSuccess && !lgaMedianPrice.data && !homePageData.data) {
-        return <div>No data available</div>;
-    }
 
     const latestDataRentals = lgaMedianPrice.data
         ? getLatestDataRentals(lgaMedianPrice.data)
@@ -34,7 +27,7 @@ const HomeContainerContent = () => {
     const latestDataSales = lgaMedianPrice.data
         ? getLatestDataSales(lgaMedianPrice.data)
         : undefined;
-        
+
     const bmLatestRentalData = getLatestRentalData(homePageData.data?.supabase_listingtypes || []);
     const bmLatestSalesData = getLatestSalesData(homePageData.data?.supabase_listingtypes || []);
 
@@ -44,9 +37,11 @@ const HomeContainerContent = () => {
     const bmRentalUnitPrice = bmLatestRentalData.find(d => d.propertytype === "Unit")?.median;
     const bmRentalHousePrice = bmLatestRentalData.find(d => d.propertytype === "House")?.median;
 
+    const homePageDataSummary = homePageData.data.supabase_home_summary.length > 0 ? homePageData.data.supabase_home_summary[0] : undefined;
+
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 my-1">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-3 mt-1">
                 <div className="col-span-1 md:col-span-6">
                     <Card className="p-0 bg-gray-100 shadow-none rounded-none">
                         <CardHeader className="px-3 py-2">
@@ -96,7 +91,79 @@ const HomeContainerContent = () => {
                                 </div>
                             </CardDescription>
                         </CardHeader>
-
+                    </Card>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 my-3">
+                <div className="col-span-1 md:col-span-6">
+                    <Card className="p-0 bg-gray-100 shadow-none rounded-none" >
+                        <CardHeader className="px-3 py-2">
+                            <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">Household type is the most affordable </CardTitle>
+                            <CardDescription className="text-black ">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="min-w-0">
+                                        <span className="block mb-1 text-xl">{homePageDataSummary?.Household_type_need}</span>
+                                        <span className="block mb-1">({formatNumber(homePageDataSummary?.Household_type_need_number)} households)</span>
+                                    </div>
+                                    <div className="shrink-0">
+                                        <HouseholdTypeIcon className="h-16 w-16 text-[#7513b8]" />
+                                    </div>
+                                </div>
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                </div>
+                <div className="col-span-1 md:col-span-6">
+                    <Card className="p-0 bg-gray-100 shadow-none rounded-none" >
+                        <CardHeader className="px-3 py-2">
+                            <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">Population {formatDate(homePageDataSummary?.Population_time_period)} (and annual change)</CardTitle>
+                            <CardDescription className="text-black ">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="min-w-0">
+                                        <span className="block mb-1 text-xl">{formatNumber(homePageDataSummary?.Population)}</span>
+                                        <span className="block mb-1">({formatPercentage(homePageDataSummary?.Population_growth_rate_annual, 1)} p.a)</span>
+                                    </div>
+                                    <div className="shrink-0">
+                                        <PopulationIcon className="h-16 w-24 text-[#7513b8]" />
+                                    </div>
+                                </div>
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-2 my-3">
+                <div className="col-span-1 md:col-span-6">
+                    <Card className="p-0 bg-gray-100 shadow-none rounded-none h-36" >
+                        <CardHeader className="px-3 py-2">
+                            <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">Average household size (2016-2021)</CardTitle>
+                            <CardDescription className="text-black ">
+                                <div className="flex justify-between space-y-1"><span >{lga.name}</span><span>{formatNumber(homePageDataSummary?.Average_household_size, 2)} ({formatNumberWithSign(homePageDataSummary?.Average_household_size_change, 2)})</span></div>
+                                <div className="flex justify-between space-y-1"><span >{bm.name}</span><span>{formatNumber(homePageDataSummary?.Average_household_size_benchmark, 2)} ({formatNumberWithSign(homePageDataSummary?.Average_household_size_benchmark_change, 2)})</span></div>
+                            </CardDescription>
+                        </CardHeader>
+                    </Card>
+                </div>
+                <div className="col-span-1 md:col-span-6">
+                    <Card className="p-0 bg-gray-100 shadow-none rounded-none h-36" >
+                        <CardHeader className="px-3 py-2">
+                            <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">{`Dominant dwelling type (2021 Census)`}</CardTitle>
+                            <CardDescription className="text-black ">
+                                <div className="flex justify-between space-y-1">
+                                    <span>{homePageDataSummary?.Dominant_dwelling_type_name}</span>
+                                    <span>({formatPercentage(homePageDataSummary?.Dominant_dwelling_type_per, 1)})</span>
+                                </div>
+                            </CardDescription>
+                            <CardDescription className="text-black ">
+                                <h3 className="text-sm text-[#7513b8] font-bold mb-1">
+                                    Emerging dwelling type
+                                </h3>
+                                <div className="flex justify-between space-y-1">
+                                    <span>{homePageDataSummary?.Emerging_dwelling_type_name}</span>
+                                    <span>({formatNumberWithSign(homePageDataSummary?.Emerging_dwelling_type_change)})</span>
+                                </div>
+                            </CardDescription>
+                        </CardHeader>
                     </Card>
                 </div>
             </div>
@@ -105,15 +172,13 @@ const HomeContainerContent = () => {
 };
 
 // Main component with Suspense wrapper
-const HomeContainer = () => {
+export default function HomeContainer() {
     return (
-        <SuspenseWrapper 
-            cardCount={2} 
-            message="Loading housing market data..."
-        >
-            <HomeContainerContent />
-        </SuspenseWrapper>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={<LoadingGrid cardCount={6} staggerDelay={500} cardType="compact" />}>
+                <HomeContainerContent />
+            </Suspense>
+        </ErrorBoundary>
     );
-};
+}
 
-export default HomeContainer;

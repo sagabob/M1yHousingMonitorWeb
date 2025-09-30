@@ -6,7 +6,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import router from './routes.tsx';
 
 // Create a client
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      // no `suspense` or `throwOnError` needed when you use useSuspenseQuery
+    },
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

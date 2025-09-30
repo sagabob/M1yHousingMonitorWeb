@@ -1,22 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+
 import { getTotalMedianPriceById } from "../repos/medianPrice.repo";
-import { QUERY_KEYS, CACHE_TIMES } from "../config/constants";
+import { QUERY_KEYS} from "../config/constants";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 export function useTotalMedianPrice(lgacode: string) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: QUERY_KEYS.MEDIAN_PRICE_BY_LGA(lgacode),
-    queryFn: () => getTotalMedianPriceById(lgacode),
-    enabled: !!lgacode,
-    staleTime: CACHE_TIMES.DEFAULT_STALE,
-    gcTime: CACHE_TIMES.DEFAULT_GC,
-    retry: (failureCount, error) => {
-      // Don't retry if document not found (404)
-      if (error?.message?.includes('not found')) {
-        return false;
-      }
-      // Retry up to 3 times for other errors
-      return failureCount < 3;
-    },
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    queryFn: () => getTotalMedianPriceById(lgacode),   
   });
 }
