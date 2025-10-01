@@ -196,7 +196,6 @@ export default function HomeContainer() {
         <QueryBoundary
             loading={<LoadingGrid cardCount={6} staggerDelay={500} cardType="compact" />}
             errorFallback={(props) => <ErrorFallback {...props} />}
-
         >
             <HomeContainerContent />
         </QueryBoundary>

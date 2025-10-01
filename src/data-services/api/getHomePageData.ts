@@ -18,13 +18,13 @@ const homeDataSummaryZ = z.object({
   Population_growth_rate_annual: z.number(),
   Population_time_period: z.string(),
   Average_household_size: z.number(),
-  Average_household_size_change: z.number(),
+  Average_household_size_change: z.number().nullable(),
   Average_household_size_benchmark: z.number(),
-  Average_household_size_benchmark_change: z.number(),
+  Average_household_size_benchmark_change: z.number().nullable(),
   Dominant_dwelling_type_name: z.string(),
   Dominant_dwelling_type_per: z.number(),
   Emerging_dwelling_type_name: z.string(),
-  Emerging_dwelling_type_change: z.number(),
+  Emerging_dwelling_type_change: z.number().nullable(),
 }).strip();
 
 export type HomeDataSummary = z.infer<typeof homeDataSummaryZ>;
@@ -61,6 +61,7 @@ export async function getHomePageData(
       },
     });
 
+    console.log(response);
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(`Edge function error: ${response.status} - ${errorData.error || response.statusText}`);

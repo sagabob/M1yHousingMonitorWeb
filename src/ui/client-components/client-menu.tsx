@@ -33,9 +33,9 @@ const ClientMenu = () => {
                 <div key={item.id} >
                     <NavLink
                         to={target}
-                        className={() => `block px-2 py-2 rounded-md text-xl font-medium transition-colors ${(location.pathname === target.pathname && location.hash === (target.hash || ""))
-                                ? "bg-[#d6b8ea] text-[#7513b8]"
-                                : "text-white bg-[#7513b8]"}`}
+                        className={() => `block px-2 py-2 rounded-md text-xl font-medium  hover:bg-[#d6b8ea] hover:text-[#7513b8] transition-colors ${(location.pathname === target.pathname && location.hash === (target.hash || ""))
+                            ? "bg-[#d6b8ea] text-[#7513b8]"
+                            : "text-white bg-[#7513b8]"}`}
                     >
                         {item.label}
                     </NavLink>
@@ -72,7 +72,7 @@ const ClientMenu = () => {
                                     to={target}
                                     className={() => `block px-3 py-2 rounded-md text-[14px] font-medium transition-colors ${active
                                         ? "bg-[#d6b8ea] text-[#7513b8]"
-                                        : "text-gray-600 hover:bg-gray-100"}`}
+                                        : "text-gray-600 hover:bg-[#d6b8ea]"}`}
                                 >
                                     {subItem.label}
                                 </NavLink>
