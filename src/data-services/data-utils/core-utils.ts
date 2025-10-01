@@ -43,7 +43,7 @@ export function formatNumber(value: number | null | undefined, digits: number = 
 export function formatNumberWithSign(value: number | null | undefined, digits: number = 0) {
     if (value === null || value === undefined) return 'N/A';
 
-    if (value > 0) {
+    if (value >= 0) {
         return "+" + value.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     } else {
         return value.toFixed(digits).replace(/\B(?=(\d{3})+(?!\d))/g, ",");

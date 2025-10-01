@@ -11,8 +11,8 @@ export async function getTotalMedianPriceById(
   opts: { throwIfMissing?: boolean } = {}
 ) {
   try {
-    const documentId = lgacode.startsWith("LGA") ? lgacode : `LGA${lgacode}`;
-
+    const documentId = lgacode;
+   
     const ref = doc(db, COLLECTIONS.PRICES_INCOMES_MEDIANS, documentId).withConverter(totalMedianPriceConverter);
     const snap = await getDoc(ref);
 
