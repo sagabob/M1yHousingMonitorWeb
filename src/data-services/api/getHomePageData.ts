@@ -77,8 +77,7 @@ export async function getHomePageData(
       error: rawData.error
     };
 
-    console.log(`✅ Successfully validated housing data: ${validatedData.supabase_listingtypes.length} listing types, ${validatedData.supabase_home_summary.length}`);
-
+    console.log(`✅ Successfully validated housing data: ${validatedData.supabase_listingtypes.length} listing types, ${validatedData.supabase_home_summary.length} summary items`);
     return validatedData;
   } catch (error) {
     console.error(`❌ Error fetching housing data via edge function for LGA ${lgacode}, BM ${bmcode}:`, error);
