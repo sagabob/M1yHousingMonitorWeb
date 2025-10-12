@@ -1,51 +1,73 @@
-# My Housing Monitor Web
+# 🏘️ My Housing Monitor Web
 
-A React-based web application for monitoring housing market data across Local Government Areas (LGAs) in Australia. Built with React, TypeScript, Vite, and Firebase.
+A modern, full-stack React web application for monitoring and analyzing Australian housing market data across Local Government Areas (LGAs). Built with cutting-edge technologies including React 19, TypeScript, Vite, Firebase Firestore, and Supabase.
 
-## Features
+## ✨ Features
 
-- **LGA Data Visualization**: View median house and unit prices, rental data for different LGAs
-- **Real-time Data**: Firebase integration for up-to-date housing market information
-- **Responsive Design**: Mobile-first design with Tailwind CSS
-- **Interactive Navigation**: React Router for seamless page navigation
-- **Data Validation**: Zod schemas for type-safe data handling
-- **Loading States**: Animated loading components with skeleton screens
-- **API Integration**: Supabase REST API for additional listing data
+- **📊 LGA Data Visualization**: Interactive displays of median house and unit prices, rental data, and market trends
+- **🔥 Real-time Data**: Firebase Firestore integration for up-to-date housing market information
+- **🎨 Beautiful UI**: Modern, responsive design with Tailwind CSS 4 and shadcn/ui components
+- **🧭 Seamless Navigation**: React Router v7 with nested routing and dynamic LGA pages
+- **🔒 Type-Safe**: Full TypeScript implementation with Zod schemas for runtime validation
+- **⚡ Optimized Performance**: React Query for efficient data fetching, caching, and synchronization
+- **📱 Mobile-First**: Responsive design that works beautifully on all devices
+- **🎭 Loading States**: Animated skeleton screens and loading components for better UX
+- **🔌 Edge API Functions**: Vercel edge functions for server-side data processing
+- **🎯 Component Library**: Comprehensive UI component library powered by Radix UI primitives
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS, Radix UI components
-- **Routing**: React Router v7
-- **State Management**: React Query (TanStack Query)
-- **Database**: Firebase Firestore
-- **API**: Supabase REST API
-- **Validation**: Zod
-- **Icons**: Lucide React
+### Frontend
+- **React 19.1** - Latest React with improved performance
+- **TypeScript 5.8** - Type safety and better developer experience
+- **Vite 7** - Lightning-fast build tool and dev server
+- **React Router v7.8** - Modern routing with nested routes
+- **TanStack Query v5.90** - Powerful data synchronization
 
-## Getting Started
+### Styling
+- **Tailwind CSS 4.1** - Utility-first CSS framework
+- **Radix UI** - Unstyled, accessible component primitives
+- **shadcn/ui** - Beautiful, reusable components built on Radix
+- **Lucide React** - Beautiful icon library
+- **class-variance-authority** - CVA for component variants
+
+### Backend & Data
+- **Firebase 12** - Firestore for real-time database
+- **Supabase** - PostgreSQL database with REST API
+- **Vercel Edge Functions** - Serverless API endpoints
+- **Zod 4** - TypeScript-first schema validation
+
+### Development Tools
+- **ESLint 9** - Code linting and quality
+- **TypeScript ESLint** - TypeScript-specific linting rules
+- **Vite Plugin React** - Fast refresh and JSX transform
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
-- Firebase project
-- Supabase project (optional)
+Before you begin, ensure you have the following installed:
+
+- **Node.js 18+** - [Download here](https://nodejs.org/)
+- **npm** or **yarn** - Package manager
+- **Firebase project** - [Create one here](https://console.firebase.google.com/)
+- **Supabase project** (optional) - [Create one here](https://supabase.com/)
 
 ### Installation
 
-1. Clone the repository
+1. **Clone the repository**
 ```bash
 git clone <repository-url>
 cd my-housing-monitor-web
 ```
 
-2. Install dependencies
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. Set up environment variables
+3. **Set up environment variables**
+   
 Create a `.env` file in the root directory:
 ```env
 # Firebase Configuration
@@ -58,110 +80,375 @@ VITE_SUPABASE_PROJECT_URL=https://your-project.supabase.co/rest/v1
 VITE_SUPABASE_API_KEY=your_supabase_anon_key
 ```
 
-4. Start the development server
+4. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+   
+   The app will be available at `http://localhost:5173`
+
+### Quick Start
+
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-src/
-├── components/          # Reusable UI components
-│   └── ui/             # Radix UI components
-├── data-services/      # Data layer
-│   ├── api/           # API services
-│   ├── hooks/         # React Query hooks
-│   ├── repos/         # Repository pattern
-│   ├── schemas/       # Zod schemas
-│   └── config/        # Configuration
-├── hooks/             # Custom React hooks
-├── page-data/         # Static data
-├── pages/             # Page components
-├── ui/                # Custom UI components
-│   ├── client-components/  # LGA-specific components
-│   ├── page-containers/    # Page containers
-│   └── components/         # Loading components
-└── lib/               # Utilities
+my-housing-monitor-web/
+├── api/                          # Vercel Edge Functions
+│   ├── home-page-data-edge.ts   # Edge API for home page data
+│   ├── info.ts                  # API info endpoint
+│   └── lib/                     # API utilities
+│       ├── database.ts          # Database connections
+│       ├── response-utils.ts    # API response helpers
+│       └── supabase-service.ts  # Supabase service layer
+│
+├── src/
+│   ├── components/              # shadcn/ui Components
+│   │   └── ui/                  # Radix UI primitives (40+ components)
+│   │       ├── button.tsx       # Button component
+│   │       ├── card.tsx         # Card component
+│   │       ├── dialog.tsx       # Modal dialog
+│   │       └── ...              # And many more
+│   │
+│   ├── data-services/           # Data Layer Architecture
+│   │   ├── api/                 # API integration layer
+│   │   │   ├── getBMGCC.ts      # BMGCC data fetching
+│   │   │   └── getHomePageData.ts
+│   │   ├── db-sources/          # Database integrations
+│   │   │   └── firebase.ts      # Firebase configuration
+│   │   ├── hooks/               # Custom React Query hooks
+│   │   │   ├── useBMGCCData.ts
+│   │   │   ├── useHomePageData.ts
+│   │   │   └── useMedianPrice.ts
+│   │   ├── repos/               # Repository pattern
+│   │   │   └── medianPrice.repo.ts
+│   │   ├── schemas/             # Zod validation schemas
+│   │   │   ├── medianPriceSchema.ts
+│   │   │   └── zodFirestore.ts
+│   │   ├── data-utils/          # Data transformation utilities
+│   │   └── config/              # Configuration constants
+│   │
+│   ├── ui/                      # Custom UI Components
+│   │   ├── client-components/   # LGA-specific components
+│   │   │   ├── client-banner.tsx
+│   │   │   ├── client-heading.tsx
+│   │   │   ├── client-menu.tsx
+│   │   │   └── client-products.tsx
+│   │   ├── core-components/     # Core reusable components
+│   │   │   ├── my-banner.tsx
+│   │   │   ├── my-header.tsx
+│   │   │   └── my-list-lga.tsx
+│   │   ├── components/          # Utility components
+│   │   │   ├── error-fallback.tsx
+│   │   │   ├── loading-card.tsx
+│   │   │   ├── loading-grid.tsx
+│   │   │   └── query-boundary.tsx
+│   │   ├── page-containers/     # Page layout containers
+│   │   ├── icons/               # Custom icon components
+│   │   └── constants/           # UI constants
+│   │
+│   ├── pages/                   # Page Components
+│   │   ├── app-landing-page.tsx # Landing page
+│   │   ├── not-found.tsx        # 404 page
+│   │   └── topics/              # Topic pages
+│   │       └── client-home.tsx
+│   │
+│   ├── page-data/               # Static Data
+│   │   ├── lga-data.ts          # LGA information
+│   │   ├── menu-structure.json  # Navigation structure
+│   │   ├── products.ts          # Product definitions
+│   │   └── types/               # Data types
+│   │
+│   ├── hooks/                   # Global Custom Hooks
+│   │   └── use-mobile.ts        # Mobile detection hook
+│   │
+│   ├── lib/                     # Utilities
+│   │   └── utils.ts             # Helper functions
+│   │
+│   ├── routes.tsx               # Route definitions
+│   ├── main.tsx                 # App entry point
+│   └── index.css                # Global styles
+│
+├── public/                      # Static assets
+├── vercel.json                  # Vercel deployment config
+└── vite.config.ts               # Vite configuration
 ```
 
-## Key Components
+## 🔑 Key Features & Architecture
 
-### Loading Components
+### 🎨 UI Component Library
 
-The app includes animated loading components for better UX:
+Built with **shadcn/ui** and **Radix UI**, featuring 40+ pre-built, accessible components:
 
-- **LoadingGrid**: Grid of loading cards with staggered animations
-- **LoadingCard**: Individual loading card with configurable animations
+- **Layout**: Card, Separator, Scroll Area, Resizable, Sidebar
+- **Navigation**: Navigation Menu, Menubar, Breadcrumb, Pagination, Tabs
+- **Forms**: Input, Textarea, Select, Checkbox, Radio Group, Switch, Form
+- **Overlays**: Dialog, Alert Dialog, Sheet, Drawer, Popover, Tooltip, Hover Card
+- **Feedback**: Alert, Toast (Sonner), Progress, Skeleton
+- **Data Display**: Table, Accordion, Collapsible, Avatar, Badge, Aspect Ratio
+- **Interactive**: Button, Toggle, Dropdown Menu, Context Menu, Command
+- **Date & Time**: Calendar, Date Picker
+
+### 📊 Data Architecture
+
+#### React Query Integration
+Efficient data fetching with automatic caching and synchronization:
 
 ```tsx
-// Basic usage
-<LoadingGrid cardCount={2} staggerDelay={200} />
-
-// With different animation types
-<LoadingCard 
-  animationType="bounce"
-  delay={400}
-  titleWidth="w-32" 
-  descriptionLines={2}
-/>
+// Custom hooks with React Query
+const { data, isLoading, error } = useHomePageData();
+const { data: medianPrice } = useMedianPrice(lgaAlias);
+const { data: bmgccData } = useBMGCCData();
 ```
 
-### Data Services
+#### Repository Pattern
+Clean separation of data access logic:
 
-- **Firebase Integration**: Real-time housing data from Firestore
-- **Supabase API**: Additional listing data via REST API
-- **Zod Validation**: Type-safe data validation and transformation
-- **React Query**: Efficient data fetching and caching
+```tsx
+// Example: medianPrice.repo.ts
+export const medianPriceRepo = {
+  getByLGA: async (alias: string) => { /* ... */ },
+  getAll: async () => { /* ... */ }
+};
+```
 
-### Routing
+#### Zod Schema Validation
+Runtime type checking and validation:
 
-- **React Router v7**: Modern routing with nested routes
-- **Dynamic Routes**: LGA-specific pages with `/:alias` pattern
-- **Outlet Context**: Passing data to nested components
+```tsx
+// Ensures data integrity from Firebase/Supabase
+const medianPriceSchema = z.object({
+  lga: z.string(),
+  medianHousePrice: z.number(),
+  medianUnitPrice: z.number(),
+  // ... more fields
+});
+```
 
-## Development
+### 🎭 Loading States & Error Handling
+
+Beautiful loading states with animated skeleton screens:
+
+```tsx
+// LoadingGrid with staggered animations
+<LoadingGrid cardCount={3} staggerDelay={150} />
+
+// Custom LoadingCard
+<LoadingCard 
+  animationType="pulse"
+  delay={200}
+  titleWidth="w-48" 
+  descriptionLines={3}
+/>
+
+// Error Boundary with fallback UI
+<QueryBoundary>
+  <YourComponent />
+</QueryBoundary>
+```
+
+### 🔌 API Layer
+
+#### Vercel Edge Functions
+Serverless API endpoints optimized for edge computing:
+
+- **`/api/home-page-data-edge`** - Home page data aggregation
+- **`/api/info`** - API information and health check
+
+#### Supabase Integration
+PostgreSQL database access via REST API:
+
+```typescript
+// Supabase service layer
+export const supabaseService = {
+  getListings: async () => { /* ... */ },
+  getByLGA: async (lga: string) => { /* ... */ }
+};
+```
+
+### 🧭 Routing & Navigation
+
+**React Router v7** with modern features:
+
+- **Nested Routes**: Hierarchical page structure
+- **Dynamic Routes**: LGA-specific pages (`/:alias`)
+- **Outlet Context**: Type-safe data passing to child routes
+- **Error Boundaries**: Graceful error handling per route
+
+```tsx
+// Route structure
+<Route path="/" element={<AppLandingPage />} />
+<Route path="/topics/:alias" element={<ClientHome />} />
+<Route path="*" element={<NotFound />} />
+```
+
+## 💻 Development
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server with hot reload at `http://localhost:5173` |
+| `npm run build` | Build for production (TypeScript compilation + Vite build) |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Run ESLint to check code quality |
 
-### Code Style
+### Development Workflow
 
-- TypeScript for type safety
-- ESLint for code quality
-- Prettier for code formatting
-- Tailwind CSS for styling
+```bash
+# 1. Create a new branch
+git checkout -b feature/your-feature-name
 
-## Deployment
+# 2. Start development server
+npm run dev
+
+# 3. Make your changes and test
+
+# 4. Lint your code
+npm run lint
+
+# 5. Build to verify no errors
+npm run build
+
+# 6. Commit and push
+git add .
+git commit -m "Your commit message"
+git push origin feature/your-feature-name
+```
+
+### Code Quality & Style
+
+- ✅ **TypeScript** - Full type safety across the codebase
+- ✅ **ESLint** - Code linting with React and TypeScript rules
+- ✅ **Tailwind CSS** - Utility-first styling
+- ✅ **Component Composition** - Reusable, composable components
+- ✅ **Custom Hooks** - Logic extraction and reusability
+- ✅ **Error Boundaries** - Graceful error handling
+
+### Project Configuration Files
+
+- `vite.config.ts` - Vite configuration and plugins
+- `tsconfig.json` - TypeScript base configuration
+- `tsconfig.app.json` - App-specific TypeScript settings
+- `tsconfig.node.json` - Node.js TypeScript settings
+- `tailwind.config.js` - Tailwind CSS configuration
+- `eslint.config.js` - ESLint rules and plugins
+- `components.json` - shadcn/ui configuration
+
+## 🚀 Deployment
 
 ### Vercel (Recommended)
 
-1. Connect your repository to Vercel
-2. Add environment variables in Vercel dashboard
-3. Deploy automatically on push to main branch
+This project is optimized for **Vercel** deployment with edge functions support.
 
-### Environment Variables for Production
+#### Deploy with Vercel
 
-Make sure to set these in your deployment platform:
+1. **Connect Repository**
+   - Import your Git repository to Vercel
+   - Or use Vercel CLI: `npm i -g vercel && vercel`
 
-- `VITE_FIREBASE_API_KEY`
-- `VITE_FIREBASE_AUTH_DOMAIN` 
-- `VITE_FIREBASE_PROJECT_ID`
-- `VITE_SUPABASE_PROJECT_URL` (optional)
-- `VITE_SUPABASE_API_KEY` (optional)
+2. **Configure Environment Variables**
+   
+   Add these in Vercel Dashboard → Settings → Environment Variables:
+   
+   ```env
+   VITE_FIREBASE_API_KEY=your_firebase_api_key
+   VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_SUPABASE_PROJECT_URL=https://your-project.supabase.co/rest/v1
+   VITE_SUPABASE_API_KEY=your_supabase_anon_key
+   ```
 
-## Contributing
+3. **Deploy**
+   - Push to your main branch
+   - Vercel will automatically build and deploy
+   - Edge functions in `/api` directory will be deployed automatically
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+#### Vercel Configuration
 
-## License
+The project includes `vercel.json` for deployment configuration:
+- Edge Functions for API routes
+- Build output directory
+- Environment variable handling
 
-This project is licensed under the MIT License.
+### Other Platforms
+
+#### Netlify
+
+```bash
+# Build command
+npm run build
+
+# Publish directory
+dist
+
+# Environment variables
+# Add the same variables as Vercel
+```
+
+#### Docker
+
+```dockerfile
+# Example Dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+EXPOSE 5173
+CMD ["npm", "run", "preview"]
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork the repository**
+2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
+3. **Make your changes**
+4. **Follow code style** (run `npm run lint`)
+5. **Test your changes** (ensure `npm run build` succeeds)
+6. **Commit your changes** (`git commit -m 'Add some amazing feature'`)
+7. **Push to the branch** (`git push origin feature/amazing-feature`)
+8. **Open a Pull Request**
+
+### Contribution Guidelines
+
+- Write clean, readable TypeScript code
+- Follow existing code style and patterns
+- Use meaningful commit messages
+- Update documentation as needed
+- Test your changes thoroughly
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 🙏 Acknowledgments
+
+- **[shadcn/ui](https://ui.shadcn.com/)** - Beautiful component library
+- **[Radix UI](https://www.radix-ui.com/)** - Accessible component primitives
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[React Query](https://tanstack.com/query)** - Powerful data synchronization
+- **[Firebase](https://firebase.google.com/)** - Real-time database
+- **[Vercel](https://vercel.com/)** - Deployment platform
+
+---
+
+**Built with ❤️ for Australian Housing Market Analysis**
