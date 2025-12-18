@@ -1,8 +1,8 @@
-import { db } from "../db-sources/firebase";
+import { db } from "@/data-services/db-sources/firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { makeZodConverter } from "../schemas/zodFirestore";
-import { TotalMedianPriceZ, type TotalMedianPrice } from "../schemas/medianPriceSchema";
-import { COLLECTIONS, ERROR_MESSAGES } from "../config/constants";
+import { makeZodConverter } from "@/data-services/schemas/zodFirestore";
+import { TotalMedianPriceZ, type TotalMedianPrice } from "@/data-services/schemas/medianPriceSchema";
+import { COLLECTIONS, ERROR_MESSAGES } from "@/data-services/config/constants";
 
 const totalMedianPriceConverter = makeZodConverter(TotalMedianPriceZ);
 
@@ -12,7 +12,7 @@ export async function getTotalMedianPriceById(
 ) {
   try {
     const documentId = lgacode;
-   
+
     const ref = doc(db, COLLECTIONS.PRICES_INCOMES_MEDIANS, documentId).withConverter(totalMedianPriceConverter);
     const snap = await getDoc(ref);
 

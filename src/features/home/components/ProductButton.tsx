@@ -13,10 +13,10 @@ const MyProductButton = ({ products }: MyProductButtonProps) => {
             style={{ backgroundColor: product.color }}
             href={product.link}
             target="_blank"
+            rel="noreferrer"
         >
             {product.name}
-        </a>
-    ))
+        </a>))
 
     return (
         <>

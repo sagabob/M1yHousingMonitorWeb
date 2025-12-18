@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom"
-import { lgaData } from "../../page-data/lga-data"
+import { lgaData } from "@/page-data/lga-data"
 import ClientHeadingSection from "@/features/client/components/ClientHeadingSection"
 import ClientContainer from "@/features/client/pages/ClientContainer"
 import PageWrapper from "@/layouts/PageWrapper"
@@ -43,7 +43,7 @@ const ClientHome = () => {
 
     return (
         <PageWrapper>
-            <ClientHeadingSection {...lga} />
+            <ClientHeadingSection lga={lga} />
             <QueryBoundary
                 loading={<PageLoadingSection />}
                 errorFallback={(props) => <ErrorSection {...props} />}

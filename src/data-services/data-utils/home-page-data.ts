@@ -1,6 +1,6 @@
-import type { TotalMedianPrice } from "../schemas/medianPriceSchema";
-import { getLatestPeriod } from "./core-utils";
-import type { ListingType } from "../api/getHomePageData";
+import type { TotalMedianPrice } from "@/data-services/schemas/medianPriceSchema";
+import { getLatestPeriod } from "@/data-services/data-utils/core-utils";
+import type { ListingType } from "@/data-services/api/getHomePageData";
 
 export function getLatestDataRentals(data: TotalMedianPrice) {
     return getLatestPeriod(data.Rentals.Periods);
@@ -11,12 +11,10 @@ export function getLatestDataSales(data: TotalMedianPrice) {
 }
 // Assuming periods are ordered chronologically (latest first)
 
-export function getLatestRentalData(data: ListingType[]) 
-{
+export function getLatestRentalData(data: ListingType[]) {
     return data.filter(item => item.ListingType === "Rentals");
 }
 
-export function getLatestSalesData(data: ListingType[]) 
-{
+export function getLatestSalesData(data: ListingType[]) {
     return data.filter(item => item.ListingType === "Sales");
 }

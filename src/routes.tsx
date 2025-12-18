@@ -1,21 +1,21 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import Home from "./pages/app-landing-page";
-import ClientHome from "./pages/topics/client-home";
-import NotFound from "./pages/not-found";
-import HomeContainer from "./features/home/pages/HomeParams";
+import Home from "@/pages/app-landing-page";
+import ClientHome from "@/pages/topics/client-home";
+import RouteError from "@/components/common/RouteError";
+import HomeContainer from "@/features/home/pages/HomeParams";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    errorElement: <NotFound />,
+    errorElement: <RouteError />,
   },
   {
     path: "/:alias",
     element: <ClientHome />,
-    errorElement: <NotFound />,
+    errorElement: <RouteError />,
     children: [
       { index: true, element: <HomeContainer /> },            // /:alias
       { path: "population-households", element: <div>population-households</div> },       // /:alias/overview

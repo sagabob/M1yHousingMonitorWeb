@@ -1,7 +1,7 @@
 import type { Lga } from "@/page-data/types/Lga";
 import HousingIllustration from "@/assets/housing-illustration.svg";
 
-const ClientBanner = (lga: Lga) => {
+const ClientBanner = ({ lga }: { lga: Lga }) => {
     return (
         <section className="-my-2.5  bg-[#7513b8] border-0 z-30 relative">
             <div className="max-w-6xl mx-auto px-2 sm:px-2 lg:px-4 ">

@@ -1,7 +1,7 @@
 import { MAX_WIDTH } from "@/ui/constants/ui-constants"
 
 
-const MyHeader = () => {
+const BaseHeader = () => {
     return (
         <header className="bg-gray-100  border-b border-gray-200">
             <div className={`max-w-${MAX_WIDTH} mx-auto px-2 sm:px-2 lg:px-4 py-2`}>
@@ -17,4 +17,4 @@ const MyHeader = () => {
     )
 }
 
-export default MyHeader 
+export default BaseHeader 

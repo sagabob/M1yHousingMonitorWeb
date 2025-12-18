@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getBMGCC } from "../api/getBMGCC";
+import { getBMGCC } from "@/data-services/api/getBMGCC";
 
 
 export function useBMGCCData(lgacode: string) {

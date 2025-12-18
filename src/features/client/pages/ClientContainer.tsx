@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { MAX_WIDTH } from "@/ui/constants/ui-constants";
-import ClientMenu from "../components/ClientMenu";
+import ClientMenu from "@/features/client/components/ClientMenu";
 import type { Lga } from "@/page-data/types/Lga";
 import type { BmGCC } from "@/data-services/api/getBMGCC";
 
