@@ -4,7 +4,7 @@ import { formatRentalValue, formatSaleValue, formatLgaCode, formatNumber, format
 import { getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
 import { useHomePageData } from "@/data-services/hooks/useHomePageData";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
-import { usePageContext } from "@/data-services/hooks/use-pageContext";
+import { usePageContext } from "@/data-services/hooks/usePageContext";
 import { ErrorFallback } from "../components/error-fallback";
 import { HouseholdTypeIcon } from "../icons/household_type";
 import PopulationIcon from "../icons/population";
@@ -20,7 +20,7 @@ const HomeContainerContent = () => {
 
     const lgaCode = formatLgaCode(lga);
     const lgaMedianPrice = useTotalMedianPrice(lgaCode)
-    const homePageData = useHomePageData(lgaCode, bmGCC.BM_GCC_Code)
+    const homePageData = useHomePageData(lgaCode, bmGCC.GCC_Code)
 
     // With ErrorBoundary wrapping this component, throw on missing data
     if (!lgaMedianPrice.data) {
@@ -31,7 +31,7 @@ const HomeContainerContent = () => {
         throw new Error('No home page data available');
     }
 
-    if (homePageData.data.supabase_home_summary.length === 0) {
+    if (homePageData.data.home_summary.length === 0) {
         throw new Error('No home data summary available');
     }
 
@@ -47,15 +47,15 @@ const HomeContainerContent = () => {
         throw new Error('No sales data available');
     }
     
-    const homePageDataSummary = homePageData.data.supabase_home_summary[0];
+    const homePageDataSummary = homePageData.data.home_summary[0];
 
-    const bmLatestRentalData = getLatestRentalData(homePageData.data.supabase_listingtypes);
-    const bmLatestSalesData = getLatestSalesData(homePageData.data.supabase_listingtypes);
+    const bmLatestRentalData = getLatestRentalData(homePageData.data.listing_types);
+    const bmLatestSalesData = getLatestSalesData(homePageData.data.listing_types);
 
-    const bmUnitPrice = bmLatestSalesData.find(d => d.propertytype === "Unit")?.median;
-    const bmHousePrice = bmLatestSalesData.find(d => d.propertytype === "House")?.median;
-    const bmRentalUnitPrice = bmLatestRentalData.find(d => d.propertytype === "Unit")?.median;
-    const bmRentalHousePrice = bmLatestRentalData.find(d => d.propertytype === "House")?.median;
+    const bmUnitPrice = bmLatestSalesData.find(d => d.PropertyType === "Unit")?.Median;
+    const bmHousePrice = bmLatestSalesData.find(d => d.PropertyType === "House")?.Median;
+    const bmRentalUnitPrice = bmLatestRentalData.find(d => d.PropertyType === "Unit")?.Median;
+    const bmRentalHousePrice = bmLatestRentalData.find(d => d.PropertyType === "House")?.Median;
 
     return (
         <div>
@@ -67,12 +67,12 @@ const HomeContainerContent = () => {
                             <CardDescription className="text-black">
                                 <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median Unit Price ({latestDataSales.Period_Name})</h3>
                                 <div className="flex justify-between space-y-1"><span>{lga.name}</span><span>{formatSaleValue(latestDataSales.Median_Unit)}</span></div>
-                                <div className="flex justify-between space-y-1"><span>{bmGCC.BM_GCC_Name}</span><span>{formatSaleValue(bmUnitPrice)}</span></div>
+                                <div className="flex justify-between space-y-1"><span>{bmGCC.GCC_Name}</span><span>{formatSaleValue(bmUnitPrice)}</span></div>
                             </CardDescription>
                             <CardDescription className="text-black">
                                 <h3 className="text-sm text-[#7513b8] font-bold mb-1">Median House Price ({latestDataSales.Period_Name})</h3>
                                 <div className="flex justify-between space-y-1"><span>{lga.name}</span><span>{formatSaleValue(latestDataSales.Median_House)}</span></div>
-                                <div className="flex justify-between space-y-1"><span>{bmGCC.BM_GCC_Name}</span><span>{formatSaleValue(bmHousePrice)}</span></div>
+                                <div className="flex justify-between space-y-1"><span>{bmGCC.GCC_Name}</span><span>{formatSaleValue(bmHousePrice)}</span></div>
                             </CardDescription>
                         </CardHeader>
 
@@ -91,7 +91,7 @@ const HomeContainerContent = () => {
                                     <span>{formatRentalValue(latestDataRentals.Median_Unit, "week")}</span>
                                 </div>
                                 <div className="flex justify-between space-y-1">
-                                    <span>{bmGCC.BM_GCC_Name}</span>
+                                    <span>{bmGCC.GCC_Name}</span>
                                     <span>{formatRentalValue(bmRentalUnitPrice, "week")}</span>
                                 </div>
                             </CardDescription>
@@ -104,7 +104,7 @@ const HomeContainerContent = () => {
                                     <span>{formatRentalValue(latestDataRentals.Median_House, "week")}</span>
                                 </div>
                                 <div className="flex justify-between space-y-1">
-                                    <span>{bmGCC.BM_GCC_Name}</span>
+                                    <span>{bmGCC.GCC_Name}</span>
                                     <span>{formatRentalValue(bmRentalHousePrice, "week")}</span>
                                 </div>
                             </CardDescription>
@@ -157,7 +157,7 @@ const HomeContainerContent = () => {
                             <CardTitle className="text-[#7513b8] py-2 mb-1 border-b-2 border-b-[#7513b8]">Average household size (2016-2021)</CardTitle>
                             <CardDescription className="text-black ">
                                 <div className="flex justify-between space-y-1"><span>{lga.name}</span><span>{formatNumber(homePageDataSummary.Average_household_size, 2)} ({formatNumberWithSign(homePageDataSummary.Average_household_size_change, 2)})</span></div>
-                                <div className="flex justify-between space-y-1"><span>{bmGCC.BM_GCC_Name}</span><span>{formatNumber(homePageDataSummary.Average_household_size_benchmark, 2)} ({formatNumberWithSign(homePageDataSummary.Average_household_size_benchmark_change, 2)})</span></div>
+                                <div className="flex justify-between space-y-1"><span>{bmGCC.GCC_Name}</span><span>{formatNumber(homePageDataSummary.Average_household_size_benchmark, 2)} ({formatNumberWithSign(homePageDataSummary.Average_household_size_benchmark_change, 2)})</span></div>
                             </CardDescription>
                         </CardHeader>
                     </Card>
@@ -169,7 +169,9 @@ const HomeContainerContent = () => {
                             <CardDescription className="text-black ">
                                 <div className="flex justify-between space-y-1">
                                     <span>{homePageDataSummary.Dominant_dwelling_type_name}</span>
-                                    <span>({formatPercentage(homePageDataSummary.Dominant_dwelling_type_per, 1)})</span>
+                                    {homePageDataSummary.Dominant_dwelling_type_Per !== null && homePageDataSummary.Dominant_dwelling_type_Per !== undefined && (
+                                        <span>({formatPercentage(homePageDataSummary.Dominant_dwelling_type_Per, 1)})</span>
+                                    )}
                                 </div>
                             </CardDescription>
                             <CardDescription className="text-black ">

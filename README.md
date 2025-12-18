@@ -315,6 +315,8 @@ git checkout -b feature/your-feature-name
 # 2. Start development server
 npm run dev
 
+vercel dev --local-config vercel.dev.json
+
 # 3. Make your changes and test
 
 # 4. Lint your code

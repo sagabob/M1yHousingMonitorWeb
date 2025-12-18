@@ -1,6 +1,6 @@
 export const config = { runtime: 'edge' };
 import { validateEnvironment } from './lib/database';
-import { getHomePageDataSummary, getLatestListingTypesV1 } from './lib/supabase-service';
+import { getHomePageSummaryByLga, getLatestListingTypes } from './lib/supabase-service';
 import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
 
 export default async function handler(req: Request) {
@@ -20,13 +20,13 @@ export default async function handler(req: Request) {
 
     // Fetch data from both sources in parallel
     const [listingResult, summaryResult] = await Promise.all([
-      getLatestListingTypesV1(bmcode, 50),
-      getHomePageDataSummary(lgacode, 1)
+      getLatestListingTypes(bmcode),
+      getHomePageSummaryByLga(lgacode)
     ]);
 
     return createSuccessResponse({
-      supabase_listingtypes: listingResult.data,
-      supabase_home_summary: summaryResult.data,
+      listingtypes: listingResult.data,
+      home_summary: summaryResult.data,
       timestamp: new Date().toISOString()
     });
 
