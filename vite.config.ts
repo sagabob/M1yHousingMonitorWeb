@@ -12,6 +12,8 @@ export default defineConfig({
     },
   },
   assetsInclude: ["**/*.html"],
+  // Server config only applies to local dev server (npm run dev)
+  // In production on Vercel, API routing is handled by vercel.json
   server: {
     proxy: {
       "/api": {
