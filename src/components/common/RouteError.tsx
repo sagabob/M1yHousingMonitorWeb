@@ -1,5 +1,5 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import NotFound from "@/pages/not-found";
+import NotFound from "@/pages/NotFound";
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 
 const RouteError = () => {

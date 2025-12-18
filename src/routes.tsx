@@ -1,8 +1,8 @@
 import {
   createBrowserRouter,
 } from "react-router-dom";
-import Home from "@/pages/app-landing-page";
-import ClientHome from "@/pages/topics/client-home";
+import Home from "@/pages/AppLandingPage";
+import ClientHome from "@/pages/topics/ClientHome";
 import RouteError from "@/components/common/RouteError";
 import HomeContainer from "@/features/home/pages/HomeParams";
 
