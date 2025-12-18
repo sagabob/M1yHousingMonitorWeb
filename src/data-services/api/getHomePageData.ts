@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 const ListingTypeZ = z.object({
-  code: z.string(),
-  listingtype: z.enum(["Rentals", "Sales"]),
-  propertytype: z.enum(["Unit", "House"]),
-  median: z.number(),
-  period_time: z.string()
+  GCCSACode: z.string(),
+  ListingType: z.enum(["Rentals", "Sales"]),
+  PropertyType: z.enum(["Unit", "House"]),
+  Median: z.number(),
+  Period: z.string()
 }).strip();
 
 export type ListingType = z.infer<typeof ListingTypeZ>;
@@ -22,7 +22,7 @@ const homeDataSummaryZ = z.object({
   Average_household_size_benchmark: z.number(),
   Average_household_size_benchmark_change: z.number().nullable(),
   Dominant_dwelling_type_name: z.string(),
-  Dominant_dwelling_type_per: z.number(),
+  Dominant_dwelling_type_Per: z.number().nullable(),
   Emerging_dwelling_type_name: z.string(),
   Emerging_dwelling_type_change: z.number().nullable(),
 }).strip();
@@ -30,8 +30,8 @@ const homeDataSummaryZ = z.object({
 export type HomeDataSummary = z.infer<typeof homeDataSummaryZ>;
 
 export interface HousingDataResponse {
-  supabase_listingtypes: ListingType[];
-  supabase_home_summary: HomeDataSummary[];
+  listing_types: ListingType[];
+  home_summary: HomeDataSummary[];
   timestamp: string;
   error?: string;
 }
@@ -68,17 +68,18 @@ export async function getHomePageData(
     }
 
     const rawData = await response.json();
+    console.log(rawData);
     console.log(`✅ Successfully fetched raw housing data for LGA ${lgacode}, BM ${bmcode}`);
 
     // Validate and transform data using Zod schemas
     const validatedData: HousingDataResponse = {
-      supabase_listingtypes: z.array(ListingTypeZ).parse(rawData.supabase_listingtypes),
-      supabase_home_summary: z.array(homeDataSummaryZ).parse(rawData.supabase_home_summary),
+      listing_types: z.array(ListingTypeZ).parse(rawData.listingtypes),
+      home_summary: z.array(homeDataSummaryZ).parse(rawData.home_summary),
       timestamp: rawData.timestamp,
       error: rawData.error
     };
 
-    console.log(`✅ Successfully validated housing data: ${validatedData.supabase_listingtypes.length} listing types, ${validatedData.supabase_home_summary.length} summary items`);
+    console.log(`✅ Successfully validated housing data: ${validatedData.listing_types.length} listing types, ${validatedData.home_summary.length} summary items`);
     return validatedData;
   } catch (error) {
     console.error(`❌ Error fetching housing data via edge function for LGA ${lgacode}, BM ${bmcode}:`, error);

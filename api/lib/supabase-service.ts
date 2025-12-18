@@ -6,55 +6,82 @@ export interface SupabaseQueryResult<T = any> {
   count?: number;
 }
 
-
-export const getHomePageDataSummary = async (lgacode: string, limit: number = 1): Promise<SupabaseQueryResult> => {
+/**
+ * Generic helper to call a Supabase RPC function with standard logging and error handling
+ */
+const callSupabaseRpc = async <T = any>(
+  rpcName: string,
+  params: Record<string, any>,
+  description: string
+): Promise<SupabaseQueryResult<T>> => {
   try {
     const supabase = getSupabaseClient();
+
+    console.log(`🔍 Fetching ${description}`);
+    console.log(`📋 RPC Function: ${rpcName}`);
+    console.log(`📋 Parameters:`, JSON.stringify(params, null, 2));
     
-    console.log(`🔍 Fetching home data summary for LGA: ${lgacode}`);
-    
-    const { data, error, count } = await supabase
-      .from('v_home_data_summary')
-      .select('*')
-      .eq('LGA_CODE', lgacode)
-      .limit(limit);
+    // Log Supabase URL (first 30 chars only for security)
+    const supabaseUrl = process.env.SUPABASE_URL || 'NOT_SET';
+    console.log(`🔗 Supabase URL: ${supabaseUrl.substring(0, 30)}...`);
+    console.log(`🔑 Supabase Key exists: ${!!process.env.SUPABASE_ANON_KEY}`);
+
+    console.log(`⏳ Calling Supabase RPC...`);
+    const { data, error } = await supabase.rpc(rpcName, params);
+    console.log(`⏸️ RPC call completed`);
 
     if (error) {
-      console.error('❌ Supabase error:', error);
+      console.error('❌ Supabase RPC error:', error);
+      console.error('❌ Error details:', JSON.stringify(error, null, 2));
+      console.error('❌ Function:', rpcName);
+      console.error('❌ Parameters:', JSON.stringify(params, null, 2));
       return { data: null, error, count: 0 };
     }
 
-    console.log(`✅ Successfully fetched ${data?.length || 0} home data summary records`);
-    
-    return { data, error: null, count: data?.length || 0 };
+    // Log raw data for debugging
+    console.log(`📦 Raw data received:`, data);
+    console.log(`📦 Data type:`, typeof data);
+    console.log(`📦 Is array:`, Array.isArray(data));
+    console.log(`📦 Data length:`, Array.isArray(data) ? data.length : data ? 1 : 0);
+
+    // Ensure data is treated as an array for the return type structure
+    const dataArray = Array.isArray(data) ? data : (data ? [data] : []);
+
+    if (dataArray.length === 0) {
+      console.warn(`⚠️ Warning: ${description} returned empty result`);
+      console.warn(`⚠️ Function: ${rpcName}, Parameters:`, JSON.stringify(params, null, 2));
+    } else {
+      console.log(`✅ Successfully fetched ${description} (${dataArray.length} items)`);
+    }
+
+    return { data: dataArray, error: null, count: dataArray.length };
   } catch (error) {
-    console.error(`❌ Error fetching home data summary for LGA ${lgacode}:`, error);
+    console.error(`❌ Error fetching ${description}:`, error);
+    console.error(`❌ Function: ${rpcName}, Parameters:`, JSON.stringify(params, null, 2));
     throw error;
   }
 };
 
-export const getLatestListingTypesV1 = async (code: string, limit: number = 50): Promise<SupabaseQueryResult> => {
-  try {
-    const supabase = getSupabaseClient();
-    
-    console.log(`🔍 Fetching latest listing types v1 for code: ${code}`);
-    
-    const { data, error, count } = await supabase
-      .from('v_latest_listingtypes_v1')
-      .select('*')
-      .eq('code', code)
-      .limit(limit);
+export const getHomePageSummaryByLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_home_page_summary_by_lga',
+    { p_lga_code: lgaCode },
+    `home page summary via RPC for LGA: ${lgaCode}`
+  );
+};
 
-    if (error) {
-      console.error('❌ Supabase error:', error);
-      return { data: null, error, count: 0 };
-    }
+export const getLatestListingTypes = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_latest_rental_and_sales_by_gccsa',
+    { p_gccsa_code: lgaCode },
+    `latest listing types via RPC for GCCSA: ${lgaCode}`
+  );
+};
 
-    console.log(`✅ Successfully fetched ${data?.length || 0} latest listing types v1`);
-    
-    return { data, error: null, count: data?.length || 0 };
-  } catch (error) {
-    console.error(`❌ Error fetching latest listing types v1 for code ${code}:`, error);
-    throw error;
-  }
+export const getBenchMarkforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_areas_by_lga_code',
+    { p_lga_code: lgaCode },
+    `areas by LGA code via RPC: ${lgaCode}`
+  );
 };

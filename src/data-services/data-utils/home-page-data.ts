@@ -13,10 +13,10 @@ export function getLatestDataSales(data: TotalMedianPrice) {
 
 export function getLatestRentalData(data: ListingType[]) 
 {
-    return data.filter(item => item.listingtype === "Rentals");
+    return data.filter(item => item.ListingType === "Rentals");
 }
 
 export function getLatestSalesData(data: ListingType[]) 
 {
-    return data.filter(item => item.listingtype === "Sales");
+    return data.filter(item => item.ListingType === "Sales");
 }
