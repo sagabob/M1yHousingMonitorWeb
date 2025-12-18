@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom"
-import { lgaData } from "../../page-data/lga-data"
-import ClientHeadingSection from "@/ui/client-components/client-heading-section"
-import ClientContainer from "@/ui/client-components/client-container"
-import MyWrapper from "@/ui/core-components/my-wrapper"
+import { lgaData } from "@/page-data/lga-data"
+import ClientHeadingSection from "@/features/client/components/ClientHeadingSection"
+import ClientContainer from "@/features/client/pages/ClientContainer"
+import PageWrapper from "@/layouts/PageWrapper"
 import { useBMGCCData } from "@/data-services/hooks/useBMGCCData"
 import { formatLgaCode } from "@/data-services/data-utils/core-utils"
-import { QueryBoundary } from "@/ui/components/query-boundary"
+import { QueryBoundary } from "@/components/common/QueryBoundary"
 import { useQueryClient } from "@tanstack/react-query"
 
 function MainClientContentPanel({ lga }: { lga: (typeof lgaData)[number] }) { //lga is a member of lagaData
@@ -42,8 +42,8 @@ const ClientHome = () => {
     const lgaCode = formatLgaCode(lga)
 
     return (
-        <MyWrapper>
-            <ClientHeadingSection {...lga} />
+        <PageWrapper>
+            <ClientHeadingSection lga={lga} />
             <QueryBoundary
                 loading={<PageLoadingSection />}
                 errorFallback={(props) => <ErrorSection {...props} />}
@@ -51,7 +51,7 @@ const ClientHome = () => {
             >
                 <MainClientContentPanel lga={lga} />
             </QueryBoundary>
-        </MyWrapper>
+        </PageWrapper>
     )
 }
 

@@ -1,14 +1,14 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import LoadingGrid from "@/ui/components/loading-grid";
+import LoadingGrid from "@/components/common/LoadingGrid";
 import { formatRentalValue, formatSaleValue, formatLgaCode, formatNumber, formatDate, formatPercentage, formatNumberWithSign } from "@/data-services/data-utils/core-utils";
 import { getLatestDataRentals, getLatestDataSales, getLatestRentalData, getLatestSalesData } from "@/data-services/data-utils/home-page-data";
 import { useHomePageData } from "@/data-services/hooks/useHomePageData";
 import { useTotalMedianPrice } from "@/data-services/hooks/useMedianPrice";
 import { usePageContext } from "@/data-services/hooks/usePageContext";
-import { ErrorFallback } from "../components/error-fallback";
-import { HouseholdTypeIcon } from "../icons/household_type";
-import PopulationIcon from "../icons/population";
-import { QueryBoundary } from "../components/query-boundary";
+import { ErrorFallback } from "@/components/common/ErrorFallback";
+import { HouseholdTypeIcon } from "@/ui/icons/household_type";
+import PopulationIcon from "@/ui/icons/population";
+import { QueryBoundary } from "@/components/common/QueryBoundary";
 
 
 
@@ -38,15 +38,15 @@ const HomeContainerContent = () => {
     // Extract data - no defensive checks needed, ErrorBoundary handles errors
     const latestDataRentals = getLatestDataRentals(lgaMedianPrice.data);
     const latestDataSales = getLatestDataSales(lgaMedianPrice.data);
-    
+
     if (!latestDataRentals) {
         throw new Error('No rental data available');
     }
-    
+
     if (!latestDataSales) {
         throw new Error('No sales data available');
     }
-    
+
     const homePageDataSummary = homePageData.data.home_summary[0];
 
     const bmLatestRentalData = getLatestRentalData(homePageData.data.listing_types);

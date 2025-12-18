@@ -1,5 +1,5 @@
 import type { Lga } from "@/page-data/types/Lga";
-import type { SingleMedianPrice } from "../schemas/medianPriceSchema";
+import type { SingleMedianPrice } from "@/data-services/schemas/medianPriceSchema";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 dayjs.extend(customParseFormat);
