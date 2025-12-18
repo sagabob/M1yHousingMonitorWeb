@@ -1,8 +1,8 @@
 import type { Lga } from "@/page-data/types/Lga";
-import MyHeader from "../core-components/my-header";
-import ClientHeading from "./client-heading";
-import ClientBanner from "./client-banner";
-import ClientProducts from "./client-products";
+import MyHeader from "@/layouts/Header";
+import ClientHeading from "./ClientHeading";
+import ClientBanner from "./ClientBanner";
+import ClientProducts from "./ClientProducts";
 
 const ClientHeadingSection = (lga: Lga) => {
     return (

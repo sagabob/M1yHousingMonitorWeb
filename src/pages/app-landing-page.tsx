@@ -1,19 +1,19 @@
-import MyWrapper from "../ui/core-components/my-wrapper";
-import MyBanner from "../ui/core-components/my-banner";
-import MyHeader from "../ui/core-components/my-header";
-import MyHeading from "../ui/core-components/my-heading";
-import MyListLga from "../ui/core-components/my-list-lga";
-import MyProductTab from "../ui/core-components/my-product-tab";
+import PageWrapper from "../layouts/PageWrapper";
+import MyBanner from "../features/home/components/HomeBanner";
+import MyHeader from "../layouts/Header";
+import MyHeading from "../components/common/PageHeading";
+import MyListLga from "../features/home/components/LgaList";
+import MyProductTab from "../features/home/components/ProductTab";
 
 const AppLandingPage = () => {
     return (
-        <MyWrapper>
+        <PageWrapper>
             <MyHeader />
             <MyHeading />
             <MyProductTab />
             <MyBanner />
             <MyListLga />
-        </MyWrapper>
+        </PageWrapper>
     )
 }
 

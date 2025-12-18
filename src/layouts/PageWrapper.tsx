@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-const MyWrapper = ({ children }: { children: ReactNode }) => {
+const PageWrapper = ({ children }: { children: ReactNode }) => {
     return (
         <div className="min-h-screen bg-white">
             {children}
@@ -8,4 +8,4 @@ const MyWrapper = ({ children }: { children: ReactNode }) => {
     )
 }
 
-export default MyWrapper;   
+export default PageWrapper;   

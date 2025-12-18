@@ -1,5 +1,5 @@
 import { baseUrl } from "@/page-data/lga-data";
-import { MAX_WIDTH } from "../constants/ui-constants"
+import { MAX_WIDTH } from "@/ui/constants/ui-constants"
 import type { Lga } from "@/page-data/types/Lga";
 const ClientHeading = (lga: Lga) => {
 

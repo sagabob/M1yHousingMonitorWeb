@@ -1,4 +1,4 @@
-import { MAX_WIDTH } from "../constants/ui-constants"
+import { MAX_WIDTH } from "@/ui/constants/ui-constants"
 
 
 const MyHeader = () => {
