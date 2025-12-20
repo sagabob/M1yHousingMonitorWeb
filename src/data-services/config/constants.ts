@@ -7,11 +7,13 @@ export const COLLECTIONS = {
 export const QUERY_KEYS = {  
   MEDIAN_PRICE_BY_LGA: (lgacode: string) => ['medianPrice', lgacode],
   HOUSING_DATA_BY_CODE: (lgacode: string, bmcode: string) => ['listingTypes', 'homePageData', lgacode, bmcode],
+  BMGCC_BY_CODE: (lgacode: string) => ['bm-gcc', lgacode],
 
 } as const;
 
 // Cache times (in milliseconds)
 export const CACHE_TIMES = {
+  FIVE_MINUTES: 5 * 60 * 1000,
   DEFAULT_STALE: 10 * 60 * 1000, // 10 minutes
   DEFAULT_GC: 30 * 60 * 1000,    // 30 minutes
 } as const;

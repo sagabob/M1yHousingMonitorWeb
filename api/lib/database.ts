@@ -1,20 +1,18 @@
 
 import { createClient } from '@supabase/supabase-js';
+import { validateEnvironment } from './env';
 
 // Supabase client (singleton pattern)
 let supabaseClient: any = null;
 
 export const getSupabaseClient = () => {
   if (!supabaseClient) {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_ANON_KEY;
-
-    if (!supabaseUrl || !supabaseKey) {
-      throw new Error('Supabase configuration missing');
-    }
+    const env = validateEnvironment();
+    const supabaseUrl = env.SUPABASE_URL;
+    const supabaseKey = env.SUPABASE_ANON_KEY;
 
     console.log(`🔧 Initializing Supabase client`);
-    console.log(`🔧 URL: ${supabaseUrl.substring(0, 30)}...`);
+    console.log(`🔧 URL: ${supabaseUrl.substring(0, 20)}...`);
     console.log(`🔧 Key exists: ${!!supabaseKey}`);
 
     supabaseClient = createClient(supabaseUrl, supabaseKey, {
@@ -40,22 +38,4 @@ export const getSupabaseClient = () => {
     });
   }
   return supabaseClient;
-};
-
-// Utility function to validate environment variables
-export const validateEnvironment = () => {
-  const required = {
-    SUPABASE_URL: process.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
-  };
-
-  const missing = Object.entries(required)
-    .filter(([_, value]) => !value)
-    .map(([key]) => key);
-
-  if (missing.length > 0) {
-    throw new Error(`Missing environment variables: ${missing.join(', ')}`);
-  }
-
-  return true;
 };

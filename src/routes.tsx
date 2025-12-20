@@ -5,22 +5,23 @@ import Home from "@/pages/AppLandingPage";
 import ClientHome from "@/pages/topics/ClientHome";
 import RouteError from "@/components/common/RouteError";
 import HomeContainer from "@/features/home/pages/HomeParams";
+import { ROUTES } from "@/lib/constants";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: ROUTES.HOME,
     element: <Home />,
     errorElement: <RouteError />,
   },
   {
-    path: "/:alias",
+    path: ROUTES.CLIENT,
     element: <ClientHome />,
     errorElement: <RouteError />,
     children: [
       { index: true, element: <HomeContainer /> },            // /:alias
-      { path: "population-households", element: <div>population-households</div> },       // /:alias/overview
-      { path: "housing-and-approvals", element: <div>Rentals</div> },         // /:alias/rentals
-      { path: "housing-market", element: <div>Sales</div> },             // /:alias/sales
+      { path: ROUTES.POPULATION_HOUSEHOLDS, element: <div>population-households</div> },       // /:alias/overview
+      { path: ROUTES.HOUSING_APPROVALS, element: <div>Rentals</div> },         // /:alias/rentals
+      { path: ROUTES.HOUSING_MARKET, element: <div>Sales</div> },             // /:alias/sales
       // add more child routes to match your menu-structure.json
     ],
   },

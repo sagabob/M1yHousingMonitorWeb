@@ -1,5 +1,5 @@
 export const config = { runtime: 'edge' };
-import { validateEnvironment } from './lib/database';
+import { validateEnvironment } from './lib/env';
 import { getHomePageSummaryByLga, getLatestListingTypes } from './lib/supabase-service';
 import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
 
