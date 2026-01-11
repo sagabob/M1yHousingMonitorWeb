@@ -21,13 +21,13 @@ export const getSupabaseClient = () => {
         autoRefreshToken: false,
       },
       global: {
-        fetch: (url, options: RequestInit = {}) => {
+        fetch: (url: string | Request | URL, options: RequestInit = {}) => {
           // Convert headers to a plain object if it's a Headers instance
           const headers = new Headers(options.headers);
           headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
           headers.set('Pragma', 'no-cache');
           headers.set('Expires', '0');
-          
+
           return fetch(url, {
             ...options,
             cache: 'no-store',

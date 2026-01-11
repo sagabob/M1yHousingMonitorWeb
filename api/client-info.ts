@@ -1,5 +1,4 @@
 export const config = { runtime: 'edge' };
-import { validateEnvironment } from './lib/database';
 import { getBenchMarkforLga } from './lib/supabase-service';
 import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
 
@@ -12,7 +11,6 @@ export default async function handler(req: Request) {
     }
 
     try {
-        validateEnvironment();
 
         console.log(`🔍 Fetching client info for LGA: ${lgaCode}`);
 

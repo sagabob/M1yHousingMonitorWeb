@@ -108,79 +108,45 @@ npm run preview
 ```
 my-housing-monitor-web/
 ├── api/                          # Vercel Edge Functions
-│   ├── home-page-data-edge.ts   # Edge API for home page data
-│   ├── info.ts                  # API info endpoint
+│   ├── client-info.ts           # Client info API
+│   ├── home-page-data-edge.ts   # Home page data API
 │   └── lib/                     # API utilities
 │       ├── database.ts          # Database connections
-│       ├── response-utils.ts    # API response helpers
-│       └── supabase-service.ts  # Supabase service layer
+│       └── response-utils.ts    # API helpers
 │
 ├── src/
-│   ├── components/              # shadcn/ui Components
-│   │   └── ui/                  # Radix UI primitives (40+ components)
-│   │       ├── button.tsx       # Button component
-│   │       ├── card.tsx         # Card component
-│   │       ├── dialog.tsx       # Modal dialog
-│   │       └── ...              # And many more
+│   ├── components/              # Shared Components
+│   │   ├── common/              # App-specific shared components
+│   │   │   ├── ErrorFallback.tsx
+│   │   │   ├── LoadingCard.tsx
+│   │   │   └── ...
+│   │   └── ui/                  # Shadcn Universal UI components
+│   │       ├── button.tsx
+│   │       ├── card.tsx
+│   │       └── ...
 │   │
 │   ├── data-services/           # Data Layer Architecture
 │   │   ├── api/                 # API integration layer
-│   │   │   ├── getBMGCC.ts      # BMGCC data fetching
-│   │   │   └── getHomePageData.ts
-│   │   ├── db-sources/          # Database integrations
-│   │   │   └── firebase.ts      # Firebase configuration
-│   │   ├── hooks/               # Custom React Query hooks
-│   │   │   ├── useBMGCCData.ts
-│   │   │   ├── useHomePageData.ts
-│   │   │   └── useMedianPrice.ts
+│   │   ├── db-sources/          # Database connections (Firebase/Supabase)
+│   │   ├── hooks/               # React Query hooks
 │   │   ├── repos/               # Repository pattern
-│   │   │   └── medianPrice.repo.ts
 │   │   ├── schemas/             # Zod validation schemas
-│   │   │   ├── medianPriceSchema.ts
-│   │   │   └── zodFirestore.ts
-│   │   ├── data-utils/          # Data transformation utilities
-│   │   └── config/              # Configuration constants
+│   │   └── data-utils/          # Transformation utilities
 │   │
-│   ├── ui/                      # Custom UI Components
-│   │   ├── client-components/   # LGA-specific components
-│   │   │   ├── client-banner.tsx
-│   │   │   ├── client-heading.tsx
-│   │   │   ├── client-menu.tsx
-│   │   │   └── client-products.tsx
-│   │   ├── core-components/     # Core reusable components
-│   │   │   ├── my-banner.tsx
-│   │   │   ├── my-header.tsx
-│   │   │   └── my-list-lga.tsx
-│   │   ├── components/          # Utility components
-│   │   │   ├── error-fallback.tsx
-│   │   │   ├── loading-card.tsx
-│   │   │   ├── loading-grid.tsx
-│   │   │   └── query-boundary.tsx
-│   │   ├── page-containers/     # Page layout containers
-│   │   ├── icons/               # Custom icon components
-│   │   └── constants/           # UI constants
+│   ├── features/                # Feature Modules (Vertical Slices)
+│   │   ├── client/              # Client feature
+│   │   │   ├── components/      # Client-specific components
+│   │   │   └── pages/           # Client feature pages
+│   │   └── home/                # Home feature
+│   │       ├── components/      # Home-specific components
+│   │       └── pages/           # Home feature pages
 │   │
-│   ├── pages/                   # Page Components
-│   │   ├── app-landing-page.tsx # Landing page
-│   │   ├── not-found.tsx        # 404 page
-│   │   └── topics/              # Topic pages
-│   │       └── client-home.tsx
-│   │
-│   ├── page-data/               # Static Data
-│   │   ├── lga-data.ts          # LGA information
-│   │   ├── menu-structure.json  # Navigation structure
-│   │   ├── products.ts          # Product definitions
-│   │   └── types/               # Data types
-│   │
-│   ├── hooks/                   # Global Custom Hooks
-│   │   └── use-mobile.ts        # Mobile detection hook
-│   │
+│   ├── layouts/                 # Application layouts
+│   ├── pages/                   # Route Entry Points
+│   ├── ui/                      # UI constants & icons
 │   ├── lib/                     # Utilities
-│   │   └── utils.ts             # Helper functions
-│   │
 │   ├── routes.tsx               # Route definitions
-│   ├── main.tsx                 # App entry point
-│   └── index.css                # Global styles
+│   └── main.tsx                 # Entry point
 │
 ├── public/                      # Static assets
 ├── vercel.json                  # Vercel deployment config
@@ -297,7 +263,8 @@ export const supabaseService = {
 
 ## 💻 Development
 
-### Available Scripts
+
+### Development Available Scripts
 
 | Command | Description |
 |---------|-------------|
@@ -305,6 +272,20 @@ export const supabaseService = {
 | `npm run build` | Build for production (TypeScript compilation + Vite build) |
 | `npm run preview` | Preview production build locally |
 | `npm run lint` | Run ESLint to check code quality |
+
+### Naming Conventions
+
+To ensure consistency, we adhere to the following naming conventions:
+
+#### File Naming
+- **React Components**: `PascalCase` (e.g., `UserProfile.tsx`) - matches component name.
+- **Non-Components**: `camelCase` (e.g., `useAuth.ts`, `apiClient.ts`).
+- **API Routes**: `kebab-case` (e.g., `api/client-info.ts`).
+- **Directories**: `kebab-case` (preferred) or `camelCase`.
+
+#### Component Naming
+- **General**: `PascalCase` noun-based descriptions (e.g., `SubmitButton`).
+- **Feature-Specific**: `[FeatureName][ComponentName]` (e.g., `ClientHeading.tsx`).
 
 ### Development Workflow
 

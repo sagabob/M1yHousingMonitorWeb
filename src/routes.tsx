@@ -20,8 +20,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomeContainer /> },            // /:alias
       { path: ROUTES.POPULATION_HOUSEHOLDS, element: <div>population-households</div> },       // /:alias/overview
-      { path: ROUTES.HOUSING_APPROVALS, element: <div>Rentals</div> },         // /:alias/rentals
-      { path: ROUTES.HOUSING_MARKET, element: <div>Sales</div> },             // /:alias/sales
+      { path: ROUTES.HOUSING_APPROVALS, element: <div>Housing Approvals</div> },         // /:alias/rentals
+      { path: ROUTES.HOUSING_MARKET, element: <div>Housing Market</div> },             // /:alias/sales
       // add more child routes to match your menu-structure.json
     ],
   },
