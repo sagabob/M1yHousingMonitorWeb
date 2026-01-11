@@ -1,7 +1,7 @@
 export const ROUTES = {
     HOME: "/",
     CLIENT: "/:alias",
-    POPULATION_HOUSEHOLDS: "populatin-households",
-    HOUSING_APPROVALS: "housing-approvals",
+    HOUSING_CONSUMPTION: "housing-consumption",
     HOUSING_MARKET: "housing-market",
+    HOUSING_SUPPLY: "housing-and-approvals",
 } as const;

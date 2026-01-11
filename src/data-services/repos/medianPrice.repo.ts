@@ -27,8 +27,7 @@ export async function getTotalMedianPriceById(
     // `snap.data()` is now parsed, stripped, and defaults applied
     const data = snap.data();
     // (Optional) If you want TypeScript to assert compatibility with your hand-written type:
-    const typed: TotalMedianPrice = data; // should compile if shapes match
-    return typed;
+    return data;
   } catch (error) {
     console.error(`❌ Error fetching median price data for LGA ${lgacode}:`, error);
     throw error;

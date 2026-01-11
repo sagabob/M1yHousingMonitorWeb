@@ -19,10 +19,11 @@ const router = createBrowserRouter([
     errorElement: <RouteError />,
     children: [
       { index: true, element: <HomeContainer /> },            // /:alias
-      { path: ROUTES.POPULATION_HOUSEHOLDS, element: <div>population-households</div> },       // /:alias/overview
-      { path: ROUTES.HOUSING_APPROVALS, element: <div>Housing Approvals</div> },         // /:alias/rentals
+      { path: ROUTES.HOUSING_SUPPLY, element: <div>housing-supply</div> },    // /:alias/overview
+      // /:alias/rentals
       { path: ROUTES.HOUSING_MARKET, element: <div>Housing Market</div> },             // /:alias/sales
       // add more child routes to match your menu-structure.json
+      { path: ROUTES.HOUSING_CONSUMPTION, element: <div>Housing Consumption</div> },
     ],
   },
 ]);
