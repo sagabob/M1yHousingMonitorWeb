@@ -20,6 +20,7 @@ export default async function handler(req: Request) {
         if (clientInfoResult.error) {
             console.error('❌ Supabase RPC error in client-info:', clientInfoResult.error);
             console.error('❌ Error details:', JSON.stringify(clientInfoResult.error, null, 2));
+            return createInternalErrorResponse(clientInfoResult.error);
         }
 
         // Log result details

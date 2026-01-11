@@ -52,10 +52,10 @@ const HomeContainerContent = () => {
     const bmLatestRentalData = getLatestRentalData(homePageData.data.listing_types);
     const bmLatestSalesData = getLatestSalesData(homePageData.data.listing_types);
 
-    const bmUnitPrice = bmLatestSalesData.find(d => d.PropertyType === "Unit")?.Median;
-    const bmHousePrice = bmLatestSalesData.find(d => d.PropertyType === "House")?.Median;
-    const bmRentalUnitPrice = bmLatestRentalData.find(d => d.PropertyType === "Unit")?.Median;
-    const bmRentalHousePrice = bmLatestRentalData.find(d => d.PropertyType === "House")?.Median;
+    const bmUnitPrice = bmLatestSalesData.find(d => d.Property_Type === "Unit")?.Median;
+    const bmHousePrice = bmLatestSalesData.find(d => d.Property_Type === "House")?.Median;
+    const bmRentalUnitPrice = bmLatestRentalData.find(d => d.Property_Type === "Unit")?.Median;
+    const bmRentalHousePrice = bmLatestRentalData.find(d => d.Property_Type === "House")?.Median;
 
     return (
         <div>
@@ -169,8 +169,8 @@ const HomeContainerContent = () => {
                             <CardDescription className="text-black ">
                                 <div className="flex justify-between space-y-1">
                                     <span>{homePageDataSummary.Dominant_dwelling_type_name}</span>
-                                    {homePageDataSummary.Dominant_dwelling_type_Per !== null && homePageDataSummary.Dominant_dwelling_type_Per !== undefined && (
-                                        <span>({formatPercentage(homePageDataSummary.Dominant_dwelling_type_Per, 1)})</span>
+                                    {homePageDataSummary.Dominant_dwelling_type_per !== null && homePageDataSummary.Dominant_dwelling_type_per !== undefined && (
+                                        <span>({formatPercentage(homePageDataSummary.Dominant_dwelling_type_per, 1)})</span>
                                     )}
                                 </div>
                             </CardDescription>
