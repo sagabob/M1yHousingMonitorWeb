@@ -66,6 +66,14 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-housing: #7513b8;
+  --color-community-profile: #cb2c30;
+  --color-social-atlas: #caae01;
+  --color-population-forecast: #3b6e8f;
+  --color-economic-profile: #70b859;
+  --color-community-views: #b21f67;
+  --color-housing-id: #7513b8;
+  --color-housing-id-hover: #d6b8ea;
 }
 
 :root {
