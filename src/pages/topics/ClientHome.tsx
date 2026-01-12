@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { PageLoading } from "@/components/common/PageLoading"
 import { PageError } from "@/components/common/PageError"
 import type { Lga } from "@/page-data/types/Lga"
+import { QUERY_KEYS } from "@/data-services/config/constants"
 
 function MainClientContentPanel({ lga }: { lga: Lga }) {
     const { data: bmGCCData } = useBMGCCData(formatLgaCode(lga))
@@ -31,7 +32,8 @@ const ClientHome = () => {
             <QueryBoundary
                 loading={<PageLoading />}
                 errorFallback={(props) => <PageError {...props} />}
-                onReset={() => qc.invalidateQueries({ queryKey: ['bm-gcc', lgaCode] })}
+                onReset={() => qc.invalidateQueries({ queryKey: QUERY_KEYS.BMGCC_BY_CODE(lgaCode) })}
+
             >
                 <MainClientContentPanel lga={lga} />
             </QueryBoundary>
