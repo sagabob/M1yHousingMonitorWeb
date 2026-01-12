@@ -4,7 +4,7 @@ import {
 import Home from "@/pages/AppLandingPage";
 import ClientHome from "@/pages/topics/ClientHome";
 import RouteError from "@/components/common/RouteError";
-import HomeContainer from "@/features/home/pages/HomeParams";
+import HomeContainer from "@/features/home/pages/HomeContainer";
 import { ROUTES } from "@/lib/constants";
 
 const router = createBrowserRouter([
