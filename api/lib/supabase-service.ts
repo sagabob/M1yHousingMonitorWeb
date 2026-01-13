@@ -91,3 +91,13 @@ export const getBenchMarkforLga = async (lgaCode: string): Promise<SupabaseQuery
     'id_housing'
   );
 };
+
+
+export const getDwellingStructureforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_dwelling_structure_by_area',
+    { p_area_id: lgaCode },
+    `dwellings by area via RPC: ${lgaCode}`,
+    'id_housing'
+  );
+};

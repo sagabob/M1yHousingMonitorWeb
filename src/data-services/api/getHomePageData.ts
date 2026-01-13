@@ -36,11 +36,6 @@ export interface HousingDataResponse {
   error?: string;
 }
 
-export interface HousingDataParams {
-  lgacode: string;
-  bmcode: string;
-}
-
 // Fetch housing data from edge function
 export async function getHomePageData(
   lgacode: string,

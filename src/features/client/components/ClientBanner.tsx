@@ -1,5 +1,5 @@
 import type { Lga } from "@/page-data/types/Lga";
-import HousingIllustration from "@/assets/housing-illustration.svg";
+import HousingIllustration from "@/assets/img/housing-illustration.svg";
 
 const ClientBanner = ({ lga }: { lga: Lga }) => {
     return (

@@ -34,38 +34,6 @@
       ]
     },
     {
-      "id": "housing-consumption",
-      "label": "Housing Consumption",
-      "type": "section",
-      "subItems": [
-        {
-          "id": "who-lives-in-what-type-of-housing",
-          "label": "Who lives in what type of housing?",
-          "route": "/housing-consumption/"
-        },
-        {
-          "id": "what-is-the-household-size-for-each-dwelling-type",
-          "label": "What is the household size for each dwelling type?",
-          "route": "/housing-consumption/#what-is-the-household-size-for-each-dwelling-type"
-        },
-        {
-          "id": "what-type-of-dwellings-do-specific-household-types-live-in",
-          "label": "What type of dwellings do specific household types live in?",
-          "route": "/housing-consumption/#what-type-of-dwellings-do-specific-household-types-live-in"
-        },
-        {
-          "id": "how-have-housing-consumption-patterns-changed",
-          "label": "How have housing consumption patterns changed?",
-          "route": "/housing-consumption/#how-have-housing-consumption-patterns-changed"
-        },
-        {
-          "id": "how-do-housing-consumption-patterns-differ-by-area",
-          "label": "How do housing consumption patterns differ by area?",
-          "route": "/housing-consumption/#how-do-housing-consumption-patterns-differ-by-area"
-        }
-      ]
-    },
-    {
       "id": "housing-market",
       "label": "Housing Market",
       "type": "section",

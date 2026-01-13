@@ -4,8 +4,9 @@ export const COLLECTIONS = {
 } as const;
 
 // Query keys for React Query
-export const QUERY_KEYS = {  
+export const QUERY_KEYS = {
   MEDIAN_PRICE_BY_LGA: (lgacode: string) => ['medianPrice', lgacode],
+  DWELLING_STRUCTURE_BY_LGA: (lgacode: string, bmcode: string) => ['dwellingStructure', lgacode, bmcode],
   HOUSING_DATA_BY_CODE: (lgacode: string, bmcode: string) => ['listingTypes', 'homePageData', lgacode, bmcode],
   BMGCC_BY_CODE: (lgacode: string) => ['bm-gcc', lgacode],
 
