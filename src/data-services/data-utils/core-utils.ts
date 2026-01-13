@@ -71,7 +71,7 @@ export function formatDate(date: string | null | undefined) {
     return parsed.format("MMM YYYY");
 }
 
-export function formatPercentage(value: number | null | undefined, digits: number = 2) {
+export function formatPercentage(value: number | null | undefined, digits: number = 1) {
     if (value === null || value === undefined) return 'N/A';
     return value.toFixed(digits) + "%";
 }
