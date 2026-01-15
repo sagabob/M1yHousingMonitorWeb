@@ -1,18 +1,18 @@
 import { ErrorFallback } from "@/components/common/ErrorFallback";
-import LoadingGrid from "@/components/common/LoadingGrid";
 import { QueryBoundary } from "@/components/common/QueryBoundary";
 import { formatLgaCode } from "@/data-services/data-utils/core-utils";
 import { useDwellingStructureData } from "@/data-services/hooks/useDwellingStructureData";
 import { usePageContext } from "@/data-services/hooks/usePageContext";
 import HousingTypesChart from "@/components/charts/HousingTypesChart";
 import HousingTypesByBedroomsChart from "@/components/charts/HousingTypesByBedroomsChart";
+import LoadingChart from "@/components/charts/LoadingChart";
 
 // Main component with Suspense wrapper
 export default function HousingSupplyContainer() {
 
     return (
         <QueryBoundary
-            loading={<LoadingGrid cardCount={6} staggerDelay={300} cardType="compact" />}
+            loading={<LoadingChart />}
             errorFallback={(props) => <ErrorFallback {...props} />}
         >
             <HousingSupplyContent />
