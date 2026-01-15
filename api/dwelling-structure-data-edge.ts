@@ -1,5 +1,5 @@
 export const config = { runtime: 'edge' };
-import { getDwellingStructureforLga } from './lib/supabase-service';
+import { getDwellingStructureforLga, getDwellingTypeBedroomsforLga } from './lib/supabase-service';
 import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
 
 export default async function handler(req: Request) {
@@ -16,14 +16,16 @@ export default async function handler(req: Request) {
         console.log(`🔍 Fetching data for LGA: ${lgacode}, BM: ${bmcode}`);
 
         // Fetch data from both sources in parallel
-        const [dwellingLgaResult, dwellingBmResult] = await Promise.all([
+        const [dwellingLgaResult, dwellingBmResult, dwellingTypeBedroomsResult] = await Promise.all([
             getDwellingStructureforLga(lgacode),
-            getDwellingStructureforLga(bmcode)
+            getDwellingStructureforLga(bmcode),
+            getDwellingTypeBedroomsforLga(lgacode),
         ]);
 
         return createSuccessResponse({
             lga: dwellingLgaResult.data,
             bm: dwellingBmResult.data,
+            type_bedrooms: dwellingTypeBedroomsResult.data,
             timestamp: new Date().toISOString()
         });
 

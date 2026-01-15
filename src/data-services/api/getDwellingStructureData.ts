@@ -1,32 +1,37 @@
 import { z } from "zod";
 
-const DwellingStructureZ = z.preprocess((val) => {
-    if (typeof val === 'object' && val !== null) {
-        const v = val as any;
-        return {
-            ...v,
-            DwellingStructure: v.DwellingStructure ?? v.Dwelling_Structure ?? v.dwelling_structure ?? "Unknown Structure"
-        };
-    }
-    return val;
-}, z.object({
+const DwellingTypeBedroomsZ = z.object({
+    Area_Id: z.string(),
+    Area_Name: z.string(),
+    Dwelling_Structure: z.string(),
+    Bedroom_Number: z.string(),
+    Num_2021: z.coerce.number().optional(),
+    Per_2021: z.coerce.number().optional(),
+    Benchmark_Name: z.string(),
+    bNum_2021: z.coerce.number().optional(),
+    bPer_2021: z.coerce.number().optional(),
+}).passthrough();
+export type DwellingTypeBedrooms = z.infer<typeof DwellingTypeBedroomsZ>;
+
+const DwellingStructureZ = z.object({
     Area_Id: z.string().optional(),
-    DwellingStructure: z.string(),
-    Num_2021: z.number().optional(),
-    Per_2021: z.number().optional(),
-    Num_2016: z.number().optional(),
-    Per_2016: z.number().optional(),
-    Num_2011: z.number().optional(),
-    Per_2011: z.number().optional(),
-    Num_2006: z.number().optional(),
-    Per_2006: z.number().optional()
-}).passthrough());
+    Dwelling_Structure: z.string(),
+    Num_2021: z.coerce.number().optional(),
+    Per_2021: z.coerce.number().optional(),
+    Num_2016: z.coerce.number().optional(),
+    Per_2016: z.coerce.number().optional(),
+    Num_2011: z.coerce.number().optional(),
+    Per_2011: z.coerce.number().optional(),
+    Num_2006: z.coerce.number().optional(),
+    Per_2006: z.coerce.number().optional()
+}).passthrough();
 
 export type DwellingStructure = z.infer<typeof DwellingStructureZ>;
 
 export interface DwellingStructureResponse {
     lga: DwellingStructure[];
     bm: DwellingStructure[];
+    type_bedrooms: DwellingTypeBedrooms[];
     timestamp: string;
     error?: string;
 }
@@ -67,6 +72,7 @@ export async function getDwellingStructureData(
         const validatedData: DwellingStructureResponse = {
             lga: z.array(DwellingStructureZ).parse(rawData.lga),
             bm: z.array(DwellingStructureZ).parse(rawData.bm),
+            type_bedrooms: z.array(DwellingTypeBedroomsZ).parse(rawData.type_bedrooms),
             timestamp: rawData.timestamp,
             error: rawData.error
         };

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, groupBy, map, sortBy } from 'lodash';
 import {
     BarChart,
     Bar,
@@ -8,6 +8,7 @@ import {
     Tooltip,
     ResponsiveContainer,
     CartesianGrid,
+    Label,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
 import {
@@ -22,27 +23,18 @@ import { formatPercentage } from '@/data-services/data-utils/core-utils';
 import TooltipWrapper from './TooltipWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
 import { ErrorMessageChart } from './ErrorMessageChart';
+import type { DwellingTypeBedrooms } from '@/data-services/api/getDwellingStructureData';
 
 // --- Types ---
-
-export interface DwellingStructureItem {
-    Dwelling_Structure: string;
-    [key: string]: any;
-}
-
-interface HousingTypesChartProps {
-    data: DwellingStructureItem[];
-    benchmarkData: DwellingStructureItem[];
+interface HousingTypesByBedroomsChartProps {
+    data: DwellingTypeBedrooms[];
     areaName: string;
-    benchmarkName: string;
     dataNotes?: string;
-    chartInfo?: string;
 }
 
 type DataType = 'percent' | 'number';
 
 // --- Constants ---
-const YEARS = [2006, 2011, 2016, 2021] as const;
 const DWELLING_STRUCTURE_ORDER: Record<string, number> = {
     'Separate house': 1,
     'Medium density': 2,
@@ -63,8 +55,14 @@ const roundToDecimal = (value: number, decimals: number): number => {
     return Math.round(value * Math.pow(10, decimals)) / Math.pow(10, decimals);
 };
 
-// --- Sub-Components ---
+// Extract the starting number from bedroom string for sorting
+// Handles formats like "0-2", "3", "4+", "0-1", "2", "3+" etc.
+const getStartNumber = (bedroomStr: string): number => {
+    const match = bedroomStr.match(/^(\d+)/);
+    return match ? parseInt(match[1], 10) : 999;
+};
 
+// --- Sub-Components ---
 const ChartIcon = React.memo(({ dwellingType, className }: { dwellingType: string, className?: string }) => {
     const iconClass = `w-12 h-12 text-primary mx-auto mb-2 ${className || ''}`;
 
@@ -101,7 +99,7 @@ const CustomTooltipContent = React.memo(({ active, payload, label, dataType }: C
 
     return (
         <TooltipWrapper>
-            <strong className="block mb-1">{label}</strong>
+            <strong className="block mb-1">{label} bedrooms</strong>
             {payload.map((item, index) => (
                 <div
                     key={index}
@@ -120,13 +118,10 @@ const CustomTooltipContent = React.memo(({ active, payload, label, dataType }: C
 CustomTooltipContent.displayName = 'CustomTooltipContent';
 
 // --- Main Component ---
-
-const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
+const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = ({
     data,
-    dataNotes,
-    benchmarkData,
     areaName,
-    benchmarkName,
+    dataNotes,
 }) => {
     const [dataType, setDataType] = useState<DataType>('percent');
 
@@ -138,54 +133,52 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
     const changeToPercent = useCallback(() => setDataType('percent'), []);
     const changeToNumber = useCallback(() => setDataType('number'), []);
 
-    // 1. Prepare Chart Data (Memoized)
+    // Get benchmark name from first data item
+    const benchmarkName = useMemo(() => {
+        return data.length > 0 ? data[0].Benchmark_Name || '' : '';
+    }, [data]);
+
+    // 1. Prepare Chart Data (Memoized) - Group by dwelling structure and sort by bedroom number
     const chartData = useMemo(() => {
         if (isEmpty(data)) return [];
 
-        const mappedData = data.map((item) => {
-            const benchmarkNode = benchmarkData.find(
-                (bmItem) => bmItem.Dwelling_Structure === item.Dwelling_Structure
-            ) || ({} as DwellingStructureItem);
-
-            const yearData = YEARS.map((year) => {
-                const per = safeNumber(item[`Per_${year}`]);
-                const per_bm = safeNumber(benchmarkNode[`Per_${year}`]);
-                return {
-                    year,
-                    value: safeNumber(item[`Num_${year}`]),
-                    per: roundToDecimal(per, 1),
-                    value_bm: safeNumber(benchmarkNode[`Num_${year}`]),
-                    per_bm: roundToDecimal(per_bm, 1),
-                };
+        const grouped = groupBy(data, 'Dwelling_Structure');
+        
+        return map(grouped, (value, key) => {
+            const sorted = sortBy(value, (item) => {
+                return getStartNumber(item.Bedroom_Number);
             });
 
             return {
-                dwellingStructure: item.Dwelling_Structure,
-                data: yearData,
+                type: key,
+                data: sorted.map(item => ({
+                    Bedroom_Number: item.Bedroom_Number,
+                    Num_2021: safeNumber(item.Num_2021),
+                    Per_2021: roundToDecimal(safeNumber(item.Per_2021), 1),
+                    bNum_2021: safeNumber(item.bNum_2021),
+                    bPer_2021: roundToDecimal(safeNumber(item.bPer_2021), 1),
+                })),
             };
-        });
-
-        return mappedData.sort((a, b) => {
-            const orderA = DWELLING_STRUCTURE_ORDER[a.dwellingStructure] ?? 99;
-            const orderB = DWELLING_STRUCTURE_ORDER[b.dwellingStructure] ?? 99;
+        }).sort((a, b) => {
+            const orderA = DWELLING_STRUCTURE_ORDER[a.type] ?? 99;
+            const orderB = DWELLING_STRUCTURE_ORDER[b.type] ?? 99;
             return orderA - orderB;
         });
-    }, [data, benchmarkData]);
+    }, [data]);
 
     // 2. Calculate Max Value & Ticks (Memoized)
     const { ticks } = useMemo(() => {
         if (isEmpty(chartData)) return { ticks: [0, 100] };
 
-        // Efficiently find max value without heavy lodash chaining
         let currentMax = 0;
 
         chartData.forEach(chart => {
             chart.data.forEach(d => {
                 if (dataType === 'number') {
-                    if (d.value > currentMax) currentMax = d.value;
+                    if (d.Num_2021 > currentMax) currentMax = d.Num_2021;
                 } else {
-                    if (d.per > currentMax) currentMax = d.per;
-                    if (d.per_bm > currentMax) currentMax = d.per_bm;
+                    if (d.Per_2021 > currentMax) currentMax = d.Per_2021;
+                    if (d.bPer_2021 > currentMax) currentMax = d.bPer_2021;
                 }
             });
         });
@@ -215,16 +208,15 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
         return items;
     }, [areaName, benchmarkName, dataType, COLOR_PRIMARY, COLOR_MUTED]);
 
-
     if (isEmpty(data)) {
         return <ErrorMessageChart />;
     }
 
     return (
         <ChartWrapper
-            title="What is the dominant housing type?"
-            subTitle="Dwellings by dwelling type, 2006 to 2021"
-            dataSource={Datasource.ABS2006}
+            title="What is the mix of housing?"
+            subTitle="Occupied dwellings by dwelling type and no. of bedrooms, 2021"
+            dataSource={Datasource.ABS2021}
             dataNotes={dataNotes}
         >
             <div className="mb-4 flex flex-col gap-4">
@@ -255,11 +247,11 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
 
                 {/* Charts Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {chartData.map(({ dwellingStructure, data }) => (
-                        <div className="col-span-1 min-w-0" key={dwellingStructure}>
+                    {chartData.map(({ type, data }) => (
+                        <div className="col-span-1 min-w-0" key={type}>
                             <div className="w-full h-[200px]">
                                 <ResponsiveContainer>
-                                    <BarChart data={data} margin={{ top: 10, left: 0, right: 0 }}>
+                                    <BarChart data={data} margin={{ top: 10, left: 0, right: 0, bottom: 25 }}>
                                         <CartesianGrid vertical={false} strokeDasharray="3 3" />
                                         <YAxis
                                             tickLine={false}
@@ -270,28 +262,38 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
                                             width={48}
                                             tick={{ fontSize: 11 }}
                                         />
-                                        <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+                                        <XAxis 
+                                            dataKey="Bedroom_Number" 
+                                            tick={{ fontSize: 11 }}
+                                        >
+                                            <Label
+                                                value="Bedrooms"
+                                                offset={-5}
+                                                position="insideBottom"
+                                                style={{ fontSize: 11 }}
+                                            />
+                                        </XAxis>
                                         <Tooltip
                                             content={(props) => <CustomTooltipContent {...(props as any)} dataType={dataType} />}
                                             cursor={{ fill: 'transparent' }}
                                         />
 
                                         {dataType === 'percent' && (
-                                            <Bar dataKey="per" fill={COLOR_PRIMARY} name={areaName} />
+                                            <Bar dataKey="Per_2021" fill={COLOR_PRIMARY} name={areaName} />
                                         )}
                                         {dataType === 'percent' && (
-                                            <Bar dataKey="per_bm" fill={COLOR_MUTED} name={benchmarkName} />
+                                            <Bar dataKey="bPer_2021" fill={COLOR_MUTED} name={benchmarkName} />
                                         )}
                                         {dataType === 'number' && (
-                                            <Bar dataKey="value" fill={COLOR_PRIMARY} name="LGA" />
+                                            <Bar dataKey="Num_2021" fill={COLOR_PRIMARY} name="LGA" />
                                         )}
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
-                            <div className="text-center mt-2">
-                                <ChartIcon dwellingType={dwellingStructure} className="w-10 h-10 mb-1" />
+                            <div className="text-center mt-3">
+                                <ChartIcon dwellingType={type} className="w-10 h-10 mb-1" />
                                 <span className="font-medium text-xs leading-tight block">
-                                    {dwellingStructure}
+                                    {type}
                                 </span>
                             </div>
                         </div>
@@ -302,4 +304,4 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
     );
 };
 
-export default HousingTypesChart;
+export default HousingTypesByBedroomsChart;
