@@ -1,7 +1,6 @@
 export const config = { runtime: 'edge' };
-import { validateEnvironment } from './lib/env';
-import { getHomePageSummaryByLga, getLatestListingTypes } from './lib/supabase-service';
-import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
+import { getHomePageSummaryByLga, getLatestListingTypes } from './_lib/supabase-service';
+import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './_lib/response-utils';
 
 export default async function handler(req: Request) {
   const url = new URL(req.url);
@@ -13,9 +12,6 @@ export default async function handler(req: Request) {
   }
 
   try {
-    // Validate environment variables
-    validateEnvironment();
-
     console.log(`🔍 Fetching data for LGA: ${lgacode}, BM: ${bmcode}`);
 
     // Fetch data from both sources in parallel
