@@ -7,6 +7,6 @@ export function useTotalMedianPrice(lgacode: string) {
   return useSuspenseQuery({
     queryKey: QUERY_KEYS.MEDIAN_PRICE_BY_LGA(lgacode),
     queryFn: () => getTotalMedianPriceById(lgacode),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: CACHE_TIMES.FIVE_MINUTES,
   });
 }
