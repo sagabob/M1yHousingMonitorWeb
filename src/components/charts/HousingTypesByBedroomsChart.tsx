@@ -224,18 +224,26 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                 <div className="flex justify-start d-print-none">
                     <div className="flex items-center">
                         <Button
-                            variant={dataType === 'percent' ? 'secondary' : 'outline'}
+                            variant="outline"
                             size="sm"
                             onClick={changeToPercent}
-                            className={`h-7 text-xs rounded-r-none border-r-0 focus:z-10 ${dataType === 'percent' ? 'text-white' : ''}`}
+                            className={`h-7 text-xs rounded-r-none border-r-0 focus:z-10 ${
+                                dataType === 'percent' 
+                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
+                                    : ''
+                            }`}
                         >
                             Percent
                         </Button>
                         <Button
-                            variant={dataType === 'number' ? 'secondary' : 'outline'}
+                            variant="outline"
                             size="sm"
                             onClick={changeToNumber}
-                            className={`h-7 text-xs rounded-l-none focus:z-10 ${dataType === 'number' ? 'text-white' : ''}`}
+                            className={`h-7 text-xs rounded-l-none focus:z-10 ${
+                                dataType === 'number' 
+                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
+                                    : ''
+                            }`}
                         >
                             Number
                         </Button>
