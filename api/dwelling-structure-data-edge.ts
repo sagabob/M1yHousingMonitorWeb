@@ -1,6 +1,6 @@
 export const config = { runtime: 'edge' };
-import { getDwellingStructureforLga, getDwellingTypeBedroomsforLga } from './lib/supabase-service';
-import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './lib/response-utils';
+import { getDwellingStructureforLga, getDwellingTypeBedroomsforLga } from './_lib/supabase-service';
+import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './_lib/response-utils';
 
 export default async function handler(req: Request) {
     const url = new URL(req.url);

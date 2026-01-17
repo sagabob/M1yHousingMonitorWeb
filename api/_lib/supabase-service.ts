@@ -21,12 +21,6 @@ const callSupabaseRpc = async <T = any>(
     console.log(`🔍 Fetching ${description}`);
     console.log(`📋 RPC Function: ${rpcName} (Schema: ${schemaName})`);
     console.log(`📋 Parameters:`, JSON.stringify(params, null, 2));
-
-    // Log Supabase URL (first 30 chars only for security)
-    const supabaseUrl = process.env.SUPABASE_URL || 'NOT_SET';
-    console.log(`🔗 Supabase URL: ${supabaseUrl.substring(0, 30)}...`);
-    console.log(`🔑 Supabase Key exists: ${!!process.env.SUPABASE_ANON_KEY}`);
-
     console.log(`⏳ Calling Supabase RPC...`);
     // Use the specified schema
     const { data, error } = await supabase.schema(schemaName).rpc(rpcName, params);

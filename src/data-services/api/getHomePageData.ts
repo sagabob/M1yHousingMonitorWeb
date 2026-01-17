@@ -42,7 +42,7 @@ export async function getHomePageData(
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL("/api/home-page-data", window.location.origin);
+    const url = new URL("/api/home-page-data-edge", window.location.origin);
 
     url.searchParams.set("lgacode", lgacode);
     url.searchParams.set("bmcode", bmcode);
@@ -58,8 +58,23 @@ export async function getHomePageData(
 
     console.log(response);
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Edge function error: ${response.status} - ${errorData.error || response.statusText}`);
+      const contentType = response.headers.get('content-type');
+      let errorMessage = `Edge function error: ${response.status} - ${response.statusText}`;
+      
+      if (contentType?.includes('application/json')) {
+        try {
+          const errorData = await response.json();
+          errorMessage = `Edge function error: ${response.status} - ${errorData.error || response.statusText}`;
+        } catch (e) {
+          // If JSON parsing fails, use default error message
+        }
+      } else {
+        // If response is not JSON (e.g., HTML error page), read as text
+        const text = await response.text();
+        errorMessage = `Edge function error: ${response.status} - ${response.statusText}. Response: ${text.substring(0, 200)}`;
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const rawData = await response.json();
