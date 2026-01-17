@@ -36,11 +36,13 @@ Each feature directory typically contains its own components, hooks, and logic s
 ### 2. `src/data-services/`
 This directory serves as the centralized data layer for the application.
 
-- **`api/`**: Base API client or configuration.
+- **`api/`**: API integration layer (e.g., `getBMGCC.ts`).
+- **`db-sources/`**: Database connections (Firebase/Supabase).
+- **`hooks/`**: Custom React Query hooks (Component -> Hook -> Repo).
+- **`repos/`**: Repository pattern (Data Access abstraction).
+- **`schemas/`**: Zod validation schemas.
+- **`data-utils/`**: Data transformation utilities.
 - **`config/`**: Data-related configuration.
-- **`hooks/`**: Custom React hooks for data fetching (e.g., using React Query or SWR).
-- **`schemas/`**: Zod schemas or TypeScript interfaces for data validation.
-- **`repos/`**: Repository pattern implementations (abstraction over data sources).
 
 ### 3. `src/components/`
 Contains reusable UI components shared across the application.
@@ -70,3 +72,12 @@ Contains server-side logic deployed as Vercel Serverless Functions. This is used
 - **New Features**: Create a new directory in `src/features/`.
 - **Reusable UI**: If a component is generic, place it in `src/components/ui`. If it's specific to the app but used in multiple places, use `src/components/common`.
 - **Data Fetching**: All data fetching logic should reside in `src/data-services` to maintain a single source of truth for API interactions.
+
+## Naming Conventions (Summary)
+
+- **Components**: `PascalCase`
+- **Hooks/Utils**: `camelCase`
+- **API Routes**: `kebab-case`
+- **Directories**: `kebab-case`
+
+See `Usage Guidelines` above or `README.md` for more details.

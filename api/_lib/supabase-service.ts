@@ -12,28 +12,25 @@ export interface SupabaseQueryResult<T = any> {
 const callSupabaseRpc = async <T = any>(
   rpcName: string,
   params: Record<string, any>,
-  description: string
+  description: string,
+  schemaName: string = 'public'
 ): Promise<SupabaseQueryResult<T>> => {
   try {
     const supabase = getSupabaseClient();
 
     console.log(`🔍 Fetching ${description}`);
-    console.log(`📋 RPC Function: ${rpcName}`);
+    console.log(`📋 RPC Function: ${rpcName} (Schema: ${schemaName})`);
     console.log(`📋 Parameters:`, JSON.stringify(params, null, 2));
-    
-    // Log Supabase URL (first 30 chars only for security)
-    const supabaseUrl = process.env.SUPABASE_URL || 'NOT_SET';
-    console.log(`🔗 Supabase URL: ${supabaseUrl.substring(0, 30)}...`);
-    console.log(`🔑 Supabase Key exists: ${!!process.env.SUPABASE_ANON_KEY}`);
-
     console.log(`⏳ Calling Supabase RPC...`);
-    const { data, error } = await supabase.rpc(rpcName, params);
+    // Use the specified schema
+    const { data, error } = await supabase.schema(schemaName).rpc(rpcName, params);
     console.log(`⏸️ RPC call completed`);
 
     if (error) {
       console.error('❌ Supabase RPC error:', error);
       console.error('❌ Error details:', JSON.stringify(error, null, 2));
       console.error('❌ Function:', rpcName);
+      console.error('❌ Schema:', schemaName);
       console.error('❌ Parameters:', JSON.stringify(params, null, 2));
       return { data: null, error, count: 0 };
     }
@@ -49,7 +46,7 @@ const callSupabaseRpc = async <T = any>(
 
     if (dataArray.length === 0) {
       console.warn(`⚠️ Warning: ${description} returned empty result`);
-      console.warn(`⚠️ Function: ${rpcName}, Parameters:`, JSON.stringify(params, null, 2));
+      console.warn(`⚠️ Function: ${rpcName}, Schema: ${schemaName}, Parameters:`, JSON.stringify(params, null, 2));
     } else {
       console.log(`✅ Successfully fetched ${description} (${dataArray.length} items)`);
     }
@@ -57,7 +54,7 @@ const callSupabaseRpc = async <T = any>(
     return { data: dataArray, error: null, count: dataArray.length };
   } catch (error) {
     console.error(`❌ Error fetching ${description}:`, error);
-    console.error(`❌ Function: ${rpcName}, Parameters:`, JSON.stringify(params, null, 2));
+    console.error(`❌ Function: ${rpcName}, Schema: ${schemaName}, Parameters:`, JSON.stringify(params, null, 2));
     throw error;
   }
 };
@@ -66,7 +63,8 @@ export const getHomePageSummaryByLga = async (lgaCode: string): Promise<Supabase
   return callSupabaseRpc(
     'get_home_page_summary_by_lga',
     { p_lga_code: lgaCode },
-    `home page summary via RPC for LGA: ${lgaCode}`
+    `home page summary via RPC for LGA: ${lgaCode}`,
+    'id_housing'
   );
 };
 
@@ -74,7 +72,8 @@ export const getLatestListingTypes = async (lgaCode: string): Promise<SupabaseQu
   return callSupabaseRpc(
     'get_latest_rental_and_sales_by_gccsa',
     { p_gccsa_code: lgaCode },
-    `latest listing types via RPC for GCCSA: ${lgaCode}`
+    `latest listing types via RPC for GCCSA: ${lgaCode}`,
+    'id_housing'
   );
 };
 
@@ -82,6 +81,28 @@ export const getBenchMarkforLga = async (lgaCode: string): Promise<SupabaseQuery
   return callSupabaseRpc(
     'get_areas_by_lga_code',
     { p_lga_code: lgaCode },
-    `areas by LGA code via RPC: ${lgaCode}`
+    `areas by LGA code via RPC: ${lgaCode}`,
+    'id_housing'
+  );
+};
+
+
+export const getDwellingStructureforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_dwelling_structure_by_area',
+    { p_area_id: lgaCode },
+    `dwellings by area via RPC: ${lgaCode}`,
+    'id_housing'
+  );
+};
+
+
+
+export const getDwellingTypeBedroomsforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_dwelling_type_bedrooms_by_area',
+    { p_area_id: lgaCode },
+    `dwelling type bedrooms by area via RPC: ${lgaCode}`,
+    'id_housing'
   );
 };

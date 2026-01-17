@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 const ListingTypeZ = z.object({
-  GCCSACode: z.string(),
-  ListingType: z.enum(["Rentals", "Sales"]),
-  PropertyType: z.enum(["Unit", "House"]),
+  GCCSA_Code: z.string(),
+  Listing_Type: z.enum(["Rentals", "Sales"]),
+  Property_Type: z.enum(["Unit", "House", "Dwelling"]),
   Median: z.number(),
   Period: z.string()
 }).strip();
@@ -11,7 +11,7 @@ const ListingTypeZ = z.object({
 export type ListingType = z.infer<typeof ListingTypeZ>;
 
 const homeDataSummaryZ = z.object({
-  LGA_CODE: z.string(),
+  LGA_Code: z.string(),
   Household_type_need: z.string(),
   Household_type_need_number: z.number(),
   Population: z.number(),
@@ -22,7 +22,7 @@ const homeDataSummaryZ = z.object({
   Average_household_size_benchmark: z.number(),
   Average_household_size_benchmark_change: z.number().nullable(),
   Dominant_dwelling_type_name: z.string(),
-  Dominant_dwelling_type_Per: z.number().nullable(),
+  Dominant_dwelling_type_per: z.number().nullable(),
   Emerging_dwelling_type_name: z.string(),
   Emerging_dwelling_type_change: z.number().nullable(),
 }).strip();
@@ -36,18 +36,13 @@ export interface HousingDataResponse {
   error?: string;
 }
 
-export interface HousingDataParams {
-  lgacode: string;
-  bmcode: string;
-}
-
 // Fetch housing data from edge function
 export async function getHomePageData(
   lgacode: string,
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL("/api/home-page-data", window.location.origin);
+    const url = new URL("/api/home-page-data-edge", window.location.origin);
 
     url.searchParams.set("lgacode", lgacode);
     url.searchParams.set("bmcode", bmcode);
@@ -63,8 +58,23 @@ export async function getHomePageData(
 
     console.log(response);
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Edge function error: ${response.status} - ${errorData.error || response.statusText}`);
+      const contentType = response.headers.get('content-type');
+      let errorMessage = `Edge function error: ${response.status} - ${response.statusText}`;
+      
+      if (contentType?.includes('application/json')) {
+        try {
+          const errorData = await response.json();
+          errorMessage = `Edge function error: ${response.status} - ${errorData.error || response.statusText}`;
+        } catch (e) {
+          // If JSON parsing fails, use default error message
+        }
+      } else {
+        // If response is not JSON (e.g., HTML error page), read as text
+        const text = await response.text();
+        errorMessage = `Edge function error: ${response.status} - ${response.statusText}. Response: ${text.substring(0, 200)}`;
+      }
+      
+      throw new Error(errorMessage);
     }
 
     const rawData = await response.json();

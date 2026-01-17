@@ -7,30 +7,15 @@ import { useBMGCCData } from "@/data-services/hooks/useBMGCCData"
 import { formatLgaCode } from "@/data-services/data-utils/core-utils"
 import { QueryBoundary } from "@/components/common/QueryBoundary"
 import { useQueryClient } from "@tanstack/react-query"
+import { PageLoading } from "@/components/common/PageLoading"
+import { PageError } from "@/components/common/PageError"
+import type { Lga } from "@/page-data/types/Lga"
+import { QUERY_KEYS } from "@/data-services/config/constants"
 
-function MainClientContentPanel({ lga }: { lga: (typeof lgaData)[number] }) { //lga is a member of lagaData
+function MainClientContentPanel({ lga }: { lga: Lga }) {
     const { data: bmGCCData } = useBMGCCData(formatLgaCode(lga))
     return <ClientContainer lga={lga} bmGCCData={bmGCCData} />
 }
-
-const PageLoadingSection = () => (
-    <div className="flex flex-col items-center justify-center py-16 space-y-6">
-        <div className="flex items-center space-x-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-3 border-[#7513b8]"></div>
-            <span className="text-2xl font-semibold text-gray-800">Loading housing data...</span>
-        </div>
-        <p className="text-lg text-gray-600 text-center max-w-lg">
-            Fetching the latest housing market information and demographic data for your area.
-        </p>
-    </div>
-)
-
-const ErrorSection = ({ error, reset }: { error: Error; reset: () => void }) => (
-    <div className="text-red-600 space-y-2">
-        <div>Something went wrong: {error.message}</div>
-        <button onClick={reset} className="underline">Try again</button>
-    </div>
-)
 
 const ClientHome = () => {
     const { alias } = useParams()
@@ -45,9 +30,10 @@ const ClientHome = () => {
         <PageWrapper>
             <ClientHeadingSection lga={lga} />
             <QueryBoundary
-                loading={<PageLoadingSection />}
-                errorFallback={(props) => <ErrorSection {...props} />}
-                onReset={() => qc.invalidateQueries({ queryKey: ['bm-gcc', lgaCode] })}
+                loading={<PageLoading />}
+                errorFallback={(props) => <PageError {...props} />}
+                onReset={() => qc.invalidateQueries({ queryKey: QUERY_KEYS.BMGCC_BY_CODE(lgaCode) })}
+
             >
                 <MainClientContentPanel lga={lga} />
             </QueryBoundary>

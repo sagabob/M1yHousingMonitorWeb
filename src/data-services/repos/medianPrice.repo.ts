@@ -24,11 +24,11 @@ export async function getTotalMedianPriceById(
       return null;
     }
 
-    // `snap.data()` is now parsed, stripped, and defaults applied
-    const data = snap.data();
-    // (Optional) If you want TypeScript to assert compatibility with your hand-written type:
-    const typed: TotalMedianPrice = data; // should compile if shapes match
-    return typed;
+    // `snap.data()` is executed via the converter which runs schema.safeParse or parse
+    // We explicitly cast to TotalMedianPrice to ensure we return the strict Output type
+    // (Zod v3 inference can sometimes conflate Input/Output in generics)
+    const data = snap.data() as TotalMedianPrice;
+    return data;
   } catch (error) {
     console.error(`❌ Error fetching median price data for LGA ${lgacode}:`, error);
     throw error;

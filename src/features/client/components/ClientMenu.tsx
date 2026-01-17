@@ -57,9 +57,9 @@ const ClientMenu = () => {
                 <div key={item.id} >
                     <NavLink
                         to={target}
-                        className={() => `block px-2 py-2 rounded-md text-xl font-medium  hover:bg-[#d6b8ea] hover:text-[#7513b8] transition-colors ${(location.pathname === target.pathname && location.hash === (target.hash || ""))
-                            ? "bg-[#d6b8ea] text-[#7513b8]"
-                            : "text-white bg-[#7513b8]"}`}
+                        className={() => `block px-2 py-2 rounded-md text-xl font-medium  hover:bg-[#d6b8ea] hover:text-housing transition-colors ${(location.pathname === target.pathname && location.hash === (target.hash || ""))
+                            ? "bg-[#d6b8ea] text-housing"
+                            : "text-white bg-housing"}`}
                     >
                         {item.label}
                     </NavLink>
@@ -76,7 +76,7 @@ const ClientMenu = () => {
                 onOpenChange={() => toggleSection(item.id)}
             >
                 <CollapsibleTrigger
-                    className="w-full flex items-center justify-between px-2 py-2 my-2 text-sm font-medium text-white bg-[#7513b8] hover:bg-[#d6b8ea] hover:text-[#7513b8] rounded-md transition-colors">
+                    className="w-full flex items-center justify-between px-2 py-2 my-2 text-sm font-medium text-white bg-housing hover:bg-[#d6b8ea] hover:text-housing rounded-md transition-colors">
                     <span className="text-lg">{item.label}</span>
                     <div className={`transition-transform duration-300 ease-in-out ${openSections.includes(item.id) ? "rotate-180" : ""}`}>
                         {openSections.includes(item.id) ? (
@@ -96,7 +96,7 @@ const ClientMenu = () => {
                                     key={subItem.id}
                                     to={target}
                                     className={() => `block px-3 py-2 rounded-md text-[14px] font-medium transition-colors ${active
-                                        ? "bg-[#d6b8ea] text-[#7513b8]"
+                                        ? "bg-[#d6b8ea] text-housing"
                                         : "text-gray-600 hover:bg-[#d6b8ea]"}`}
                                 >
                                     {subItem.label}
