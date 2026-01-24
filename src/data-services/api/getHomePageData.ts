@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fetchAPI } from "../utils/api-client";
 
 const ListingTypeZ = z.object({
   GCCSA_Code: z.string(),
@@ -43,43 +44,15 @@ export async function getHomePageData(
 ): Promise<HousingDataResponse> {
   try {
     const url = new URL("/api/home-page-data-edge", window.location.origin);
-
     url.searchParams.set("lgacode", lgacode);
     url.searchParams.set("bmcode", bmcode);
 
-    console.log(`🔍 Fetching housing data via edge function: ${url.toString()}`);
-
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(response);
-    if (!response.ok) {
-      const contentType = response.headers.get('content-type');
-      let errorMessage = `Edge function error: ${response.status} - ${response.statusText}`;
-      
-      if (contentType?.includes('application/json')) {
-        try {
-          const errorData = await response.json();
-          errorMessage = `Edge function error: ${response.status} - ${errorData.error || response.statusText}`;
-        } catch (e) {
-          // If JSON parsing fails, use default error message
-        }
-      } else {
-        // If response is not JSON (e.g., HTML error page), read as text
-        const text = await response.text();
-        errorMessage = `Edge function error: ${response.status} - ${response.statusText}. Response: ${text.substring(0, 200)}`;
-      }
-      
-      throw new Error(errorMessage);
-    }
-
-    const rawData = await response.json();
-    console.log(rawData);
-    console.log(`✅ Successfully fetched raw housing data for LGA ${lgacode}, BM ${bmcode}`);
+    const rawData = await fetchAPI<{
+      listingtypes: unknown[];
+      home_summary: unknown[];
+      timestamp: string;
+      error?: string;
+    }>(url.toString());
 
     // Validate and transform data using Zod schemas
     const validatedData: HousingDataResponse = {
@@ -89,10 +62,9 @@ export async function getHomePageData(
       error: rawData.error
     };
 
-    console.log(`✅ Successfully validated housing data: ${validatedData.listing_types.length} listing types, ${validatedData.home_summary.length} summary items`);
     return validatedData;
   } catch (error) {
-    console.error(`❌ Error fetching housing data via edge function for LGA ${lgacode}, BM ${bmcode}:`, error);
+    console.error(`❌ Error fetching housing data for LGA ${lgacode}, BM ${bmcode}:`, error);
     throw error;
   }
 }

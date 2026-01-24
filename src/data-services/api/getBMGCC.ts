@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fetchAPI } from "../utils/api-client";
 
 const BmGCCZ = z.object({
   GCC_Code: z.string(),
@@ -8,21 +9,9 @@ const BmGCCZ = z.object({
 export type BmGCC = z.infer<typeof BmGCCZ>;
 
 export async function getBMGCC(lgacode: string) {
-
   try {
-    const response = await fetch(`/api/client-info?lgacode=${lgacode}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch BM GCC data: ${response.statusText}`);
-    }
-
-    const responseData = await response.json();
-    console.log(responseData);
+    const url = `/api/client-info?lgacode=${lgacode}`;
+    const responseData = await fetchAPI<{ data: unknown[] }>(url);
 
     // Extract data array from response
     const data = responseData.data;
@@ -43,7 +32,6 @@ export async function getBMGCC(lgacode: string) {
     console.error(`❌ Error fetching BM GCC data for LGA ${lgacode}:`, error);
     throw error;
   }
-
 }
 
 
