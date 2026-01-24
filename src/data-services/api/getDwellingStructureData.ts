@@ -29,10 +29,17 @@ const DwellingStructureZ = z.object({
 
 export type DwellingStructure = z.infer<typeof DwellingStructureZ>;
 
+
+const Sa1RecordZ = z.object({
+    SA1_Code: z.string(),
+}).strip();
+export type Sa1List = z.infer<typeof Sa1RecordZ>;
+
 export interface DwellingStructureResponse {
     lga: DwellingStructure[];
     bm: DwellingStructure[];
     type_bedrooms: DwellingTypeBedrooms[];
+    sa1_list: Sa1List[];
     timestamp: string;
     error?: string;
 }
@@ -52,6 +59,7 @@ export async function getDwellingStructureData(
             lga: unknown[];
             bm: unknown[];
             type_bedrooms: unknown[];
+            sa1_list: string[];
             timestamp: string;
             error?: string;
         }>(url.toString());
@@ -61,6 +69,7 @@ export async function getDwellingStructureData(
             lga: z.array(DwellingStructureZ).parse(rawData.lga),
             bm: z.array(DwellingStructureZ).parse(rawData.bm),
             type_bedrooms: z.array(DwellingTypeBedroomsZ).parse(rawData.type_bedrooms),
+            sa1_list: z.array(Sa1RecordZ).parse(rawData.sa1_list),
             timestamp: rawData.timestamp,
             error: rawData.error
         };

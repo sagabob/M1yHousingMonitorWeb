@@ -97,12 +97,20 @@ export const getDwellingStructureforLga = async (lgaCode: string): Promise<Supab
 };
 
 
-
 export const getDwellingTypeBedroomsforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
   return callSupabaseRpc(
     'get_dwelling_type_bedrooms_by_area',
     { p_area_id: lgaCode },
     `dwelling type bedrooms by area via RPC: ${lgaCode}`,
+    'id_housing'
+  );
+};
+
+export const getSa1byarea = async (lgaCodeInt: number): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_sa1_by_area',
+    { p_area_id: lgaCodeInt },
+    `sa1 by area via RPC: ${lgaCodeInt}`,
     'id_housing'
   );
 };
