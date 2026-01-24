@@ -10,13 +10,10 @@ import {
     CartesianGrid,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
-import {
-    LandcomHouseIcon,
-    LandcomTownhousesIcon,
-    LandcomApartmentsIcon,
-} from '../icons/landcom-icons';
+import { LandcomHouseIcon, LandcomTownhousesIcon, LandcomApartmentsIcon } from '../icons/landcom-icons';
 import ChartWrapper from './ChartWrapper';
-import { Button } from '@/components/ui/button';
+import { ChartToggleGroup, type ChartDataType } from './ChartToggleGroup';
+import { useChartTheme } from '@/hooks/useChartTheme';
 import { CustomLegend } from './CustomLegend';
 import { formatPercentage } from '@/data-services/data-utils/core-utils';
 import TooltipWrapper from './TooltipWrapper';
@@ -39,7 +36,7 @@ interface HousingTypesChartProps {
     chartInfo?: string;
 }
 
-type DataType = 'percent' | 'number';
+
 
 // --- Constants ---
 const YEARS = [2006, 2011, 2016, 2021] as const;
@@ -91,7 +88,7 @@ interface CustomTooltipContentProps {
     active?: boolean;
     payload?: TooltipPayloadItem[];
     label?: string;
-    dataType: DataType;
+    dataType: ChartDataType;
 }
 
 const CustomTooltipContent = React.memo(({ active, payload, label, dataType }: CustomTooltipContentProps) => {
@@ -128,15 +125,11 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
     areaName,
     benchmarkName,
 }) => {
-    const [dataType, setDataType] = useState<DataType>('percent');
+    const [dataType, setDataType] = useState<ChartDataType>('percent');
+    const theme = useChartTheme();
 
-    // CSS Variables - resolving to values for Recharts compatibility
-    const getVar = (name: string) => typeof window !== 'undefined' ? getComputedStyle(document.body).getPropertyValue(name).trim() : '#000';
-    const COLOR_PRIMARY = getVar('--primary') || '#7513b8';
-    const COLOR_MUTED = getVar('--muted-foreground') || '#8c94a3';
-
-    const changeToPercent = useCallback(() => setDataType('percent'), []);
-    const changeToNumber = useCallback(() => setDataType('number'), []);
+    const COLOR_PRIMARY = theme.primary;
+    const COLOR_MUTED = theme.muted;
 
     // 1. Prepare Chart Data (Memoized)
     const chartData = useMemo(() => {
@@ -229,34 +222,7 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
         >
             <div className="mb-4 flex flex-col gap-4">
                 {/* Controls */}
-                <div className="flex justify-start d-print-none">
-                    <div className="flex items-center">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={changeToPercent}
-                            className={`h-7 text-xs rounded-r-none border-r-0 focus:z-10 ${
-                                dataType === 'percent' 
-                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
-                                    : ''
-                            }`}
-                        >
-                            Percent
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={changeToNumber}
-                            className={`h-7 text-xs rounded-l-none focus:z-10 ${
-                                dataType === 'number' 
-                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
-                                    : ''
-                            }`}
-                        >
-                            Number
-                        </Button>
-                    </div>
-                </div>
+                <ChartToggleGroup value={dataType} onChange={setDataType} />
 
                 {/* Legend */}
                 <CustomLegend items={legendItems} />

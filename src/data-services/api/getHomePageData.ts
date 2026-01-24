@@ -43,7 +43,7 @@ export async function getHomePageData(
   bmcode: string
 ): Promise<HousingDataResponse> {
   try {
-    const url = new URL("/api/home-page-data-edge", window.location.origin);
+    const url = new URL("/api/home-page-data", window.location.origin);
     url.searchParams.set("lgacode", lgacode);
     url.searchParams.set("bmcode", bmcode);
 

@@ -11,7 +11,7 @@ const DwellingTypeBedroomsZ = z.object({
     Benchmark_Name: z.string(),
     bNum_2021: z.coerce.number().optional(),
     bPer_2021: z.coerce.number().optional(),
-}).passthrough();
+}).strip();
 export type DwellingTypeBedrooms = z.infer<typeof DwellingTypeBedroomsZ>;
 
 const DwellingStructureZ = z.object({
@@ -25,7 +25,7 @@ const DwellingStructureZ = z.object({
     Per_2011: z.coerce.number().optional(),
     Num_2006: z.coerce.number().optional(),
     Per_2006: z.coerce.number().optional()
-}).passthrough();
+}).strip();
 
 export type DwellingStructure = z.infer<typeof DwellingStructureZ>;
 
@@ -44,7 +44,7 @@ export async function getDwellingStructureData(
     bmcode: string
 ): Promise<DwellingStructureResponse> {
     try {
-        const url = new URL("/api/dwelling-structure-data-edge", window.location.origin);
+        const url = new URL("/api/dwelling-structure-data", window.location.origin);
         url.searchParams.set("lgacode", lgacode);
         url.searchParams.set("bmcode", bmcode);
 
