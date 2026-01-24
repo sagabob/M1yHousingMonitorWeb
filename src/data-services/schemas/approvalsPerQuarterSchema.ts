@@ -7,6 +7,8 @@ export const SingleApprovalsPerQuarterZ = z.object({
     Total_Residential: z.number(),
 }).strip();
 
+export type SingleApprovalsPerQuarter = z.infer<typeof SingleApprovalsPerQuarterZ>;
+
 
 export const ApprovalsPerQuarterZ = z.object({
     Approvals_Per_Quarter: z.array(SingleApprovalsPerQuarterZ).default([]),

@@ -7,6 +7,7 @@ import HousingTypesChart from "@/components/charts/HousingTypesChart";
 import HousingTypesByBedroomsChart from "@/components/charts/HousingTypesByBedroomsChart";
 import LoadingChart from "@/components/charts/LoadingChart";
 import { useApprovalsPerQuarter } from "@/data-services/hooks/useApprovalsPerQuarter";
+import { ApprovalsMap } from "@/components/maps/ApprovalsMap";
 
 // Main component with Suspense wrapper
 export default function HousingSupplyContainer() {
@@ -58,6 +59,18 @@ const HousingSupplyContent = () => {
                     <HousingTypesByBedroomsChart
                         data={dwellingStructureData.data.type_bedrooms}
                         areaName={lga.name}
+                    />
+                </div>
+            </div>
+            <div className="col-span-12 md:col-span-12">
+                <h2 className="mb-2 pb-2 text-[28px] font-bold border-b border-[#a9aaab]">Building Approvals</h2>
+                <div className="row">
+                    <ApprovalsMap
+                        data={approvalData.data}
+                        pageContext={{
+                            geocode: lgaCode,
+                            alias: lga.alias
+                        }}
                     />
                 </div>
             </div>
