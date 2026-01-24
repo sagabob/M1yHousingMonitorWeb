@@ -9,7 +9,7 @@
 export async function handleFetchError(response: Response): Promise<Error> {
   const contentType = response.headers.get('content-type');
   let errorMessage = `API error: ${response.status} - ${response.statusText}`;
-  
+
   if (contentType?.includes('application/json')) {
     try {
       const errorData = await response.json();
@@ -22,7 +22,7 @@ export async function handleFetchError(response: Response): Promise<Error> {
     const text = await response.text();
     errorMessage = `API error: ${response.status} - ${response.statusText}. Response: ${text.substring(0, 200)}`;
   }
-  
+
   return new Error(errorMessage);
 }
 
@@ -34,16 +34,15 @@ export async function fetchAPI<T = unknown>(
   options?: RequestInit
 ): Promise<T> {
   const url = new URL(endpoint, window.location.origin);
-  
+
   const response = await fetch(url.toString(), {
     method: 'GET',
+    ...options,
     headers: {
       'Content-Type': 'application/json',
       ...options?.headers,
     },
-    ...options,
   });
-
   if (!response.ok) {
     throw await handleFetchError(response);
   }

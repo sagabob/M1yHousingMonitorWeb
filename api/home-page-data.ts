@@ -21,6 +21,12 @@ export default withEdgeHandler(async (req: Request) => {
     getHomePageSummaryByLga(lgacode)
   ]);
 
+  if (listingResult.error || summaryResult.error) {
+    return createInternalErrorResponse(
+      listingResult.error?.message || summaryResult.error?.message || 'Failed to fetch data'
+    );
+  }
+
   return createSuccessResponse({
     listingtypes: listingResult.data,
     home_summary: summaryResult.data,

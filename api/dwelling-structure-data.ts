@@ -22,6 +22,10 @@ export default withEdgeHandler(async (req: Request) => {
         getDwellingTypeBedroomsforLga(lgacode),
     ]);
 
+    if (dwellingLgaResult.error || dwellingBmResult.error || dwellingTypeBedroomsResult.error) {
+        return createErrorResponse('Failed to fetch dwelling data');
+    }
+
     return createSuccessResponse({
         lga: dwellingLgaResult.data,
         bm: dwellingBmResult.data,

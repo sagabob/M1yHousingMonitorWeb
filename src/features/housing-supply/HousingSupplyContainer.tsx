@@ -27,9 +27,12 @@ const HousingSupplyContent = () => {
     const lga = pageContext.lga;
     const bmGCC = pageContext.bmGCCData;
 
+    if (!lga || !bmGCC) {
+        return null; // or a suitable fallback UI
+    }
+
     const lgaCode = formatLgaCode(lga);
     const dwellingStructureData = useDwellingStructureData(lgaCode, bmGCC.GCC_Code);
-
     return (<div>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-3 mt-1">
             <div className="col-span-12 md:col-span-12">
