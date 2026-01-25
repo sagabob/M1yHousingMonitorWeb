@@ -25,7 +25,10 @@ export async function getApprovalsPerQuarterByIds(ids: string[]) {
             ).withConverter(approvalsPerQuarterConverter);
 
             const querySnapshot = await getDocs(q);
-            return querySnapshot.docs.map((doc) => doc.data() as ApprovalsPerQuarter);
+            return querySnapshot.docs.map((doc) => ({
+                sa1: doc.id,
+                data: doc.data() as ApprovalsPerQuarter
+            }));
         });
 
         const results = await Promise.all(promises);

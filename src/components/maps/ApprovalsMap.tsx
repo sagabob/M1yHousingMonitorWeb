@@ -21,7 +21,7 @@ interface ApprovalsMapProps {
 const DATA_TYPES = [
     { value: 'Total_Residential', label: 'Total' },
     { value: 'Houses', label: 'Houses' },
-    { value: 'Other_residential', label: 'Other/Apartments' }
+    { value: 'Other_residential', label: 'Other' }
 ];
 
 export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, title }) => {
@@ -98,10 +98,9 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
 
     const rawGeocode = pageContext.geocode.replace(/^LGA/, '');
     const geoJsonUrl = `/geo-data/sa1/${rawGeocode}_${pageContext.alias}_sa1.json`;
-    console.log('Using GeoJSON URL:', geoJsonUrl);
 
     return (
-        <Card className="w-full shadow-md">
+        <Card className="w-full bg-gray-100 shadow-none rounded-none border-none">
             <CardHeader className="pb-2">
                 <CardTitle>{title || 'Building Approvals Map'}</CardTitle>
                 <CardDescription>
@@ -132,7 +131,11 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                             </SelectTrigger>
                             <SelectContent>
                                 {formattedPeriods.map(p => (
-                                    <SelectItem key={p.value} value={p.value}>
+                                    <SelectItem
+                                        key={p.value}
+                                        value={p.value}
+                                        disabled={endPeriod ? isAfter(parseISO(p.value), parseISO(endPeriod)) : false}
+                                    >
                                         {p.label}
                                     </SelectItem>
                                 ))}
@@ -148,7 +151,11 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                             </SelectTrigger>
                             <SelectContent>
                                 {formattedPeriods.map(p => (
-                                    <SelectItem key={p.value} value={p.value}>
+                                    <SelectItem
+                                        key={p.value}
+                                        value={p.value}
+                                        disabled={startPeriod ? isBefore(parseISO(p.value), parseISO(startPeriod)) : false}
+                                    >
                                         {p.label}
                                     </SelectItem>
                                 ))}

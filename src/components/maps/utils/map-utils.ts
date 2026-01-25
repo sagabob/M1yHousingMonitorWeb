@@ -3,15 +3,15 @@ import numeral from 'numeral';
 
 // Standard 9-class Blues color scheme
 export const COLOR_RANGE = [
-    '#f7fbff',
-    '#deebf7',
-    '#c6dbef',
-    '#9ecae1',
-    '#6baed6',
-    '#4292c6',
-    '#2171b5',
-    '#08519c',
-    '#08306b',
+    '#fcfbfd',
+    '#efedf5',
+    '#dadaeb',
+    '#bcbddc',
+    '#9e9ac8',
+    '#807dba',
+    '#6a51a3',
+    '#54278f',
+    '#3f007d',
 ];
 
 export const getColorScale = (data: number[]) => {

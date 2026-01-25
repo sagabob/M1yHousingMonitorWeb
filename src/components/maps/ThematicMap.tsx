@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { MapContainer, TileLayer, GeoJSON, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMap, LayersControl } from 'react-leaflet';
 import L, { type PathOptions, type LatLngBoundsExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import type { ScaleQuantile } from 'd3-scale';
@@ -65,6 +65,7 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
         data.forEach(item => {
             map.set(String(item[dataIdField]), item);
         });
+        console.log(`[ThematicMap] Data Map created with ${map.size} entries.`);
         return map;
     }, [data, dataIdField]);
 
@@ -76,8 +77,11 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                 if (!res.ok) throw new Error(`Failed to fetch GeoJSON from ${geoJsonUrl}`);
                 return res.json();
             })
-            .then(data => {
-                setGeoJsonData(data);
+            .then(geoJson => {
+                // Match logic for debugging if needed
+                // if (data.features && data.features.length > 0) { ... }
+
+                setGeoJsonData(geoJson);
                 setLoading(false);
             })
             .catch(err => {
@@ -163,12 +167,21 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                 style={{ height: '100%', width: '100%' }}
                 zoom={10}
                 minZoom={4}
-                scrollWheelZoom={false}
+                scrollWheelZoom={true}
             >
-                <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
+                <LayersControl position="topright">
+                    <LayersControl.BaseLayer checked name="Open Street Map">
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                    </LayersControl.BaseLayer>
+                    <LayersControl.BaseLayer name="Satellite">
+                        <TileLayer
+                            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                        />
+                    </LayersControl.BaseLayer>
+                </LayersControl>
 
                 {geoJsonData && (
                     <GeoJSON
