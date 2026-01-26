@@ -30,6 +30,7 @@ interface ThematicMapProps {
     title?: string;
     tooltipFormat?: string;
     onFeatureClick?: (feature: any, dataItem: any) => void;
+    totalStats?: string;
 }
 
 const SetBounds = ({ bounds }: { bounds: LatLngBoundsExpression | null }) => {
@@ -42,6 +43,16 @@ const SetBounds = ({ bounds }: { bounds: LatLngBoundsExpression | null }) => {
     return null;
 };
 
+const MapStatsControl = ({ content }: { content: string }) => {
+    return (
+        <div className="leaflet-top leaflet-left" style={{ marginTop: '70px', marginLeft: '0px' }}>
+            <div className="leaflet-control leaflet-bar bg-white p-2 shadow-md rounded text-sm font-semibold border border-gray-300 text-gray-800">
+                {content}
+            </div>
+        </div>
+    );
+};
+
 export const ThematicMap: React.FC<ThematicMapProps> = ({
     data,
     geoJsonUrl,
@@ -52,12 +63,15 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
     height = 600,
     title,
     tooltipFormat = '0,0',
-    onFeatureClick
+    onFeatureClick,
+    totalStats
 }) => {
     const [geoJsonData, setGeoJsonData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [_hoveredFeature, setHoveredFeature] = useState<any>(null);
+
+    // ... (rest of the component)
 
     // Create a lookup map for data performance
     const dataMap = useMemo(() => {
@@ -78,9 +92,6 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                 return res.json();
             })
             .then(geoJson => {
-                // Match logic for debugging if needed
-                // if (data.features && data.features.length > 0) { ... }
-
                 setGeoJsonData(geoJson);
                 setLoading(false);
             })
@@ -107,8 +118,13 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
         const dataItem = dataMap.get(String(id));
         const value = dataItem ? dataItem[valueField] : null;
 
+        let fillColor = '#eee';
+        if (value !== null && value !== undefined) {
+            fillColor = value === 0 ? '#ffffff' : colorScale(value);
+        }
+
         return {
-            fillColor: value !== null && value !== undefined ? colorScale(value) : '#eee',
+            fillColor,
             weight: 1,
             opacity: 1,
             color: 'white',
@@ -142,10 +158,6 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
             },
             mouseout: (e) => {
                 const layer = e.target;
-                // specialized resetStyle unavailable on generic layer, so we restyle manually
-                // or preferably use geojson ref to reset. 
-                // For simplicity, we just re-apply the style function logic locally or allow redraw
-                // Ideally we'd use 'resetStyle' from the GeoJSON component ref, but simple inline style is okay.
                 if (feature) {
                     const originalStyle = style(feature);
                     layer.setStyle(originalStyle);
@@ -169,7 +181,14 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                 minZoom={4}
                 scrollWheelZoom={true}
             >
+                {/* ... (LayersControl) */}
                 <LayersControl position="topright">
+                    <LayersControl.BaseLayer name="Base Map">
+                        <TileLayer
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+                            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+                        />
+                    </LayersControl.BaseLayer>
                     <LayersControl.BaseLayer checked name="Open Street Map">
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -193,7 +212,11 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
 
                 <SetBounds bounds={bounds} />
 
-                {/* Optional: Add custom controls or overlays here */}
+                {totalStats && (
+                    <div className="leaflet-control-container">
+                        <MapStatsControl content={totalStats} />
+                    </div>
+                )}
             </MapContainer>
 
             <MapLegend scale={colorScale} title={title} />

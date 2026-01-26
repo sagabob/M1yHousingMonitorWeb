@@ -8,6 +8,7 @@ import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { Label } from '../ui/label';
 import { parseISO, format, isAfter, isBefore, isEqual } from 'date-fns';
 import { type SingleApprovalsPerQuarter } from '../../data-services/schemas/approvalsPerQuarterSchema';
+import { cn } from '@/lib/utils';
 
 interface ApprovalsMapProps {
     data: any[]; // The raw data structure
@@ -15,7 +16,7 @@ interface ApprovalsMapProps {
         geocode: string;
         alias: string;
     };
-    title?: string;
+    title: string;
 }
 
 const DATA_TYPES = [
@@ -93,30 +94,45 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
     }, [mapData]);
 
     if (!data || data.length === 0) {
-        return <div className="p-4 text-center">No data available for map.</div>;
+        return (
+            <div className="p-4 text-center">
+                No data available for map. <br />
+                Debug: {data === undefined ? 'undefined' : data === null ? 'null' : `Length: ${data.length}`} <br />
+                Type: {typeof data}
+            </div>
+        );
     }
 
     const rawGeocode = pageContext.geocode.replace(/^LGA/, '');
     const geoJsonUrl = `/geo-data/sa1/${rawGeocode}_${pageContext.alias}_sa1.json`;
 
     return (
-        <Card className="w-full bg-gray-100 shadow-none rounded-none border-none">
+        <Card className="w-full bg-gray-50 shadow-none rounded-none border-none">
             <CardHeader className="pb-2">
-                <CardTitle>{title || 'Building Approvals Map'}</CardTitle>
+                <CardTitle className="text-xl font-bold text-slate-800">{title}</CardTitle>
                 <CardDescription>
-                    Tracking residential building approvals by SA1.
-                    <span className="font-semibold text-primary ml-1">
-                        Total: {totalApprovals.toLocaleString()}
-                    </span>
+                    Residential building approvals by SA1 quarterly.
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="flex flex-wrap gap-4 mb-4 items-end">
                     <div className="space-y-1">
                         <Label>Approval Type</Label>
-                        <ToggleGroup type="single" value={selectedType} onValueChange={(val) => val && setSelectedType(val)}>
-                            {DATA_TYPES.map(type => (
-                                <ToggleGroupItem key={type.value} value={type.value} className="px-3 py-1">
+                        <ToggleGroup type="single" value={selectedType} onValueChange={(val) => val && setSelectedType(val)} className="gap-0">
+                            {DATA_TYPES.map((type, index) => (
+                                <ToggleGroupItem
+                                    key={type.value}
+                                    value={type.value}
+                                    className={cn(
+                                        "px-3 py-1 h-7 text-xs border border-input focus:z-10 bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-[#8c94a3] data-[state=on]:text-white data-[state=on]:border-[#8c94a3]",
+                                        // First item
+                                        index === 0 && "rounded-r-none",
+                                        // Middle items
+                                        index > 0 && index < DATA_TYPES.length - 1 && "rounded-none border-l-0",
+                                        // Last item
+                                        index === DATA_TYPES.length - 1 && "rounded-l-none border-l-0"
+                                    )}
+                                >
                                     {type.label}
                                 </ToggleGroupItem>
                             ))}
@@ -126,7 +142,7 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                     <div className="space-y-1">
                         <Label>From</Label>
                         <Select value={startPeriod} onValueChange={setStartPeriod}>
-                            <SelectTrigger className="w-[140px]">
+                            <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0">
                                 <SelectValue placeholder="Start Date" />
                             </SelectTrigger>
                             <SelectContent>
@@ -135,6 +151,7 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                                         key={p.value}
                                         value={p.value}
                                         disabled={endPeriod ? isAfter(parseISO(p.value), parseISO(endPeriod)) : false}
+                                        className="text-xs"
                                     >
                                         {p.label}
                                     </SelectItem>
@@ -146,7 +163,7 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                     <div className="space-y-1">
                         <Label>To</Label>
                         <Select value={endPeriod} onValueChange={setEndPeriod}>
-                            <SelectTrigger className="w-[140px]">
+                            <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0">
                                 <SelectValue placeholder="End Date" />
                             </SelectTrigger>
                             <SelectContent>
@@ -155,6 +172,7 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                                         key={p.value}
                                         value={p.value}
                                         disabled={startPeriod ? isBefore(parseISO(p.value), parseISO(startPeriod)) : false}
+                                        className="text-xs"
                                     >
                                         {p.label}
                                     </SelectItem>
@@ -177,6 +195,7 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
                         colorScale={colorScale}
                         height={500}
                         title={`${DATA_TYPES.find(t => t.value === selectedType)?.label} Approvals`}
+                        totalStats={`Total: ${totalApprovals.toLocaleString()}`}
                     />
                 </div>
             </CardContent>

@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { ErrorFallback } from "@/components/common/ErrorFallback";
 import { QueryBoundary } from "@/components/common/QueryBoundary";
 import { formatLgaCode } from "@/data-services/data-utils/core-utils";
@@ -7,7 +8,9 @@ import HousingTypesChart from "@/components/charts/HousingTypesChart";
 import HousingTypesByBedroomsChart from "@/components/charts/HousingTypesByBedroomsChart";
 import LoadingChart from "@/components/charts/LoadingChart";
 import { useApprovalsPerQuarter } from "@/data-services/hooks/useApprovalsPerQuarter";
-import { ApprovalsMap } from "@/components/maps/ApprovalsMap";
+
+// Lazy load the ApprovalsMap
+const ApprovalsMap = lazy(() => import("@/components/maps/ApprovalsMap").then(module => ({ default: module.ApprovalsMap })));
 
 // Main component with Suspense wrapper
 export default function HousingSupplyContainer() {
@@ -63,15 +66,17 @@ const HousingSupplyContent = () => {
                 </div>
             </div>
             <div className="col-span-12 md:col-span-12">
-                <h2 className="mb-2 pb-2 text-[28px] font-bold border-b border-[#a9aaab]">Building Approvals</h2>
                 <div className="row">
-                    <ApprovalsMap
-                        data={approvalData.data}
-                        pageContext={{
-                            geocode: lgaCode,
-                            alias: lga.alias
-                        }}
-                    />
+                    <Suspense fallback={<div className="h-[500px] flex items-center justify-center bg-gray-50 text-gray-400">Loading Map...</div>}>
+                        <ApprovalsMap
+                            data={approvalData.data}
+                            pageContext={{
+                                geocode: lgaCode,
+                                alias: lga.alias
+                            }}
+                            title="Where are building approvals located?"
+                        />
+                    </Suspense>
                 </div>
             </div>
 

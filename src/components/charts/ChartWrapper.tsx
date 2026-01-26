@@ -21,7 +21,7 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({
     children
 }) => {
     return (
-        <Card className="w-full bg-gray-100 shadow-none rounded-none border-none">
+        <Card className="w-full bg-gray-50 shadow-none rounded-none border-none">
             <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold text-slate-800">{title}</CardTitle>
                 {subTitle && <CardDescription className="text-slate-500 font-medium">{subTitle}</CardDescription>}
