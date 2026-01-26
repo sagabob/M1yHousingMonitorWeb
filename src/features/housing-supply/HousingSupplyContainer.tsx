@@ -48,7 +48,7 @@ const HousingSupplyContent = () => {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-3 mt-1">
             <div className="col-span-12 md:col-span-12">
                 <h2 className="mb-2 pb-2 text-[28px] font-bold border-b border-[#a9aaab]">Dwelling Structure</h2>
-                <div className="row">
+                <div className="row" id="what-is-the-dominant-housing-type">
                     <HousingTypesChart
                         data={dwellingStructureData.data.lga}
                         benchmarkData={dwellingStructureData.data.bm}
@@ -58,7 +58,7 @@ const HousingSupplyContent = () => {
                 </div>
             </div>
             <div className="col-span-12 md:col-span-12">
-                <div className="row">
+                <div className="row" id="what-is-the-mix-of-housing">
                     <HousingTypesByBedroomsChart
                         data={dwellingStructureData.data.type_bedrooms}
                         areaName={lga.name}
@@ -66,7 +66,7 @@ const HousingSupplyContent = () => {
                 </div>
             </div>
             <div className="col-span-12 md:col-span-12">
-                <div className="row">
+                <div className="row" id="where-is-new-building-happening">
                     <Suspense fallback={<div className="h-[500px] flex items-center justify-center bg-gray-50 text-gray-400">Loading Map...</div>}>
                         <ApprovalsMap
                             data={approvalData.data}
