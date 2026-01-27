@@ -24,13 +24,13 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({
         <Card className="w-full bg-gray-50 shadow-none rounded-none border-none">
             <CardHeader className="pb-2">
                 <CardTitle className="text-xl font-bold text-slate-800">{title}</CardTitle>
-                {subTitle && <CardDescription className="text-slate-500 font-medium">{subTitle}</CardDescription>}
+                {subTitle && <CardDescription className="text-[16px] text-[#5f6062] font-medium">{subTitle}</CardDescription>}
             </CardHeader>
             <CardContent>
                 {children || body}
             </CardContent>
             {(dataSource) && (
-                <CardFooter className="flex-col items-start gap-1 pt-2  text-xs">
+                <CardFooter className="flex-col items-start gap-1 pt-2  text-[15px]">
                     {dataSource && <div><strong>Source:</strong> {dataSource}</div>}
                 </CardFooter>
             )}

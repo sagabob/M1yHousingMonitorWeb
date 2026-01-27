@@ -5,10 +5,11 @@ import { type SingleApprovalsPerQuarter } from '@/data-services/schemas/approval
 
 import { ThematicMap } from './ThematicMap';
 import { getColorScale, aggregateApprovalsData, type ApprovalsMapDataItem } from './utils/map-utils';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { Label } from '../ui/label';
+import ChartWrapper from '../charts/ChartWrapper';
+import * as Datasource from '@/data-services/config/text-constants';
 
 // --- Types ---
 
@@ -181,38 +182,34 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
     const geoJsonUrl = `/geo-data/sa1/${rawGeocode}_${pageContext.alias}_sa1.json`;
 
     return (
-        <Card className="w-full bg-gray-50 shadow-none rounded-none border-none">
-            <CardHeader className="pb-2">
-                <CardTitle className="text-xl font-bold text-slate-800">{title}</CardTitle>
-                <CardDescription>
-                    Residential building approvals by SA1 quarterly.
-                </CardDescription>
-            </CardHeader>
-            <CardContent>
-                <MapControls
-                    selectedType={selectedType}
-                    onTypeChange={setSelectedType}
-                    startPeriod={startPeriod}
-                    onStartChange={setStartPeriod}
-                    endPeriod={endPeriod}
-                    onEndChange={setEndPeriod}
-                    periodOptions={formattedPeriods}
-                />
+        <ChartWrapper
+            title={title}
+            subTitle="Residential building approvals by SA1 quarterly."
+            dataSource={Datasource.MapBuildingApproval}
+        >
+            <MapControls
+                selectedType={selectedType}
+                onTypeChange={setSelectedType}
+                startPeriod={startPeriod}
+                onStartChange={setStartPeriod}
+                endPeriod={endPeriod}
+                onEndChange={setEndPeriod}
+                periodOptions={formattedPeriods}
+            />
 
-                <div className="min-h-[500px] border rounded-md">
-                    <ThematicMap
-                        data={mapData}
-                        geoJsonUrl={geoJsonUrl}
-                        joinField="SA1_MAIN21"
-                        dataIdField="Area_Id"
-                        valueField="Approvals"
-                        colorScale={colorScale}
-                        height={500}
-                        title={`${DATA_TYPES.find(t => t.value === selectedType)?.label} Approvals`}
-                        totalStats={`Total: ${totalApprovals.toLocaleString()}`}
-                    />
-                </div>
-            </CardContent>
-        </Card>
+            <div className="min-h-[500px] border rounded-md">
+                <ThematicMap
+                    data={mapData}
+                    geoJsonUrl={geoJsonUrl}
+                    joinField="SA1_MAIN21"
+                    dataIdField="Area_Id"
+                    valueField="Approvals"
+                    colorScale={colorScale}
+                    height={500}
+                    title={`${DATA_TYPES.find(t => t.value === selectedType)?.label} Approvals`}
+                    totalStats={`Total: ${totalApprovals.toLocaleString()}`}
+                />
+            </div>
+        </ChartWrapper>
     );
 };

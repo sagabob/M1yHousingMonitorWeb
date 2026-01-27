@@ -35,12 +35,6 @@ const callSupabaseRpc = async <T = any>(
       return { data: null, error, count: 0 };
     }
 
-    // Log raw data for debugging
-    console.log(`📦 Raw data received:`, data);
-    console.log(`📦 Data type:`, typeof data);
-    console.log(`📦 Is array:`, Array.isArray(data));
-    console.log(`📦 Data length:`, Array.isArray(data) ? data.length : data ? 1 : 0);
-
     // Ensure data is treated as an array for the return type structure
     const dataArray = Array.isArray(data) ? data : (data ? [data] : []);
 

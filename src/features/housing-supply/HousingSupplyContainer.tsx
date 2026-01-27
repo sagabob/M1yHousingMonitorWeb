@@ -38,11 +38,8 @@ const HousingSupplyContent = () => {
 
     const lgaCode = formatLgaCode(lga);
     const dwellingStructureData = useDwellingStructureData(lgaCode, bmGCC.GCC_Code);
-    console.log("dwellingStructureData", dwellingStructureData)
-
     const sa1_list = dwellingStructureData.data.sa1_list.map((item) => item.SA1_Code);
     const approvalData = useApprovalsPerQuarter(sa1_list);
-    console.log("approvalData", approvalData)
 
     return (<div>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-3 mt-1">

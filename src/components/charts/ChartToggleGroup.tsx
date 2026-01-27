@@ -15,31 +15,32 @@ export const ChartToggleGroup: React.FC<ChartToggleGroupProps> = ({
     onChange,
     className
 }) => {
+    const options: { value: ChartDataType; label: string }[] = [
+        { value: 'percent', label: 'Percent' },
+        { value: 'number', label: 'Number' },
+    ];
     return (
         <div className={cn("flex justify-start d-print-none", className)}>
             <div className="flex items-center">
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onChange('percent')}
-                    className={cn(
-                        "h-7 text-xs rounded-r-none border-r-0 focus:z-10",
-                        value === 'percent' && "bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white"
-                    )}
-                >
-                    Percent
-                </Button>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onChange('number')}
-                    className={cn(
-                        "h-7 text-xs rounded-l-none focus:z-10",
-                        value === 'number' && "bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white"
-                    )}
-                >
-                    Number
-                </Button>
+                {options.map((option, index) => {
+                    const isActive = value === option.value;
+                    return (
+                        <Button
+                            key={option.value}
+                            variant="outline"
+                            size="sm"
+                            onClick={() => onChange(option.value as ChartDataType)}
+                            className={cn(
+                                "h-7 text-[15px] focus:z-10",
+                                index === 0 && "rounded-r-none border-r-0",
+                                index === options.length - 1 && "rounded-l-none",
+                                isActive && "bg-[#5f6062] text-white border-[#5f6062] hover:bg-[#5f6062] hover:text-white"
+                            )}
+                        >
+                            {option.label}
+                        </Button>
+                    );
+                })}
             </div>
         </div>
     );
