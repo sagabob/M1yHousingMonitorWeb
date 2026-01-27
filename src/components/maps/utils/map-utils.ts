@@ -65,7 +65,11 @@ export const aggregateApprovalsData = (
                 (isAfter(currentPeriod, start) || isEqual(currentPeriod, start)) &&
                 (isBefore(currentPeriod, end) || isEqual(currentPeriod, end))
             ) {
-                const val = (curr as any)[selectedType];
+                const val = curr[selectedType as keyof SingleApprovalsPerQuarter];
+                if (val === undefined) {
+                    console.warn(`Unknown approval type: ${selectedType}`);
+                    return acc;
+                }
                 return acc + (typeof val === 'number' ? val : 0);
             }
             return acc;

@@ -24,14 +24,17 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
         if (typeof scale.quantiles === 'function') {
             const quantiles = scale.quantiles();
             const domain = scale.domain();
-            const min = Math.min(...domain);
-            const max = Math.max(...domain);
+            let min = domain[0];
+            let max = domain[0];
+            for (let k = 1; k < domain.length; k++) {
+                if (domain[k] < min) min = domain[k];
+                if (domain[k] > max) max = domain[k];
+            }
 
             const low = i === 0 ? min : quantiles[i - 1];
             const high = i === range.length - 1 ? max : quantiles[i];
             return [low, high];
         }
-
         return [null, null];
     };
 
@@ -98,3 +101,4 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
         </div>
     );
 };
+
