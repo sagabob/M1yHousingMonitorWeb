@@ -12,6 +12,9 @@ import { PageError } from "@/components/common/PageError"
 import type { Lga } from "@/page-data/types/Lga"
 import { QUERY_KEYS } from "@/data-services/config/constants"
 
+
+import { ScrollToAnchor } from "@/components/common/ScrollToAnchor"
+
 function MainClientContentPanel({ lga }: { lga: Lga }) {
     const { data: bmGCCData } = useBMGCCData(formatLgaCode(lga))
     return <ClientContainer lga={lga} bmGCCData={bmGCCData} />
@@ -28,6 +31,7 @@ const ClientHome = () => {
 
     return (
         <PageWrapper>
+            <ScrollToAnchor />
             <ClientHeadingSection lga={lga} />
             <QueryBoundary
                 loading={<PageLoading />}

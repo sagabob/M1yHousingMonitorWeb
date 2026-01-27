@@ -2,11 +2,11 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMap, LayersControl } from 'react-leaflet';
 import L, { type PathOptions, type LatLngBoundsExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import type { ScaleQuantile } from 'd3-scale';
+
 import { MapLegend } from './MapLegend';
 import { formatNumber } from './utils/map-utils';
 
-// Fix Leaflet's default icon path issues in Webpack/Vite
+// Fix Leaflet's default icon path issues in Webpack/Vite environments
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -16,16 +16,21 @@ let DefaultIcon = L.icon({
     iconSize: [25, 41],
     iconAnchor: [12, 41]
 });
-
 L.Marker.prototype.options.icon = DefaultIcon;
+
+// --- Interfaces ---
 
 interface ThematicMapProps {
     data: any[];
     geoJsonUrl: string;
-    joinField: string; // GeoJSON property to match on
-    dataIdField: string; // Data property to match on
-    valueField: string; // Data property to visualize (number)
-    colorScale: ScaleQuantile<string>;
+    /** Property in GeoJSON features to match against data (e.g. SA1_CODE) */
+    joinField: string;
+    /** Property in data items to match against GeoJSON (e.g. Area_Id) */
+    dataIdField: string;
+    /** Numerical property in data to visualize (e.g. Approvals) */
+    valueField: string;
+    /** D3 scale function */
+    colorScale: any;
     height?: string | number;
     title?: string;
     tooltipFormat?: string;
@@ -33,6 +38,11 @@ interface ThematicMapProps {
     totalStats?: string;
 }
 
+// --- Sub-components ---
+
+/**
+ * Helper component to fit map bounds when they change
+ */
 const SetBounds = ({ bounds }: { bounds: LatLngBoundsExpression | null }) => {
     const map = useMap();
     useEffect(() => {
@@ -43,6 +53,9 @@ const SetBounds = ({ bounds }: { bounds: LatLngBoundsExpression | null }) => {
     return null;
 };
 
+/**
+ * Custom control to display total stats overlay
+ */
 const MapStatsControl = ({ content }: { content: string }) => {
     return (
         <div className="leaflet-top leaflet-left" style={{ marginTop: '70px', marginLeft: '0px' }}>
@@ -53,6 +66,14 @@ const MapStatsControl = ({ content }: { content: string }) => {
     );
 };
 
+// --- Main Component ---
+
+/**
+ * ThematicMap
+ * 
+ * Generic Choropleth map component using Leaflet.
+ * Fetches GeoJSON from a URL and joins it with provided `data`.
+ */
 export const ThematicMap: React.FC<ThematicMapProps> = ({
     data,
     geoJsonUrl,
@@ -69,20 +90,25 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
     const [geoJsonData, setGeoJsonData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [_hoveredFeature, setHoveredFeature] = useState<any>(null);
+    // State for map data loading
 
-    // ... (rest of the component)
+    // Create a unique key for the GeoJSON layer to force remounting when data changes
+    const [layerKey, setLayerKey] = useState(0);
 
-    // Create a lookup map for data performance
+    useEffect(() => {
+        setLayerKey(prev => prev + 1);
+    }, [data, joinField, valueField, colorScale]);
+
+    // Create a lookup map for faster data matching
     const dataMap = useMemo(() => {
         const map = new Map();
         data.forEach(item => {
             map.set(String(item[dataIdField]), item);
         });
-        console.log(`[ThematicMap] Data Map created with ${map.size} entries.`);
         return map;
     }, [data, dataIdField]);
 
+    // Fetch GeoJSON data
     useEffect(() => {
         setLoading(true);
         setError(null);
@@ -102,6 +128,7 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
             });
     }, [geoJsonUrl]);
 
+    // Calculate bounds of the GeoJSON layer
     const bounds = useMemo(() => {
         if (!geoJsonData) return null;
         try {
@@ -112,15 +139,19 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
         }
     }, [geoJsonData]);
 
+    // Styling function for each feature
     const style = (feature: any): PathOptions => {
         if (!feature) return {};
         const id = feature.properties[joinField];
         const dataItem = dataMap.get(String(id));
         const value = dataItem ? dataItem[valueField] : null;
 
-        let fillColor = '#eee';
+        let fillColor = 'transparent';
+        let fillOpacity = 0;
+
         if (value !== null && value !== undefined) {
             fillColor = value === 0 ? '#ffffff' : colorScale(value);
+            fillOpacity = 0.7;
         }
 
         return {
@@ -128,10 +159,11 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
             weight: 1,
             opacity: 1,
             color: 'white',
-            fillOpacity: 0.7
+            fillOpacity
         };
     };
 
+    // Interaction handlers
     const onEachFeature = (feature: any, layer: L.Layer) => {
         const id = feature.properties[joinField];
         const dataItem = dataMap.get(String(id));
@@ -139,8 +171,8 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
 
         layer.bindTooltip(
             `<div>
-                <strong>${id}</strong><br/>
-                ${value !== null ? formatNumber(value, tooltipFormat) : 'No Data'}
+                <strong>SA1: ${id}</strong><br/>
+                ${value != null ? (value > 0 ? 'Approvals: ' + formatNumber(value, tooltipFormat) : 'Approval: ' + formatNumber(value, tooltipFormat)) : 'No Data'}
             </div>`,
             { sticky: true, direction: 'top' }
         );
@@ -149,12 +181,11 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
             mouseover: (e) => {
                 const layer = e.target;
                 layer.setStyle({
-                    weight: 3,
+                    weight: 1,
                     color: '#666',
                     fillOpacity: 0.9
                 });
                 layer.bringToFront();
-                setHoveredFeature({ feature, dataItem });
             },
             mouseout: (e) => {
                 const layer = e.target;
@@ -162,7 +193,6 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                     const originalStyle = style(feature);
                     layer.setStyle(originalStyle);
                 }
-                setHoveredFeature(null);
             },
             click: () => {
                 if (onFeatureClick) onFeatureClick(feature, dataItem);
@@ -181,7 +211,6 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
                 minZoom={4}
                 scrollWheelZoom={true}
             >
-                {/* ... (LayersControl) */}
                 <LayersControl position="topright">
                     <LayersControl.BaseLayer name="Base Map">
                         <TileLayer
@@ -204,6 +233,7 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
 
                 {geoJsonData && (
                     <GeoJSON
+                        key={layerKey}
                         data={geoJsonData}
                         style={style}
                         onEachFeature={onEachFeature}
