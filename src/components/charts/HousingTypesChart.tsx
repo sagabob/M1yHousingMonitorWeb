@@ -247,7 +247,7 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
                                         <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                                         <Tooltip
                                             content={(props) => <CustomTooltipContent {...(props as any)} dataType={dataType} />}
-                                            cursor={{ fill: 'transparent' }}
+                                            cursor={{ fill: '#eee' }}
                                         />
 
                                         {dataType === 'percent' && (

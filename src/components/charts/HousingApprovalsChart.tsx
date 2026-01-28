@@ -137,7 +137,7 @@ const HousingApprovalsChart: React.FC<HousingApprovalsChartProps> = ({
                             </XAxis>
                             <Tooltip
                                 content={(props) => <CustomTooltipContent {...(props as any)} />}
-                                cursor={{ fill: 'transparent' }}
+                                cursor={{ fill: '#eee' }}
                             />
 
                             <Bar
