@@ -11,6 +11,7 @@ import {
     Label,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
+import { COLOR_TEXT_PRIMARY, CHART_AXIS_FONT_SIZE } from '@/ui/constants/ui-constants';
 import {
     LandcomHouseIcon,
     LandcomTownhousesIcon,
@@ -240,17 +241,17 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                                             domain={[0, ticks[ticks.length - 1]]}
                                             ticks={ticks}
                                             width={48}
-                                            tick={{ fontSize: 12, fill: '#333333' }}
+                                            tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                         />
                                         <XAxis
                                             dataKey="Bedroom_Number"
-                                            tick={{ fontSize: 12, fill: '#333333' }}
+                                            tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                         >
                                             <Label
                                                 value="Bedrooms"
                                                 offset={-5}
                                                 position="insideBottom"
-                                                style={{ fontSize: 12, fill: '#333333' }}
+                                                style={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                             />
                                         </XAxis>
                                         <Tooltip
@@ -272,7 +273,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                             </div>
                             <div className="text-center mt-3">
                                 <ChartIcon dwellingType={type} className="w-10 h-10 mb-1" />
-                                <span className="font-medium text-[14px] text-[#333333] leading-tight block">
+                                <span className="font-medium text-[14px] leading-tight block" style={{ color: COLOR_TEXT_PRIMARY }}>
                                     {type}
                                 </span>
                             </div>

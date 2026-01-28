@@ -7,6 +7,7 @@ import { ThematicMap } from './ThematicMap';
 import { getColorScale, aggregateApprovalsData, type ApprovalsMapDataItem } from './utils/map-utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
+import { COLOR_BORDER_DEFAULT, COLOR_BG_HOVER } from '@/ui/constants/ui-constants';
 import { Label } from '../ui/label';
 import ChartWrapper from '../charts/ChartWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
@@ -60,11 +61,17 @@ const MapControls: React.FC<MapControlsProps> = ({
                             key={type.value}
                             value={type.value}
                             className={cn(
-                                "px-3 py-1 h-7 text-xs border border-[#5f6062] focus:z-10 bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-[#5f6062] data-[state=on]:text-white data-[state=on]:border-[#5f6062]",
+                                "px-3 py-1 h-7 text-xs border focus:z-10 bg-transparent data-[state=on]:text-white transition-colors",
+                                "hover:bg-[var(--theme-hover)] data-[state=on]:bg-[var(--theme-active)]",
                                 index === 0 && "rounded-r-none",
                                 index > 0 && index < DATA_TYPES.length - 1 && "rounded-none border-l-0",
                                 index === DATA_TYPES.length - 1 && "rounded-l-none border-l-0"
                             )}
+                            style={{
+                                borderColor: COLOR_BORDER_DEFAULT,
+                                '--theme-active': COLOR_BORDER_DEFAULT,
+                                '--theme-hover': COLOR_BG_HOVER,
+                            } as React.CSSProperties}
                         >
                             {type.label}
                         </ToggleGroupItem>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { COLOR_BORDER_DEFAULT, COLOR_BG_HOVER } from '@/ui/constants/ui-constants';
 
 export type ChartDataType = 'percent' | 'number';
 
@@ -31,11 +32,22 @@ export const ChartToggleGroup: React.FC<ChartToggleGroupProps> = ({
                             size="sm"
                             onClick={() => onChange(option.value as ChartDataType)}
                             className={cn(
-                                "h-7 text-[15px] focus:z-10 border border-[#5f6062]",
+                                "h-7 text-[15px] focus:z-10",
                                 index === 0 && "rounded-r-none border-r-0",
                                 index === options.length - 1 && "rounded-l-none",
-                                isActive && "bg-[#5f6062] text-white hover:bg-[#5f6062] hover:text-white"
+                                isActive && "text-white hover:text-white"
                             )}
+                            style={{
+                                borderColor: COLOR_BORDER_DEFAULT,
+                                backgroundColor: isActive ? COLOR_BORDER_DEFAULT : 'transparent',
+                                color: isActive ? 'white' : undefined,
+                            }}
+                            onMouseEnter={(e) => {
+                                if (!isActive) e.currentTarget.style.backgroundColor = COLOR_BG_HOVER;
+                            }}
+                            onMouseLeave={(e) => {
+                                if (!isActive) e.currentTarget.style.backgroundColor = 'transparent';
+                            }}
                         >
                             {option.label}
                         </Button>

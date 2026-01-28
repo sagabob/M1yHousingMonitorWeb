@@ -11,6 +11,7 @@ import {
     Label
 } from 'recharts';
 import ChartWrapper from './ChartWrapper';
+import { COLOR_TEXT_PRIMARY, CHART_AXIS_FONT_SIZE } from '@/ui/constants/ui-constants';
 import { useChartTheme } from '@/hooks/useChartTheme';
 import { CustomLegend } from './CustomLegend';
 import TooltipWrapper from './TooltipWrapper';
@@ -122,17 +123,17 @@ const HousingApprovalsChart: React.FC<HousingApprovalsChartProps> = ({
                                 tickFormatter={formatNumber}
                                 domain={['auto', 'auto']}
                                 width={48}
-                                tick={{ fontSize: 12, fill: '#333333' }}
+                                tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                             />
                             <XAxis
                                 dataKey="Year_Label"
-                                tick={{ fontSize: 12, fill: '#333333' }}
+                                tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                             >
                                 <Label
                                     value={Datasource.FinancialYearChartLabel}
                                     offset={-5}
                                     position="insideBottom"
-                                    style={{ fontSize: 12, fill: '#333333' }}
+                                    style={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                 />
                             </XAxis>
                             <Tooltip

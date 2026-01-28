@@ -1,5 +1,6 @@
 import React from 'react';
 import { formatNumber } from './utils/map-utils';
+import { COLOR_TEXT_PRIMARY } from '@/ui/constants/ui-constants';
 
 interface MapLegendProps {
     scale: any; // Generic scale to support Quantile, Threshold, and custom Cluster
@@ -47,7 +48,7 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
                         className="w-4 h-4 rounded-sm border border-gray-600 inline-block"
                         style={{ backgroundColor: '#ffffff' }}
                     />
-                    <span className="text-[#333333]">
+                    <span style={{ color: COLOR_TEXT_PRIMARY }}>
                         0
                     </span>
                 </div>
@@ -91,7 +92,7 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
                                 className="w-4 h-4 rounded-sm border border-gray-600 inline-block"
                                 style={{ backgroundColor: color }}
                             />
-                            <span className="text-[#333333]">
+                            <span style={{ color: COLOR_TEXT_PRIMARY }}>
                                 {label}
                             </span>
                         </div>

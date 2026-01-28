@@ -1,4 +1,4 @@
-import React from 'react';
+import { COLOR_TEXT_PRIMARY } from '@/ui/constants/ui-constants';
 
 interface LegendItem {
     label: string;
@@ -18,7 +18,7 @@ export const CustomLegend: React.FC<CustomLegendProps> = ({ items }) => {
                         className="block w-3 h-3 rounded-full"
                         style={{ backgroundColor: item.color || '#ccc' }}
                     />
-                    <span className="text-sm text-[#333333] font-medium">
+                    <span className="text-sm font-medium" style={{ color: COLOR_TEXT_PRIMARY }}>
                         {item.label}
                     </span>
                 </div>
