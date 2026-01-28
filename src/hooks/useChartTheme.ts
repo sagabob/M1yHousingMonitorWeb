@@ -12,6 +12,7 @@ export const useChartTheme = () => {
         return {
             primary: getVar('--primary') || '#7513b8',
             muted: getVar('--muted-foreground') || '#8c94a3',
+            chart1: '#ba89dc'
         };
     }, []);
 };

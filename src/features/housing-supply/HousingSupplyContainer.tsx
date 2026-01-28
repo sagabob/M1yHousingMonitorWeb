@@ -8,6 +8,8 @@ import HousingTypesChart from "@/components/charts/HousingTypesChart";
 import HousingTypesByBedroomsChart from "@/components/charts/HousingTypesByBedroomsChart";
 import LoadingChart from "@/components/charts/LoadingChart";
 import { useApprovalsPerQuarter } from "@/data-services/hooks/useApprovalsPerQuarter";
+import { useBuildingApprovalsLGA } from "@/data-services/hooks/useBuildingApprovalsLGA";
+import HousingApprovalsChart from "@/components/charts/HousingApprovalsChart";
 
 // Lazy load the ApprovalsMap
 const ApprovalsMap = lazy(() => import("@/components/maps/ApprovalsMap").then(module => ({ default: module.ApprovalsMap })));
@@ -40,6 +42,7 @@ const HousingSupplyContent = () => {
     const dwellingStructureData = useDwellingStructureData(lgaCode, bmGCC.GCC_Code);
     const sa1_list = dwellingStructureData.data.sa1_list.map((item) => item.SA1_Code);
     const approvalData = useApprovalsPerQuarter(sa1_list);
+    const buildingApprovalsLGA = useBuildingApprovalsLGA(lgaCode);
 
     return (<div>
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2 mb-3 mt-1">
@@ -59,6 +62,13 @@ const HousingSupplyContent = () => {
                     <HousingTypesByBedroomsChart
                         data={dwellingStructureData.data.type_bedrooms}
                         areaName={lga.name}
+                    />
+                </div>
+            </div>
+            <div className="col-span-12 md:col-span-12">
+                <div className="row" id="how-are-residential-building-approvals-tracking">
+                    <HousingApprovalsChart
+                        data={buildingApprovalsLGA.data}
                     />
                 </div>
             </div>
