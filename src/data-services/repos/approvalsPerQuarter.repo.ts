@@ -20,7 +20,7 @@ export async function getApprovalsPerQuarterByIds(ids: string[]) {
 
         const promises = idChunks.map(async (chunk) => {
             const q = query(
-                collection(db, COLLECTIONS.APPROVALS_PER_QUARTER),
+                collection(db, COLLECTIONS.BUILDING_APPROVALS_SA1),
                 where(documentId(), 'in', chunk)
             ).withConverter(approvalsPerQuarterConverter);
 
