@@ -35,12 +35,6 @@ const callSupabaseRpc = async <T = any>(
       return { data: null, error, count: 0 };
     }
 
-    // Log raw data for debugging
-    console.log(`📦 Raw data received:`, data);
-    console.log(`📦 Data type:`, typeof data);
-    console.log(`📦 Is array:`, Array.isArray(data));
-    console.log(`📦 Data length:`, Array.isArray(data) ? data.length : data ? 1 : 0);
-
     // Ensure data is treated as an array for the return type structure
     const dataArray = Array.isArray(data) ? data : (data ? [data] : []);
 
@@ -97,12 +91,20 @@ export const getDwellingStructureforLga = async (lgaCode: string): Promise<Supab
 };
 
 
-
 export const getDwellingTypeBedroomsforLga = async (lgaCode: string): Promise<SupabaseQueryResult> => {
   return callSupabaseRpc(
     'get_dwelling_type_bedrooms_by_area',
     { p_area_id: lgaCode },
     `dwelling type bedrooms by area via RPC: ${lgaCode}`,
+    'id_housing'
+  );
+};
+
+export const getSa1byarea = async (lgaCodeInt: number): Promise<SupabaseQueryResult> => {
+  return callSupabaseRpc(
+    'get_sa1_by_area',
+    { p_area_id: lgaCodeInt },
+    `sa1 by area via RPC: ${lgaCodeInt}`,
     'id_housing'
   );
 };

@@ -23,7 +23,7 @@ export const MedianPricePeriodZ = z.object({
 
 export const TotalMedianPriceZ = z.object({
   Rentals: MedianPricePeriodZ,
-  Sales:   MedianPricePeriodZ,
+  Sales: MedianPricePeriodZ,
 }).strip();
 
 // Derive TypeScript types from Zod schemas (single source of truth)

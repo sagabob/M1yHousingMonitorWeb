@@ -1,6 +1,8 @@
 // Firebase collection names
 export const COLLECTIONS = {
   PRICES_INCOMES_MEDIANS: 'PricesIncomesMedians',
+  BUILDING_APPROVALS_LGA: 'BuildingApprovalsLGA',
+  BUILDING_APPROVALS_SA1: 'BuildingApprovalsSA1',
 } as const;
 
 // Query keys for React Query
@@ -9,7 +11,8 @@ export const QUERY_KEYS = {
   DWELLING_STRUCTURE_BY_LGA: (lgacode: string, bmcode: string) => ['dwellingStructure', 'typeBedrooms', lgacode, bmcode],
   HOUSING_DATA_BY_CODE: (lgacode: string, bmcode: string) => ['listingTypes', 'homePageData', lgacode, bmcode],
   BMGCC_BY_CODE: (lgacode: string) => ['bm-gcc', lgacode],
-
+  APPROVALS_PER_QUARTER: (ids: string[]) => ['approvalsPerQuarter', ...ids],
+  BUILDING_APPROVALS_LGA: (lgacode: string) => ['buildingApprovalsLGA', lgacode],
 } as const;
 
 // Cache times (in milliseconds)

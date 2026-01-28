@@ -11,13 +11,14 @@ import {
     Label,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
+import { COLOR_TEXT_PRIMARY, CHART_AXIS_FONT_SIZE } from '@/ui/constants/ui-constants';
 import {
     LandcomHouseIcon,
     LandcomTownhousesIcon,
     LandcomApartmentsIcon,
 } from '../icons/landcom-icons';
 import ChartWrapper from './ChartWrapper';
-import { Button } from '@/components/ui/button';
+import { ChartToggleGroup, type ChartDataType } from './ChartToggleGroup';
 import { CustomLegend } from './CustomLegend';
 import { formatPercentage } from '@/data-services/data-utils/core-utils';
 import TooltipWrapper from './TooltipWrapper';
@@ -32,7 +33,7 @@ interface HousingTypesByBedroomsChartProps {
     dataNotes?: string;
 }
 
-type DataType = 'percent' | 'number';
+
 
 // --- Constants ---
 const DWELLING_STRUCTURE_ORDER: Record<string, number> = {
@@ -89,7 +90,7 @@ interface CustomTooltipContentProps {
     active?: boolean;
     payload?: TooltipPayloadItem[];
     label?: string;
-    dataType: DataType;
+    dataType: ChartDataType;
 }
 
 const CustomTooltipContent = React.memo(({ active, payload, label, dataType }: CustomTooltipContentProps) => {
@@ -123,15 +124,14 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
     areaName,
     dataNotes,
 }) => {
-    const [dataType, setDataType] = useState<DataType>('percent');
+    const [dataType, setDataType] = useState<ChartDataType>('percent');
 
     // CSS Variables - resolving to values for Recharts compatibility
     const getVar = (name: string) => typeof window !== 'undefined' ? getComputedStyle(document.body).getPropertyValue(name).trim() : '#000';
     const COLOR_PRIMARY = getVar('--primary') || '#7513b8';
     const COLOR_MUTED = getVar('--muted-foreground') || '#8c94a3';
 
-    const changeToPercent = useCallback(() => setDataType('percent'), []);
-    const changeToNumber = useCallback(() => setDataType('number'), []);
+
 
     // Get benchmark name from first data item
     const benchmarkName = useMemo(() => {
@@ -143,7 +143,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
         if (isEmpty(data)) return [];
 
         const grouped = groupBy(data, 'Dwelling_Structure');
-        
+
         return map(grouped, (value, key) => {
             const sorted = sortBy(value, (item) => {
                 return getStartNumber(item.Bedroom_Number);
@@ -221,34 +221,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
         >
             <div className="mb-4 flex flex-col gap-4">
                 {/* Controls */}
-                <div className="flex justify-start d-print-none">
-                    <div className="flex items-center">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={changeToPercent}
-                            className={`h-7 text-xs rounded-r-none border-r-0 focus:z-10 ${
-                                dataType === 'percent' 
-                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
-                                    : ''
-                            }`}
-                        >
-                            Percent
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={changeToNumber}
-                            className={`h-7 text-xs rounded-l-none focus:z-10 ${
-                                dataType === 'number' 
-                                    ? 'bg-[#8c94a3] text-white border-[#8c94a3] hover:bg-[#8c94a3] hover:text-white' 
-                                    : ''
-                            }`}
-                        >
-                            Number
-                        </Button>
-                    </div>
-                </div>
+                <ChartToggleGroup value={dataType} onChange={setDataType} />
 
                 {/* Legend */}
                 <CustomLegend items={legendItems} />
@@ -260,7 +233,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                             <div className="w-full h-[200px]">
                                 <ResponsiveContainer>
                                     <BarChart data={data} margin={{ top: 10, left: 0, right: 0, bottom: 25 }}>
-                                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                                        <CartesianGrid vertical={false} />
                                         <YAxis
                                             tickLine={false}
                                             tickFormatter={yAxisFormatter}
@@ -268,22 +241,22 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                                             domain={[0, ticks[ticks.length - 1]]}
                                             ticks={ticks}
                                             width={48}
-                                            tick={{ fontSize: 11 }}
+                                            tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                         />
-                                        <XAxis 
-                                            dataKey="Bedroom_Number" 
-                                            tick={{ fontSize: 11 }}
+                                        <XAxis
+                                            dataKey="Bedroom_Number"
+                                            tick={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                         >
                                             <Label
                                                 value="Bedrooms"
                                                 offset={-5}
                                                 position="insideBottom"
-                                                style={{ fontSize: 11 }}
+                                                style={{ fontSize: CHART_AXIS_FONT_SIZE, fill: COLOR_TEXT_PRIMARY }}
                                             />
                                         </XAxis>
                                         <Tooltip
                                             content={(props) => <CustomTooltipContent {...(props as any)} dataType={dataType} />}
-                                            cursor={{ fill: 'transparent' }}
+                                            cursor={{ fill: '#eee' }}
                                         />
 
                                         {dataType === 'percent' && (
@@ -300,7 +273,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                             </div>
                             <div className="text-center mt-3">
                                 <ChartIcon dwellingType={type} className="w-10 h-10 mb-1" />
-                                <span className="font-medium text-xs leading-tight block">
+                                <span className="font-medium text-[14px] leading-tight block" style={{ color: COLOR_TEXT_PRIMARY }}>
                                     {type}
                                 </span>
                             </div>

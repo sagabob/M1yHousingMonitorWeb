@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fetchAPI } from "../utils/api-client";
 
 const DwellingTypeBedroomsZ = z.object({
     Area_Id: z.string(),
@@ -10,7 +11,7 @@ const DwellingTypeBedroomsZ = z.object({
     Benchmark_Name: z.string(),
     bNum_2021: z.coerce.number().optional(),
     bPer_2021: z.coerce.number().optional(),
-}).passthrough();
+}).strip();
 export type DwellingTypeBedrooms = z.infer<typeof DwellingTypeBedroomsZ>;
 
 const DwellingStructureZ = z.object({
@@ -24,14 +25,21 @@ const DwellingStructureZ = z.object({
     Per_2011: z.coerce.number().optional(),
     Num_2006: z.coerce.number().optional(),
     Per_2006: z.coerce.number().optional()
-}).passthrough();
+}).strip();
 
 export type DwellingStructure = z.infer<typeof DwellingStructureZ>;
+
+
+const Sa1RecordZ = z.object({
+    SA1_Code: z.string(),
+}).strip();
+export type Sa1List = z.infer<typeof Sa1RecordZ>;
 
 export interface DwellingStructureResponse {
     lga: DwellingStructure[];
     bm: DwellingStructure[];
     type_bedrooms: DwellingTypeBedrooms[];
+    sa1_list: Sa1List[];
     timestamp: string;
     error?: string;
 }
@@ -43,59 +51,32 @@ export async function getDwellingStructureData(
     bmcode: string
 ): Promise<DwellingStructureResponse> {
     try {
-        const url = new URL("/api/dwelling-structure-data-edge", window.location.origin);
-
+        const url = new URL("/api/dwelling-structure-data", window.location.origin);
         url.searchParams.set("lgacode", lgacode);
         url.searchParams.set("bmcode", bmcode);
 
-        console.log(`🔍 Fetching housing data via edge function: ${url.toString()}`);
-
-        const response = await fetch(url.toString(), {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        console.log(response);
-        if (!response.ok) {
-            const contentType = response.headers.get('content-type');
-            let errorMessage = `Edge function error: ${response.status} - ${response.statusText}`;
-            
-            if (contentType?.includes('application/json')) {
-                try {
-                    const errorData = await response.json();
-                    errorMessage = `Edge function error: ${response.status} - ${errorData.error || response.statusText}`;
-                } catch (e) {
-                    // If JSON parsing fails, use default error message
-                }
-            } else {
-                // If response is not JSON (e.g., HTML error page), read as text
-                const text = await response.text();
-                errorMessage = `Edge function error: ${response.status} - ${response.statusText}. Response: ${text.substring(0, 200)}`;
-            }
-            
-            throw new Error(errorMessage);
-        }
-
-        const rawData = await response.json();
-        console.log("DEBUG RAW DATA LGA:", rawData.lga[0]);
-        console.log(rawData);
-        console.log(`✅ Successfully fetched raw housing data for LGA ${lgacode}, BM ${bmcode}`);
+        const rawData = await fetchAPI<{
+            lga: unknown[];
+            bm: unknown[];
+            type_bedrooms: unknown[];
+            sa1_list: string[];
+            timestamp: string;
+            error?: string;
+        }>(url.toString());
 
         // Validate and transform data using Zod schemas
         const validatedData: DwellingStructureResponse = {
             lga: z.array(DwellingStructureZ).parse(rawData.lga),
             bm: z.array(DwellingStructureZ).parse(rawData.bm),
             type_bedrooms: z.array(DwellingTypeBedroomsZ).parse(rawData.type_bedrooms),
+            sa1_list: z.array(Sa1RecordZ).parse(rawData.sa1_list),
             timestamp: rawData.timestamp,
             error: rawData.error
         };
 
-        console.log(`✅ Successfully validated housing data: ${validatedData.lga.length} LGA items, ${validatedData.bm.length} BM items`);
         return validatedData;
     } catch (error) {
-        console.error(`❌ Error fetching housing data via edge function for LGA ${lgacode}, BM ${bmcode}:`, error);
+        console.error(`❌ Error fetching dwelling structure data for LGA ${lgacode}, BM ${bmcode}:`, error);
         throw error;
     }
 }

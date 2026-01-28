@@ -32,48 +32,6 @@
           "route": "/housing-and-approvals/#where-is-new-building-happening"
         }
       ]
-    },
-    {
-      "id": "housing-market",
-      "label": "Housing Market",
-      "type": "section",
-      "subItems": [
-        {
-          "id": "how-do-housing-prices-compare",
-          "label": "How do housing prices compare?",
-          "route": "/housing-market/#how-do-housing-prices-compare"
-        },
-        {
-          "id": "how-have-house-prices-been-changing",
-          "label": "How have house prices been changing?",
-          "route": "/housing-market/#how-have-house-prices-been-changing"
-        },
-        {
-          "id": "how-have-unit-prices-been-changing",
-          "label": "How have unit prices been changing?",
-          "route": "/housing-market/#how-have-unit-prices-been-changing"
-        },
-        {
-          "id": "how-do-rental-costs-compare",
-          "label": "How do rental costs compare?",
-          "route": "/housing-market/#how-do-rental-costs-compare"
-        },
-        {
-          "id": "how-have-house-rental-prices-been-changing",
-          "label": "How have house rental prices been changing?",
-          "route": "/housing-market/#how-have-house-rental-prices-been-changing"
-        },
-        {
-          "id": "how-have-unit-rental-prices-been-changing",
-          "label": "How have unit rental prices been changing?",
-          "route": "/housing-market/#how-have-unit-rental-prices-been-changing"
-        },
-        {
-          "id": "what-is-the-rental-vacancy-rate",
-          "label": "What is the rental vacancy rate?",
-          "route": "/housing-market/#what-is-the-rental-vacancy-rate"
-        }
-      ]
     }
   ]
 }
