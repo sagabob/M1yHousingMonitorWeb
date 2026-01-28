@@ -44,10 +44,10 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-2">
                     <span
-                        className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-600 inline-block"
+                        className="w-4 h-4 rounded-sm border border-gray-600 inline-block"
                         style={{ backgroundColor: '#ffffff' }}
                     />
-                    <span className="text-gray-700 dark:text-gray-300">
+                    <span className="text-[#333333]">
                         0
                     </span>
                 </div>
@@ -88,10 +88,10 @@ export const MapLegend: React.FC<MapLegendProps> = ({ scale, title }) => {
                     return (
                         <div key={i} className="flex items-center gap-2">
                             <span
-                                className="w-4 h-4 rounded-sm border border-gray-300 dark:border-gray-600 inline-block"
+                                className="w-4 h-4 rounded-sm border border-gray-600 inline-block"
                                 style={{ backgroundColor: color }}
                             />
-                            <span className="text-gray-700 dark:text-gray-300">
+                            <span className="text-[#333333]">
                                 {label}
                             </span>
                         </div>

@@ -60,7 +60,7 @@ const MapControls: React.FC<MapControlsProps> = ({
                             key={type.value}
                             value={type.value}
                             className={cn(
-                                "px-3 py-1 h-7 text-xs border border-input focus:z-10 bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-[#8c94a3] data-[state=on]:text-white data-[state=on]:border-[#8c94a3]",
+                                "px-3 py-1 h-7 text-xs border border-[#5f6062] focus:z-10 bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-[#5f6062] data-[state=on]:text-white data-[state=on]:border-[#5f6062]",
                                 index === 0 && "rounded-r-none",
                                 index > 0 && index < DATA_TYPES.length - 1 && "rounded-none border-l-0",
                                 index === DATA_TYPES.length - 1 && "rounded-l-none border-l-0"
@@ -76,10 +76,10 @@ const MapControls: React.FC<MapControlsProps> = ({
             <div className="space-y-1">
                 <Label>From</Label>
                 <Select value={startPeriod} onValueChange={onStartChange}>
-                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0">
+                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-[#5f6062]">
                         <SelectValue placeholder="Start Date" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border border-[#5f6062]">
                         {periodOptions.map(p => (
                             <SelectItem
                                 key={p.value}
@@ -98,10 +98,10 @@ const MapControls: React.FC<MapControlsProps> = ({
             <div className="space-y-1">
                 <Label>To</Label>
                 <Select value={endPeriod} onValueChange={onEndChange}>
-                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0">
+                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-[#5f6062]">
                         <SelectValue placeholder="End Date" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="border border-[#5f6062]">
                         {periodOptions.map(p => (
                             <SelectItem
                                 key={p.value}

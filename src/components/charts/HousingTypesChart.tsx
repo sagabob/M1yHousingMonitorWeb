@@ -234,7 +234,7 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
                             <div className="w-full h-[200px]">
                                 <ResponsiveContainer>
                                     <BarChart data={data} margin={{ top: 10, left: 0, right: 0 }}>
-                                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                                        <CartesianGrid vertical={false} />
                                         <YAxis
                                             tickLine={false}
                                             tickFormatter={yAxisFormatter}
@@ -242,9 +242,9 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
                                             domain={[0, ticks[ticks.length - 1]]}
                                             ticks={ticks}
                                             width={48}
-                                            tick={{ fontSize: 11 }}
+                                            tick={{ fontSize: 12, fill: '#333333' }}
                                         />
-                                        <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+                                        <XAxis dataKey="year" tick={{ fontSize: 12, fill: '#333333' }} />
                                         <Tooltip
                                             content={(props) => <CustomTooltipContent {...(props as any)} dataType={dataType} />}
                                             cursor={{ fill: '#eee' }}
@@ -264,7 +264,7 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
                             </div>
                             <div className="text-center mt-2">
                                 <ChartIcon dwellingType={dwellingStructure} className="w-10 h-10 mb-1" />
-                                <span className="font-medium text-xs leading-tight block">
+                                <span className="font-medium text-[14px] text-[#333333] leading-tight block">
                                     {dwellingStructure}
                                 </span>
                             </div>

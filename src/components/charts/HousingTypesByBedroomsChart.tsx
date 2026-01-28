@@ -232,7 +232,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                             <div className="w-full h-[200px]">
                                 <ResponsiveContainer>
                                     <BarChart data={data} margin={{ top: 10, left: 0, right: 0, bottom: 25 }}>
-                                        <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                                        <CartesianGrid vertical={false} />
                                         <YAxis
                                             tickLine={false}
                                             tickFormatter={yAxisFormatter}
@@ -240,17 +240,17 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                                             domain={[0, ticks[ticks.length - 1]]}
                                             ticks={ticks}
                                             width={48}
-                                            tick={{ fontSize: 11 }}
+                                            tick={{ fontSize: 12, fill: '#333333' }}
                                         />
                                         <XAxis
                                             dataKey="Bedroom_Number"
-                                            tick={{ fontSize: 11 }}
+                                            tick={{ fontSize: 12, fill: '#333333' }}
                                         >
                                             <Label
                                                 value="Bedrooms"
                                                 offset={-5}
                                                 position="insideBottom"
-                                                style={{ fontSize: 11 }}
+                                                style={{ fontSize: 12, fill: '#333333' }}
                                             />
                                         </XAxis>
                                         <Tooltip
@@ -272,7 +272,7 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
                             </div>
                             <div className="text-center mt-3">
                                 <ChartIcon dwellingType={type} className="w-10 h-10 mb-1" />
-                                <span className="font-medium text-xs leading-tight block">
+                                <span className="font-medium text-[14px] text-[#333333] leading-tight block">
                                     {type}
                                 </span>
                             </div>

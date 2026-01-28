@@ -18,7 +18,7 @@ export const CustomLegend: React.FC<CustomLegendProps> = ({ items }) => {
                         className="block w-3 h-3 rounded-full"
                         style={{ backgroundColor: item.color || '#ccc' }}
                     />
-                    <span className="text-sm text-slate-600 font-medium">
+                    <span className="text-sm text-[#333333] font-medium">
                         {item.label}
                     </span>
                 </div>

@@ -115,24 +115,24 @@ const HousingApprovalsChart: React.FC<HousingApprovalsChartProps> = ({
                 <div className="w-full h-[360px]">
                     <ResponsiveContainer>
                         <BarChart data={chartData} margin={{ top: 10, left: 0, right: 0, bottom: 25 }}>
-                            <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                            <CartesianGrid vertical={false} />
                             <YAxis
                                 tickLine={false}
                                 axisLine={false}
                                 tickFormatter={formatNumber}
                                 domain={['auto', 'auto']}
                                 width={48}
-                                tick={{ fontSize: 11 }}
+                                tick={{ fontSize: 12, fill: '#333333' }}
                             />
                             <XAxis
                                 dataKey="Year_Label"
-                                tick={{ fontSize: 11 }}
+                                tick={{ fontSize: 12, fill: '#333333' }}
                             >
                                 <Label
                                     value={Datasource.FinancialYearChartLabel}
                                     offset={-5}
                                     position="insideBottom"
-                                    style={{ fontSize: 11 }}
+                                    style={{ fontSize: 12, fill: '#333333' }}
                                 />
                             </XAxis>
                             <Tooltip
