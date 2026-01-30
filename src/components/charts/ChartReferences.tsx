@@ -40,7 +40,7 @@ export const ChartReferences: React.FC<ChartReferencesProps> = ({ dataSource, da
                                 <span className="underline underline-offset-2">Data notes</span>
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-5xl">
+                        <DialogContent className="max-w-5xl z-[1500]">
                             <DialogHeader>
                                 <DialogTitle>Data notes</DialogTitle>
                             </DialogHeader>

@@ -18,13 +18,13 @@ import TooltipWrapper from './TooltipWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
 import { ErrorMessageChart } from './ErrorMessageChart';
 import type { BuildingApprovalsLGA } from '@/data-services/schemas/buildingApprovalsLGA.schema';
+import HousingApprovalsInfo from '../notes/HousingApprovalsInfo';
+import { HousingApprovalsNotes } from '../notes/HousingApprovalsNotes';
 
 // --- Types ---
 
 interface HousingApprovalsChartProps {
     data: BuildingApprovalsLGA | null | undefined;
-    dataNotes?: string;
-    chartInfo?: string;
 }
 
 // --- Helper Functions ---
@@ -72,8 +72,6 @@ CustomTooltipContent.displayName = 'CustomTooltipContent';
 
 const HousingApprovalsChart: React.FC<HousingApprovalsChartProps> = ({
     data,
-    dataNotes,
-    chartInfo,
 }) => {
     const theme = useChartTheme();
     const COLOR_PRIMARY = theme.primary;
@@ -105,8 +103,8 @@ const HousingApprovalsChart: React.FC<HousingApprovalsChartProps> = ({
             title="How are residential building approvals tracking?"
             subTitle="Approvals by dwelling type"
             dataSource={Datasource.ChartBuildingApproval}
-            dataNotes={dataNotes}
-            chartInfo={chartInfo}
+            dataNotes={<HousingApprovalsNotes />}
+            chartInfo={<HousingApprovalsInfo />}
         >
             <div className="mb-4 flex flex-col gap-4">
                 {/* Legend */}

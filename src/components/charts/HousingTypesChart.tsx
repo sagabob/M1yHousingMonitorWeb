@@ -33,11 +33,9 @@ export interface DwellingStructureItem {
 interface HousingTypesChartProps {
     data: DwellingStructureItem[];
     benchmarkData: DwellingStructureItem[];
-    areaName: string;
-    benchmarkName: string;
-    areaName: string;
     benchmarkName: string;
     chartInfo?: string;
+    areaName: string
 }
 
 
