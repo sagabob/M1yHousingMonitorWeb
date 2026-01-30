@@ -11,6 +11,8 @@ import { COLOR_BORDER_DEFAULT, COLOR_BG_HOVER } from '@/ui/constants/ui-constant
 import { Label } from '../ui/label';
 import ChartWrapper from '../charts/ChartWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
+import { HousingApprovalsMapInfo } from '../notes/HousingApprovalsMapInfo';
+import { HousingApprovalsMapNotes } from '../notes/HousingApprovalsMapNotes';
 
 // --- Types ---
 
@@ -191,8 +193,10 @@ export const ApprovalsMap: React.FC<ApprovalsMapProps> = ({ data, pageContext, t
     return (
         <ChartWrapper
             title={title}
-            subTitle="Residential building approvals by SA1 quarterly."
+            subTitle="Approvals by SA1"
             dataSource={Datasource.MapBuildingApproval}
+            dataNotes={<HousingApprovalsMapNotes />}
+            chartInfo={<HousingApprovalsMapInfo />}
         >
             <MapControls
                 selectedType={selectedType}
