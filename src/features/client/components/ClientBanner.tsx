@@ -1,9 +1,9 @@
 import type { Lga } from "@/page-data/types/Lga";
-import HousingIllustration from "@/assets/housing-illustration.svg";
+import HousingIllustration from "@/assets/img/housing-illustration.svg";
 
 const ClientBanner = ({ lga }: { lga: Lga }) => {
     return (
-        <section className="-my-2.5  bg-[#7513b8] border-0 z-30 relative">
+        <section className="-my-2.5  bg-housing border-0 z-30 relative">
             <div className="max-w-6xl mx-auto px-2 sm:px-2 lg:px-4 ">
                 <div>
                     <h1 className="text-white text-2xl sm:text-3xl md:text-4xl font-bold pt-10">Explore the housing story for {lga.name}</h1>

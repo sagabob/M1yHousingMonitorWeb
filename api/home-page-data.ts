@@ -1,7 +1,8 @@
 export const config = { runtime: 'edge' };
-import { withEdgeHandler } from './_lib/with-edge-handler';
 import { getHomePageSummaryByLga, getLatestListingTypes } from './_lib/supabase-service';
-import { createErrorResponse, createSuccessResponse } from './_lib/response-utils';
+import { createErrorResponse, createSuccessResponse, createInternalErrorResponse } from './_lib/response-utils';
+
+import { withEdgeHandler } from './_lib/with-edge-handler';
 
 export default withEdgeHandler(async (req: Request) => {
   const url = new URL(req.url);
@@ -19,6 +20,12 @@ export default withEdgeHandler(async (req: Request) => {
     getLatestListingTypes(bmcode),
     getHomePageSummaryByLga(lgacode)
   ]);
+
+  if (listingResult.error || summaryResult.error) {
+    return createInternalErrorResponse(
+      listingResult.error?.message || summaryResult.error?.message || 'Failed to fetch data'
+    );
+  }
 
   return createSuccessResponse({
     listingtypes: listingResult.data,

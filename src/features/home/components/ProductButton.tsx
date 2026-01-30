@@ -5,22 +5,22 @@ interface MyProductButtonProps {
 }
 
 const MyProductButton = ({ products }: MyProductButtonProps) => {
-
-    const productButtons = products.map((product) => (
-        <a
-            key={product.id}
-            className={`inline-block text-white h-11 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 py-2`}
-            style={{ backgroundColor: product.color }}
-            href={product.link}
-            target="_blank"
-            rel="noreferrer"
-        >
-            {product.name}
-        </a>))
-
     return (
         <>
-            {productButtons}
+            {products.map((product) => (
+                <a
+                    key={product.id}
+                    className="inline-block text-white h-11 text-xs sm:text-sm md:text-base lg:text-lg px-2 sm:px-3 md:px-4 py-2 hover:opacity-90 transition-opacity"
+                    style={{ backgroundColor: product.color }}
+                    href={product.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={product.description || product.name}
+                    aria-label={`Go to ${product.name}`}
+                >
+                    {product.name}
+                </a>
+            ))}
         </>
     )
 }

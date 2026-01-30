@@ -1,9 +1,10 @@
 import { z } from "zod";
+import { fetchAPI } from "../utils/api-client";
 
 const ListingTypeZ = z.object({
-  GCCSACode: z.string(),
-  ListingType: z.enum(["Rentals", "Sales"]),
-  PropertyType: z.enum(["Unit", "House"]),
+  GCCSA_Code: z.string(),
+  Listing_Type: z.enum(["Rentals", "Sales"]),
+  Property_Type: z.enum(["Unit", "House", "Dwelling"]),
   Median: z.number(),
   Period: z.string()
 }).strip();
@@ -11,7 +12,7 @@ const ListingTypeZ = z.object({
 export type ListingType = z.infer<typeof ListingTypeZ>;
 
 const homeDataSummaryZ = z.object({
-  LGA_CODE: z.string(),
+  LGA_Code: z.string(),
   Household_type_need: z.string(),
   Household_type_need_number: z.number(),
   Population: z.number(),
@@ -22,7 +23,7 @@ const homeDataSummaryZ = z.object({
   Average_household_size_benchmark: z.number(),
   Average_household_size_benchmark_change: z.number().nullable(),
   Dominant_dwelling_type_name: z.string(),
-  Dominant_dwelling_type_Per: z.number().nullable(),
+  Dominant_dwelling_type_per: z.number().nullable(),
   Emerging_dwelling_type_name: z.string(),
   Emerging_dwelling_type_change: z.number().nullable(),
 }).strip();
@@ -36,11 +37,6 @@ export interface HousingDataResponse {
   error?: string;
 }
 
-export interface HousingDataParams {
-  lgacode: string;
-  bmcode: string;
-}
-
 // Fetch housing data from edge function
 export async function getHomePageData(
   lgacode: string,
@@ -48,28 +44,15 @@ export async function getHomePageData(
 ): Promise<HousingDataResponse> {
   try {
     const url = new URL("/api/home-page-data", window.location.origin);
-
     url.searchParams.set("lgacode", lgacode);
     url.searchParams.set("bmcode", bmcode);
 
-    console.log(`🔍 Fetching housing data via edge function: ${url.toString()}`);
-
-    const response = await fetch(url.toString(), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(response);
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Edge function error: ${response.status} - ${errorData.error || response.statusText}`);
-    }
-
-    const rawData = await response.json();
-    console.log(rawData);
-    console.log(`✅ Successfully fetched raw housing data for LGA ${lgacode}, BM ${bmcode}`);
+    const rawData = await fetchAPI<{
+      listingtypes: unknown[];
+      home_summary: unknown[];
+      timestamp: string;
+      error?: string;
+    }>(url.toString());
 
     // Validate and transform data using Zod schemas
     const validatedData: HousingDataResponse = {
@@ -79,10 +62,9 @@ export async function getHomePageData(
       error: rawData.error
     };
 
-    console.log(`✅ Successfully validated housing data: ${validatedData.listing_types.length} listing types, ${validatedData.home_summary.length} summary items`);
     return validatedData;
   } catch (error) {
-    console.error(`❌ Error fetching housing data via edge function for LGA ${lgacode}, BM ${bmcode}:`, error);
+    console.error(`❌ Error fetching housing data for LGA ${lgacode}, BM ${bmcode}:`, error);
     throw error;
   }
 }
