@@ -20,6 +20,8 @@ import { formatPercentage } from '@/data-services/data-utils/core-utils';
 import TooltipWrapper from './TooltipWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
 import { ErrorMessageChart } from './ErrorMessageChart';
+import DominantHousingTypeInfo from '../notes/DominantHousingTypeInfo';
+import { HousingTypesNotes } from '../notes/HousingTypesNotes';
 
 // --- Types ---
 
@@ -31,10 +33,9 @@ export interface DwellingStructureItem {
 interface HousingTypesChartProps {
     data: DwellingStructureItem[];
     benchmarkData: DwellingStructureItem[];
-    areaName: string;
     benchmarkName: string;
-    dataNotes?: string;
     chartInfo?: string;
+    areaName: string
 }
 
 
@@ -121,7 +122,6 @@ CustomTooltipContent.displayName = 'CustomTooltipContent';
 
 const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
     data,
-    dataNotes,
     benchmarkData,
     areaName,
     benchmarkName,
@@ -219,7 +219,13 @@ const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
             title="What is the dominant housing type?"
             subTitle="Dwellings by dwelling type, 2006 to 2021"
             dataSource={Datasource.ABS2006}
-            dataNotes={dataNotes}
+            dataNotes={<HousingTypesNotes />}
+            chartInfo={
+                <DominantHousingTypeInfo
+                    LGAName={areaName}
+                    benchmarkName={benchmarkName}
+                />
+            }
         >
             <div className="mb-4 flex flex-col gap-4">
                 {/* Controls */}

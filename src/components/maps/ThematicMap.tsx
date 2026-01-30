@@ -204,7 +204,7 @@ export const ThematicMap: React.FC<ThematicMapProps> = ({
     if (error) return <div className="text-red-500 p-4">Error loading map: {error}</div>;
 
     return (
-        <div className="relative w-full border rounded-md overflow-hidden bg-gray-50" style={{ height }}>
+        <div className="relative w-full rounded-md overflow-hidden bg-gray-50" style={{ height }}>
             <MapContainer
                 style={{ height: '100%', width: '100%' }}
                 zoom={10}

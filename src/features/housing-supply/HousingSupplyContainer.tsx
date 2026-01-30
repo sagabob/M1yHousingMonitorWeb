@@ -62,6 +62,7 @@ const HousingSupplyContent = () => {
                     <HousingTypesByBedroomsChart
                         data={dwellingStructureData.data.type_bedrooms}
                         areaName={lga.name}
+                        benchmarkName={bmGCC.GCC_Name}
                     />
                 </div>
             </div>

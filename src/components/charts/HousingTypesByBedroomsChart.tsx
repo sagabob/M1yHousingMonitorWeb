@@ -25,12 +25,14 @@ import TooltipWrapper from './TooltipWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
 import { ErrorMessageChart } from './ErrorMessageChart';
 import type { DwellingTypeBedrooms } from '@/data-services/api/getDwellingStructureData';
+import { HousingTypesByBedroomsNotes } from '../notes/HousingTypesByBedroomsNotes';
+import DominantHousingTypeInfo from '../notes/DominantHousingTypeInfo';
 
 // --- Types ---
 interface HousingTypesByBedroomsChartProps {
     data: DwellingTypeBedrooms[];
     areaName: string;
-    dataNotes?: string;
+    benchmarkName: string;
 }
 
 
@@ -122,7 +124,7 @@ CustomTooltipContent.displayName = 'CustomTooltipContent';
 const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = ({
     data,
     areaName,
-    dataNotes,
+    benchmarkName,
 }) => {
     const [dataType, setDataType] = useState<ChartDataType>('percent');
 
@@ -130,13 +132,6 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
     const getVar = (name: string) => typeof window !== 'undefined' ? getComputedStyle(document.body).getPropertyValue(name).trim() : '#000';
     const COLOR_PRIMARY = getVar('--primary') || '#7513b8';
     const COLOR_MUTED = getVar('--muted-foreground') || '#8c94a3';
-
-
-
-    // Get benchmark name from first data item
-    const benchmarkName = useMemo(() => {
-        return data.length > 0 ? data[0].Benchmark_Name || '' : '';
-    }, [data]);
 
     // 1. Prepare Chart Data (Memoized) - Group by dwelling structure and sort by bedroom number
     const chartData = useMemo(() => {
@@ -217,7 +212,13 @@ const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = 
             title="What is the mix of housing?"
             subTitle="Occupied dwellings by dwelling type and no. of bedrooms, 2021"
             dataSource={Datasource.ABS2021}
-            dataNotes={dataNotes}
+            dataNotes={<HousingTypesByBedroomsNotes />}
+            chartInfo={
+                <DominantHousingTypeInfo
+                    LGAName={areaName}
+                    benchmarkName={benchmarkName}
+                />
+            }
         >
             <div className="mb-4 flex flex-col gap-4">
                 {/* Controls */}
