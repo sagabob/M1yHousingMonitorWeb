@@ -1,4 +1,3 @@
-import React from 'react';
 
 export const HousingApprovalsMapNotes = () => (
     <div className="space-y-4">
