@@ -5,7 +5,7 @@ const MyListLga = () => {
     return (
         <section className="py-10 bg-white">
             <div className={`max-w-${MAX_WIDTH} mx-auto px-2 sm:px-2 lg:px-4 py-8`}>
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {lgaData.map((lga) => (
                         <Link
                             key={lga.id}
