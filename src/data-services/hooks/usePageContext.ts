@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router-dom"
 import type { Lga } from "@/page-data/types/Lga"
-import type { BmGCC } from "@/data-services/api/getBMGCC"
+import type { BmGCC } from "@/data-services/client-api/getBMGCC"
 
 //context is context={{ lga, bmGCCData }}
 type LgaContext = {
@@ -8,6 +8,6 @@ type LgaContext = {
   bmGCCData: BmGCC
 }
 
-export function usePageContext  () {
+export function usePageContext() {
   return useOutletContext<LgaContext>()
 }

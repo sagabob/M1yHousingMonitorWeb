@@ -24,7 +24,7 @@ import { formatPercentage } from '@/data-services/data-utils/core-utils';
 import TooltipWrapper from './TooltipWrapper';
 import * as Datasource from '@/data-services/config/text-constants';
 import { ErrorMessageChart } from './ErrorMessageChart';
-import type { DwellingTypeBedrooms } from '@/data-services/api/getDwellingStructureData';
+import type { DwellingTypeBedrooms } from '@/data-services/client-api/getDwellingStructureData';
 import { HousingTypesByBedroomsNotes } from '../notes/HousingTypesByBedroomsNotes';
 import DominantHousingTypeInfo from '../notes/DominantHousingTypeInfo';
 

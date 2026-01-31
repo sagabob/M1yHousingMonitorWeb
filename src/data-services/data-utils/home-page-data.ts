@@ -1,6 +1,6 @@
 import type { TotalMedianPrice } from "@/data-services/schemas/medianPriceSchema";
 import { getLatestPeriod } from "@/data-services/data-utils/core-utils";
-import type { ListingType } from "@/data-services/api/getHomePageData";
+import type { ListingType } from "@/data-services/client-api/getHomePageData";
 
 export function getLatestDataRentals(data: TotalMedianPrice) {
     return getLatestPeriod(data.Rentals.Periods);
