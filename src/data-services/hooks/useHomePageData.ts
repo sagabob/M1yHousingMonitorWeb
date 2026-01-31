@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { getHomePageData } from "@/data-services/api/getHomePageData";
-import { QUERY_KEYS,CACHE_TIMES } from "@/data-services/config/constants";
+import { getHomePageData } from "@/data-services/client-api/getHomePageData";
+import { QUERY_KEYS, CACHE_TIMES } from "@/data-services/config/constants";
 
 
 // Hook for fetching listing types by specific code

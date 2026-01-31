@@ -16,6 +16,9 @@ export default {
         'community-views': '#b21f67',
         'housing-id': '#7513b8',
         'housing-id-hover': '#d6b8ea',
+        // Common UI Colors
+        'housing-text': '#333333',
+        'housing-gray': '#5f6062',
       },
     },
   },
