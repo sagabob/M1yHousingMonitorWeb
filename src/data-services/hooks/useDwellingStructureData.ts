@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { QUERY_KEYS, CACHE_TIMES } from "@/data-services/config/constants";
-import { getDwellingStructureData } from "@/data-services/api/getDwellingStructureData";
+import { getDwellingStructureData } from "@/data-services/client-api/getDwellingStructureData";
 
 
 // Hook for fetching listing types by specific code
