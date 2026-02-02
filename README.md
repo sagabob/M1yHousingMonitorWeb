@@ -261,6 +261,56 @@ export const supabaseService = {
 <Route path="*" element={<NotFound />} />
 ```
 
+### 🏗️ Architecture Deep Dive
+
+#### Frontend (Client-Side)
+- **Role**: Handles UI presentation, user interaction, and client-side routing.
+- **Data Access**: Does **not** access the database directly for all operations. It uses:
+    - **Repositories (`src/data-services/repos`)**: For direct, secure Firestore access (when allowed by rules).
+    - **Client API (`src/data-services/client-api`)**: Fetches data from our Backend API (Vercel Functions) when server-side processing or hiding secrets is required.
+
+#### Backend (Server-Side)
+- **Location**: `api/` directory (root).
+- **Technology**: Vercel Edge Functions / Serverless Functions.
+- **Role**:
+    - Acts as a secure proxy for sensitive database operations.
+    - Performs complex data aggregation that would be too heavy for the client.
+    - Exposes REST endpoints that the Frontend calls via `client-api`.
+
+#### Database Layer
+- **Firestore**: Primary NoSQL database for flexible data structures.
+- **Supabase**: relational data storage, tapped into via Vercel Functions/Client.
+
+---
+
+### 🎨 Design System & CSS Tokens
+
+We use **Tailwind CSS v4** with CSS variables for a dynamic and themable design system.
+
+#### 1. Adding New Colors (Tokens)
+To add a new brand color or token:
+
+**Step 1: Define CSS Variable**
+Open `src/index.css` and add your variable to the `@theme` block or `:root`:
+
+```css
+@theme inline {
+  --color-my-new-color: #123456;
+}
+```
+
+**Step 2: Use in Code**
+You can now use it directly in Tailwind classes:
+
+```tsx
+<div className="bg-my-new-color text-white">...</div>
+```
+
+#### 2. Component Design
+- **shadcn/ui**: We use these as base primitives. Do not modify `src/components/ui` files directly unless you are customizing the global component style.
+- **Overriding**: Use `className` props to override styles for specific instances.
+- **Global Styles**: Defined in `src/index.css` (headers, body defaults).
+
 ## 💻 Development
 
 

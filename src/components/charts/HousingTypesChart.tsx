@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { isEmpty } from 'lodash';
 import {
     BarChart,
@@ -10,6 +10,7 @@ import {
     CartesianGrid,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
+import { useChartSettings } from '@/store/useChartSettings';
 import { LandcomHouseIcon, LandcomTownhousesIcon, LandcomApartmentsIcon } from '../icons/landcom-icons';
 import { COLOR_TEXT_PRIMARY, CHART_AXIS_FONT_SIZE } from '@/ui/constants/ui-constants';
 import ChartWrapper from './ChartWrapper';
@@ -120,13 +121,14 @@ CustomTooltipContent.displayName = 'CustomTooltipContent';
 
 // --- Main Component ---
 
+// ... inside component
 const HousingTypesChart: React.FC<HousingTypesChartProps> = ({
     data,
     benchmarkData,
     areaName,
     benchmarkName,
 }) => {
-    const [dataType, setDataType] = useState<ChartDataType>('percent');
+    const { dataType, setDataType } = useChartSettings();
     const theme = useChartTheme();
 
     const COLOR_PRIMARY = theme.primary;

@@ -19,7 +19,7 @@ graph TD
 
 ## Directory Structure
 
-*   **`api/`**: Functions that fetch data from HTTP endpoints (e.g., Vercel Serverless Functions).
+*   **`client-api/`**: Functions that fetch data from HTTP endpoints (e.g., Vercel Serverless Functions). Use this when the frontend cannot access the database directly (e.g., for complex queries or security).
 *   **`repos/`**: Functions that fetch data directly from databases (e.g., Firestore). We use the "Repository Pattern" here.
 *   **`hooks/`**: Custom React hooks (wrapping `useSuspenseQuery`) that components consume.
 *   **`schemas/`**: Zod schemas used to validate and type incoming data.
@@ -73,7 +73,7 @@ When adding a new data requirement:
 1.  **Define Schema**: Create a new file in `schemas/` (if complex) or define inline in your repo file.
 2.  **Create Repo/API**:
     *   If fetching from Firestore -> `src/data-services/repos/[Feature].repo.ts`
-    *   If fetching from API -> `src/data-services/api/get[Feature].ts`
+    *   If fetching from API -> `src/data-services/client-api/get[Feature].ts`
 3.  **Create Hook**: `src/data-services/hooks/use[Feature].ts`.
 4.  **Use in Component**:
     ```tsx

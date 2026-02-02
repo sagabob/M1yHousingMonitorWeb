@@ -36,10 +36,10 @@ Each feature directory typically contains its own components, hooks, and logic s
 ### 2. `src/data-services/`
 This directory serves as the centralized data layer for the application.
 
-- **`api/`**: API integration layer (e.g., `getBMGCC.ts`).
+- **`client-api/`**: API integration layer (e.g., `getBMGCC.ts`). This is where frontend code calls backend endpoints.
 - **`db-sources/`**: Database connections (Firebase/Supabase).
 - **`hooks/`**: Custom React Query hooks (Component -> Hook -> Repo).
-- **`repos/`**: Repository pattern (Data Access abstraction).
+- **`repos/`**: Repository pattern (Data Access abstraction) - direct DB access (Firestore).
 - **`schemas/`**: Zod validation schemas.
 - **`data-utils/`**: Data transformation utilities.
 - **`config/`**: Data-related configuration.

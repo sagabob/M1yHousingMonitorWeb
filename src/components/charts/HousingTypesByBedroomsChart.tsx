@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { isEmpty, groupBy, map, sortBy } from 'lodash';
 import {
     BarChart,
@@ -11,6 +11,7 @@ import {
     Label,
 } from 'recharts';
 import { scaleLinear } from 'd3-scale';
+import { useChartSettings } from '@/store/useChartSettings';
 import { COLOR_TEXT_PRIMARY, CHART_AXIS_FONT_SIZE } from '@/ui/constants/ui-constants';
 import {
     LandcomHouseIcon,
@@ -121,12 +122,14 @@ const CustomTooltipContent = React.memo(({ active, payload, label, dataType }: C
 CustomTooltipContent.displayName = 'CustomTooltipContent';
 
 // --- Main Component ---
+
+// ... inside component
 const HousingTypesByBedroomsChart: React.FC<HousingTypesByBedroomsChartProps> = ({
     data,
     areaName,
     benchmarkName,
 }) => {
-    const [dataType, setDataType] = useState<ChartDataType>('percent');
+    const { dataType, setDataType } = useChartSettings();
 
     // CSS Variables - resolving to values for Recharts compatibility
     const getVar = (name: string) => typeof window !== 'undefined' ? getComputedStyle(document.body).getPropertyValue(name).trim() : '#000';
