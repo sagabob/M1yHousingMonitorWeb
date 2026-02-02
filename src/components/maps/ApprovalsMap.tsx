@@ -85,10 +85,10 @@ const MapControls: React.FC<MapControlsProps> = ({
             <div className="space-y-1">
                 <Label>From</Label>
                 <Select value={startPeriod} onValueChange={onStartChange}>
-                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-[#5f6062]">
+                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-housing-gray">
                         <SelectValue placeholder="Start Date" />
                     </SelectTrigger>
-                    <SelectContent className="border border-[#5f6062]">
+                    <SelectContent className="border border-housing-gray">
                         {periodOptions.map(p => (
                             <SelectItem
                                 key={p.value}
@@ -107,10 +107,10 @@ const MapControls: React.FC<MapControlsProps> = ({
             <div className="space-y-1">
                 <Label>To</Label>
                 <Select value={endPeriod} onValueChange={onEndChange}>
-                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-[#5f6062]">
+                    <SelectTrigger className="w-[120px] h-7 text-xs focus:ring-0 focus:ring-offset-0 border border-housing-gray">
                         <SelectValue placeholder="End Date" />
                     </SelectTrigger>
-                    <SelectContent className="border border-[#5f6062]">
+                    <SelectContent className="border border-housing-gray">
                         {periodOptions.map(p => (
                             <SelectItem
                                 key={p.value}

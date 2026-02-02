@@ -45,7 +45,7 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({
                                         <Button
                                             variant="ghost"
                                             size="sm"
-                                            className="h-6 px-2 text-[#5f6062] hover:text-[#333333] hover:bg-slate-100 gap-1.5"
+                                            className="h-6 px-2 text-housing-gray hover:text-housing-text hover:bg-slate-100 gap-1.5"
                                         >
                                             <LandcomInfoIcon className="h-5 w-5" />
                                             <span className="text-sm font-medium underline underline-offset-2">Chart info</span>
@@ -62,7 +62,7 @@ const ChartWrapper: React.FC<ChartWrapperProps> = ({
                                 </Dialog>
                             )}
                         </div>
-                        {subTitle && <CardDescription className="text-[16px] text-[#5f6062] font-medium">{subTitle}</CardDescription>}
+                        {subTitle && <CardDescription className="text-[16px] text-housing-gray font-medium">{subTitle}</CardDescription>}
                     </div>
                 </div>
             </CardHeader>

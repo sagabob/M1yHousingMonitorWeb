@@ -19,7 +19,7 @@ export const ChartReferences: React.FC<ChartReferencesProps> = ({ dataSource, da
     if (!dataSource && !dataNotes) return null;
 
     return (
-        <div className="w-full pt-4 flex flex-wrap items-center justify-between gap-4 text-sm text-[#5f6062]">
+        <div className="w-full pt-4 flex flex-wrap items-center justify-between gap-4 text-sm text-housing-gray">
             {dataSource && (
                 <div className="flex gap-2">
                     <span className="font-bold whitespace-nowrap">Source:</span>
@@ -34,7 +34,7 @@ export const ChartReferences: React.FC<ChartReferencesProps> = ({ dataSource, da
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                className="p-0 h-auto font-normal text-[#5f6062] hover:bg-transparent hover:text-black justify-start gap-1"
+                                className="p-0 h-auto font-normal text-housing-gray hover:bg-transparent hover:text-housing-text justify-start gap-1"
                             >
                                 <LandcomInfoIcon className="h-5 w-5" />
                                 <span className="underline underline-offset-2">Data notes</span>
