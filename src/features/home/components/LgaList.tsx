@@ -1,6 +1,12 @@
-import { lgaData, baseUrl } from "@/page-data/lga-data"
+import { lgaData } from "@/page-data/lga-data"
 import { Link } from "react-router-dom"
 import { MAX_WIDTH } from "@/ui/constants/ui-constants"
+
+// Helper to load client logo images dynamically
+const getLgaImage = (id: string) => {
+    return new URL(`../../../assets/img/client-logos/${id}.png`, import.meta.url).href;
+};
+
 const MyListLga = () => {
     return (
         <section className="py-10 bg-white">
@@ -15,7 +21,7 @@ const MyListLga = () => {
                             <div className="w-full">
                                 <div className="w-[200px] h-[140px] mx-auto overflow-hidden rounded-md">
                                     <img
-                                        src={baseUrl + lga.image}
+                                        src={getLgaImage(lga.id)}
                                         alt={lga.name}
                                         className="w-full h-full object-cover object-center"
                                     />
