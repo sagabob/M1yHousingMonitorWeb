@@ -1,6 +1,6 @@
 # 🏘️ My Housing Monitor Web
 
-A modern, full-stack React web application for monitoring and analyzing Australian housing market data across Local Government Areas (LGAs). Built with cutting-edge technologies including React 19, TypeScript, Vite, Firebase Firestore, and Supabase.
+A modern, full-stack React web application for monitoring and analyzing Australian housing market data across Local Government Areas (LGAs). Built with cutting-edge technologies including React 19, TypeScript, Vite, Firebase Firestore, and Supabase. Here is the demo https://experiment-housing-monitor-app.vercel.app/
 
 ## ✨ Features
 
